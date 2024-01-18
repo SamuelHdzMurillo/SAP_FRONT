@@ -6,6 +6,8 @@ export interface User {
   email: string;
   password: string;
   phone_number: string;
+  profile_img_path: string;
+  password_confirmation?: string;
 }
 
 interface UserState {
@@ -27,6 +29,7 @@ export const useUserStore = create<UserState>((set) => ({
     email: "",
     password: "",
     phone_number: "",
+    profile_img_path: "",
   },
   typeForm: "post",
   users: [],

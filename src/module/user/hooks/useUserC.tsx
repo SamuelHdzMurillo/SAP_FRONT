@@ -4,6 +4,7 @@ import DropDownUH from "../components/DropDownUH";
 import { TablePaginationConfig, TableProps } from "antd";
 import { getAllUser } from "../api";
 import { useState } from "react";
+const URL = import.meta.env.VITE_API_URL;
 interface TableParams {
   pagination?: TablePaginationConfig;
 }
@@ -24,6 +25,19 @@ export const useUserC = () => {
   });
   // const [typeForm, setTypeForm] = useState<"post" | "put" | "password">("post");
   const columns: TableColumnsType<User> = [
+    {
+      title: "",
+      dataIndex: "profile_img_path",
+      key: "profile_img_path",
+      responsive: ["md"],
+      render: (text) => (
+        <img
+          src={`${URL}/storage/${text}`}
+          alt="profile"
+          style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+        />
+      ),
+    },
     {
       title: "Nombre",
       dataIndex: "name",
@@ -57,7 +71,7 @@ export const useUserC = () => {
     if (type === "put") {
       form.setFieldsValue(record);
       setTypeForm("put");
-      setUser(record as User)
+      setUser(record as User);
     }
     setIsModalOpen(true);
   };

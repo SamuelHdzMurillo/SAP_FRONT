@@ -53,7 +53,7 @@ const UserHome = () => {
         handleOk={handleOpenModal}
         handleCancel={handleCloseModal}
       >
-        <UsersForm form={form} />
+        <UsersForm form={form} handleCloseModal={handleCloseModal} />
       </ModalC>
     </LayoutC>
   );

@@ -4,23 +4,35 @@ import InputText from "@/components/InputText";
 import { postUser, putUser } from "../api";
 import { User, useUserStore } from "../store";
 import { AnyObject } from "antd/es/_util/type";
+import { useState } from "react";
 interface UsersFormProps {
   form: FormInstance<User>;
+  handleCloseModal?: () => void;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
 
-const UsersForm = ({ form }: UsersFormProps) => {
+const UsersForm = ({ form, handleCloseModal }: UsersFormProps) => {
   const setUser = useUserStore((state) => state.setUser);
   const addUser = useUserStore((state) => state.addUser);
   const updateUser = useUserStore((state) => state.updateUser);
   const typeForm = useUserStore((state) => state.typeForm);
   const user = useUserStore((state) => state.user);
+  const [profileImg, setProfileImg] = useState<File | null>(null);
   const onFinish = async (values: User) => {
+    let formData = new FormData();
+    formData.append("name", values.name);
+    formData.append("phone_number", values.phone_number);
+    formData.append("email", values.email);
+    formData.append("password", values.password);
+    formData.append("password_confirmation", values.password_confirmation);
+    if (profileImg) {
+      formData.append("profile_img_path", profileImg);
+    }
     switch (typeForm) {
       case "post":
         (async () => {
-          const { data } = await postUser(values);
+          const { data } = await postUser(formData);
           addUser(data);
         })();
         break;
@@ -37,6 +49,7 @@ const UsersForm = ({ form }: UsersFormProps) => {
         break;
     }
     form.resetFields();
+    handleCloseModal();
   };
 
   const onChange = (changedValues: AnyObject) => {
@@ -67,6 +80,7 @@ const UsersForm = ({ form }: UsersFormProps) => {
             <InputText
               label="Número de contacto"
               name="phone_number"
+              required
               rules={[
                 {
                   max: 10,
@@ -96,6 +110,7 @@ const UsersForm = ({ form }: UsersFormProps) => {
               ]}
             />
           </Col>
+
           {typeForm === "post" && (
             <>
               <Col span={12}>
@@ -135,6 +150,13 @@ const UsersForm = ({ form }: UsersFormProps) => {
                       },
                     }),
                   ]}
+                />
+              </Col>
+              <Col span={24}>
+                <input
+                  type="file"
+                  name="profile_img_path"
+                  onChange={(e) => setProfileImg(e.target.files![0])}
                 />
               </Col>
             </>
