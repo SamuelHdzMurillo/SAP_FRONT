@@ -1,6 +1,6 @@
 // import { createElement, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { ContactsOutlined, UserOutlined } from "@ant-design/icons";
+import { UserOutlined } from "@ant-design/icons";
 import { Dropdown, Layout, Menu, Space, Typography, theme } from "antd";
 import logo from "../assets/imgs/logo.svg";
 const { Header, Sider } = Layout;
@@ -31,24 +31,19 @@ const MainC = () => {
       ],
     },
     {
-      label: "Empresas",
-      key: "/empresas-menu",
-      icon: <ContactsOutlined />,
+      label: "Promovidos",
+      key: "/promovidos-menu",
+      icon: <UserOutlined />,
       children: [
         {
           label: "Registrar",
-          key: "/empresas-registrar",
-          onClick: () => navigate("/empresas-registrar"),
+          key: "/promovidos-registrar",
+          onClick: () => navigate("/promovidos-registrar"),
         },
         {
           label: "Administrar",
-          key: "/empresas",
-          onClick: () => navigate("/empresas"),
-        },
-        {
-          label: "Administrar Contactos",
-          key: "/contactos",
-          onClick: () => navigate("/contactos"),
+          key: "/promovidos",
+          onClick: () => navigate("/promovidos"),
         },
       ],
     },

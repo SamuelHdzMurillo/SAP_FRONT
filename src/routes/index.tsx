@@ -2,6 +2,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import MainC from "../layout/MainC";
 import UserHome from "@/module/user/page/UserHome";
+import PromotedRegister from "@/module/promoted/page/PromotedRegister";
+import PromotedHome from "@/module/promoted/page/PromotedHome";
 
 export const router = createBrowserRouter([
   {
@@ -10,7 +12,15 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/usuarios",
-        element: <UserHome/>,
+        element: <UserHome />,
+      },
+      {
+        path: "/promovidos",
+        element: <PromotedHome />,
+      },
+      {
+        path: "/promovidos-registrar",
+        element: <PromotedRegister />,
       },
     ],
   },
