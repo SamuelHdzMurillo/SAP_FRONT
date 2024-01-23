@@ -30,3 +30,30 @@ export const putPromoted = async (data: Promoted) => {
   const resp = await requestHttp.put(`/api/${MODULE}/${data.id}`, data);
   return resp.data;
 };
+
+export const exportPromoteds = async () => {
+  const resp = await requestHttp.get(`/api/export-excel`, {
+    responseType: "blob", // Indica que se espera un stream binario
+  });
+
+  const url = window.URL.createObjectURL(new Blob([resp.data]));
+  const link = document.createElement("a");
+  link.href = url;
+  link.setAttribute("download", "promoteds.xlsx"); // Nombre del archivo a descargar
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+export const importPromoteds = async (data: FormData, promotor_id: number) => {
+  const resp = await requestHttp.post(
+    `/api/upload-excel/${promotor_id}`,
+    data,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return resp.data;
+};

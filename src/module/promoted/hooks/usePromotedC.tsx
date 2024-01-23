@@ -2,18 +2,17 @@ import { Form, type TableColumnsType } from "antd";
 import { Promoted, usePromotedStore } from "../store";
 import DropDownPV from "../components/DropDownPV";
 import { TablePaginationConfig, TableProps } from "antd";
-import { getAllPromoted } from "../api";
+import { exportPromoteds, getAllPromoted, importPromoteds } from "../api";
 import { useState } from "react";
 interface TableParams {
   pagination?: TablePaginationConfig;
 }
-// import { UserType } from "../page/UserHome";
 export const usePromotedC = () => {
   const setPromoteds = usePromotedStore((state) => state.setPromoteds);
-  const setPromoted = usePromotedStore((state) => state.setPromoted);
   const setTypeForm = usePromotedStore((state) => state.setTypeForm);
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [fileImport, setFileImport] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -22,7 +21,6 @@ export const usePromotedC = () => {
       total: 50,
     },
   });
-  // const [typeForm, setTypeForm] = useState<"post" | "put" | "password">("post");
   const columns: TableColumnsType<Promoted> = [
     {
       title: "Nombre",
@@ -76,11 +74,6 @@ export const usePromotedC = () => {
     // console.log(record, "usePromotedC")
     form.resetFields();
     setTypeForm("post");
-    if (type === "put") {
-      form.setFieldsValue(record);
-      setTypeForm("put");
-      setPromoted(record as Promoted);
-    }
     setIsModalOpen(true);
   };
 
@@ -106,6 +99,17 @@ export const usePromotedC = () => {
     }
     setLoading(false);
   };
+
+  const handleImport = async () => {
+    if (!fileImport) {
+      return;
+    }
+    const formData = new FormData();
+    formData.append("file", fileImport);
+    await importPromoteds(formData, 1);
+    await handleGetUsers();
+    handleCloseModal();
+  };
   const handleGetUsers = async () => {
     const { data, meta } = await getAllPromoted({ page: "1" });
     setLoading(true);
@@ -120,16 +124,23 @@ export const usePromotedC = () => {
     });
     setLoading(false);
   };
+
+  const handleExportExcel = async () => {
+    await exportPromoteds();
+  };
   return {
     columns,
-    handleCloseModal,
     isModalOpen,
     form,
-    handleOpenModal,
     loading,
+    tableParams,
+    handleCloseModal,
+    handleOpenModal,
     setLoading,
     handleGetUsers,
     handleTableChange,
-    tableParams,
+    handleExportExcel,
+    setFileImport,
+    handleImport
   };
 };
