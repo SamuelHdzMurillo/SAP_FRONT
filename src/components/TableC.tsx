@@ -13,7 +13,7 @@ interface GeneralTableProps<T> {
   pagination: TablePaginationConfig;
   handleTableChange: TableProps<AnyObject>["onChange"];
   loading?: boolean;
-  handleAdd: () => void;
+  handleAdd?: () => void;
   children: string;
 }
 
@@ -30,9 +30,12 @@ const TableC = <T,>({
 
   return (
     <>
-      <Button onClick={handleAdd} type="primary" style={{ marginBottom: 16 }}>
-        {children}
-      </Button>
+      {handleAdd && (
+        <Button onClick={handleAdd} type="primary" style={{ marginBottom: 16 }}>
+          {children}
+        </Button>
+      )}
+
       <Table
         columns={columns}
         dataSource={dataSource}

@@ -22,6 +22,10 @@ export const router = createBrowserRouter([
         path: "/promovidos-registrar",
         element: <PromotedRegister />,
       },
+      {
+        path: "/promovidos-editar/:id",
+        element: <PromotedRegister />,
+      },
     ],
   },
 ]);

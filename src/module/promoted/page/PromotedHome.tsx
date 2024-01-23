@@ -32,13 +32,13 @@ const PromotedHome = () => {
       ]}
       title={""}
     >
+      <h2>Promovidos</h2>
       <TableC
         dataSource={promotedsStore}
         columns={columns}
         pagination={tableParams.pagination}
         handleTableChange={handleTableChange}
         loading={loading}
-        handleAdd={handleOpenModal}
         children={"Agregar Usuario"}
       />
     </LayoutC>

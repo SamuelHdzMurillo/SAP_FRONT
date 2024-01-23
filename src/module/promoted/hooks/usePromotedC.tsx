@@ -1,10 +1,9 @@
 import { Form, type TableColumnsType } from "antd";
 import { Promoted, usePromotedStore } from "../store";
-import DropDownUH from "../components/DropDownUH";
+import DropDownPV from "../components/DropDownPV";
 import { TablePaginationConfig, TableProps } from "antd";
-import { getAllUser } from "../api";
+import { getAllPromoted } from "../api";
 import { useState } from "react";
-const URL = import.meta.env.VITE_API_URL;
 interface TableParams {
   pagination?: TablePaginationConfig;
 }
@@ -69,7 +68,7 @@ export const usePromotedC = () => {
       title: "Action",
       key: "action",
       render: (_, record) => (
-        <DropDownUH record={record} handleOpenModal={handleOpenModal} />
+        <DropDownPV record={record} handleOpenModal={handleOpenModal} />
       ),
     },
   ];
@@ -95,7 +94,9 @@ export const usePromotedC = () => {
     setTableParams({
       pagination,
     });
-    const { data } = await getAllUser({ page: pagination.current?.toString() });
+    const { data } = await getAllPromoted({
+      page: pagination.current?.toString(),
+    });
 
     setPromoteds(data);
 
@@ -106,7 +107,7 @@ export const usePromotedC = () => {
     setLoading(false);
   };
   const handleGetUsers = async () => {
-    const { data, meta } = await getAllUser({ page: "1" });
+    const { data, meta } = await getAllPromoted({ page: "1" });
     setLoading(true);
 
     setPromoteds(data);

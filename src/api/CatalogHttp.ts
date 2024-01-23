@@ -1,12 +1,19 @@
 import { requestHttp } from "./requestHttp";
 
-export const getSectionCatalog = async () => {
-  const resp = await requestHttp.get(`/api/catalog/section`);
+interface Params {
+  district_id?: number;
+  municipal_id?: number;
+}
+
+export const getSectionCatalogByDistrict = async ({ district_id }: Params) => {
+  const resp = await requestHttp.get(`/api/districts/${district_id}/sections`);
   const data = await resp.data;
   return data;
 };
-export const getDistrictCatalog = async () => {
-  const resp = await requestHttp.get(`/api/catalog/district`);
+export const getDistrictByMunicipal = async ({ municipal_id }: Params) => {
+  const resp = await requestHttp.get(
+    `/api/municipals/${municipal_id}/districts`
+  );
   const data = await resp.data;
   return data;
 };

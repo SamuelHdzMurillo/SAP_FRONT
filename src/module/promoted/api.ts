@@ -1,13 +1,19 @@
 import { requestHttp } from "@/api/requestHttp";
-import { User } from "./store";
-export const getAllUser = async ({ page }: { page: string }) => {
-  const resp = await requestHttp.get(`/api/superAdmins?page=${page}`);
+import { Promoted } from "./store";
+const MODULE = "promoted";
+export const getAllPromoted = async ({ page }: { page: string }) => {
+  const resp = await requestHttp.get(`/api/${MODULE}?page=${page}`);
+  const data = await resp.data;
+  return data;
+};
+export const getPromoted = async ({ id }: { id: string }) => {
+  const resp = await requestHttp.get(`/api/${MODULE}/${id}`);
   const data = await resp.data;
   return data;
 };
 
-export const postUser = async (data: FormData) => {
-  const resp = await requestHttp.post("/api/superAdmins", data, {
+export const postPromoted = async (data: Promoted) => {
+  const resp = await requestHttp.post(`/api/${MODULE}`, data, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -15,12 +21,12 @@ export const postUser = async (data: FormData) => {
   return resp.data;
 };
 
-export const destroyUser = async (id: number) => {
-  const resp = await requestHttp.delete(`/api/superAdmins/${id}`);
+export const destroyPromoted = async (id: number) => {
+  const resp = await requestHttp.delete(`/api/${MODULE}/${id}`);
   return resp.data;
 };
 
-export const putUser = async (data: User) => {
-  const resp = await requestHttp.put(`/api/superAdmins/${data.id}`, data);
+export const putPromoted = async (data: Promoted) => {
+  const resp = await requestHttp.put(`/api/${MODULE}/${data.id}`, data);
   return resp.data;
 };
