@@ -4,6 +4,7 @@ import MainC from "../layout/MainC";
 import UserHome from "@/module/user/page/UserHome";
 import PromotedRegister from "@/module/promoted/page/PromotedRegister";
 import PromotedHome from "@/module/promoted/page/PromotedHome";
+import PromotorHome from "@/module/promotor/page/PromotorHome";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
       {
         path: "/promovidos-editar/:id",
         element: <PromotedRegister />,
+      },
+      {
+        path: "/promotores",
+        element: <PromotorHome />,
       },
     ],
   },

@@ -15,20 +15,15 @@ const MainC = () => {
   const items2 = [
     {
       label: "Usuarios",
-      key: "/usuarios-menu",
+      key: "/usuarios",
+      onClick: () => navigate("/usuarios"),
       icon: <UserOutlined />,
-      children: [
-        {
-          label: "Registrar",
-          key: "/usuarios-registrar",
-          onClick: () => navigate("/usuarios-registrar"),
-        },
-        {
-          label: "Administrar",
-          key: "/usuarios",
-          onClick: () => navigate("/usuarios"),
-        },
-      ],
+    },
+    {
+      label: "Promotores",
+      key: "/promotores",
+      onClick: () => navigate("/promotores"),
+      icon: <UserOutlined />,
     },
     {
       label: "Promovidos",

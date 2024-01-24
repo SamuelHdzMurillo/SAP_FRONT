@@ -14,7 +14,7 @@ import "../promoted.css";
 import { useNavigate, useParams } from "react-router-dom";
 
 // eslint-disable-next-line react-refresh/only-export-components
-interface MunicipalCatalog {
+export interface MunicipalCatalog {
   value: number;
   label: string;
 }
@@ -76,7 +76,6 @@ const PromotedRegister = () => {
   }, []);
 
   const onFinish = async (values: Promoted) => {
-    console.log(values);
     const { latitude, longitude } = position;
     const newValues = {
       ...promoted,
