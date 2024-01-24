@@ -24,3 +24,12 @@ export const putPromotor = async (data: Promotor) => {
   const resp = await requestHttp.put(`/api/promotores/${data.id}`, data);
   return resp.data;
 };
+
+export const postProblem = async (data: FormData) => {
+  const resp = await requestHttp.post("/api/problems", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return resp.data;
+};

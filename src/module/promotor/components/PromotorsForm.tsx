@@ -37,7 +37,7 @@ const PromotorsForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
     formData.append("position", values.position);
     formData.append("email", values.email);
     formData.append("password", values.password);
-    formData.append("municipal_id", values.municipal_id);
+    formData.append("municipal_id", `${values.municipal_id}`);
     formData.append("password_confirmation", values.password_confirmation);
     if (profileImg) {
       formData.append("profile_path", profileImg);

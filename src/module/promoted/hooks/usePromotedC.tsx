@@ -70,10 +70,10 @@ export const usePromotedC = () => {
       ),
     },
   ];
-  const handleOpenModal = (type = "post", record = {}) => {
+  const handleOpenModal = (type: "post" | "put" | "problem", record = {}) => {
     // console.log(record, "usePromotedC")
     form.resetFields();
-    setTypeForm("post");
+    setTypeForm(type);
     setIsModalOpen(true);
   };
 
@@ -141,6 +141,6 @@ export const usePromotedC = () => {
     handleTableChange,
     handleExportExcel,
     setFileImport,
-    handleImport
+    handleImport,
   };
 };

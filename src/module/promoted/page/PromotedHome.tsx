@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { usePromotedStore } from "../store";
 import { Button } from "antd";
 import ModalC from "@/components/ModalC";
+import ProblemForm from "../components/ProblemForm";
 
 const PromotedHome = () => {
   const {
@@ -15,6 +16,7 @@ const PromotedHome = () => {
     loading,
     tableParams,
     isModalOpen,
+    form,
     setFileImport,
     handleGetUsers,
     handleTableChange,
@@ -25,6 +27,7 @@ const PromotedHome = () => {
   } = usePromotedC();
 
   const promotedsStore = usePromotedStore((state) => state.promoteds);
+  const type = usePromotedStore((state) => state.typeForm);
 
   useEffect(() => {
     handleGetUsers();
@@ -48,7 +51,7 @@ const PromotedHome = () => {
           gap: 10,
         }}
       >
-        <Button type="primary" onClick={() => handleOpenModal()}>
+        <Button type="primary" onClick={() => handleOpenModal("post")}>
           {" "}
           Importar{" "}
         </Button>
@@ -68,28 +71,32 @@ const PromotedHome = () => {
       <ModalC
         title="Exportar Promovidos"
         isModalOpen={isModalOpen}
-        handleOk={handleOpenModal}
+        handleOk={() => handleOpenModal("post")}
         handleCancel={handleCloseModal}
       >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 10,
-          }}
-        >
-          <input
-            type="file"
-            name="file"
-            accept=".xlsx, .xls, .csv"
-            onChange={(e) => {
-              setFileImport(e.target.files?.[0]);
+        {type === "problem" ? (
+          <ProblemForm form={form} handleCloseModal={handleCloseModal} />
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 10,
             }}
-          />
-          <Button type="primary" onClick={handleImport}>
-            Importar
-          </Button>
-        </div>
+          >
+            <input
+              type="file"
+              name="file"
+              accept=".xlsx, .xls, .csv"
+              onChange={(e) => {
+                setFileImport(e.target.files?.[0]);
+              }}
+            />
+            <Button type="primary" onClick={handleImport}>
+              Importar
+            </Button>
+          </div>
+        )}
       </ModalC>
     </LayoutC>
   );
