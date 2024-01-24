@@ -26,6 +26,12 @@ const MainC = () => {
       icon: <UserOutlined />,
     },
     {
+      label: "Problemas",
+      key: "/problemas",
+      onClick: () => navigate("/problemas"),
+      icon: <UserOutlined />,
+    },
+    {
       label: "Promovidos",
       key: "/promovidos-menu",
       icon: <UserOutlined />,
