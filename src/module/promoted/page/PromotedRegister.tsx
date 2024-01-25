@@ -29,7 +29,7 @@ const PromotedRegister = () => {
   const setPromoted = usePromotedStore((state) => state.setPromoted);
   // const addPromoted = usePromotedStore((state) => state.addPromoted);
   const setTypeForm = usePromotedStore((state) => state.setTypeForm);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   // const updatePromoted = usePromotedStore((state) => state.updatePromoted);
   const typeForm = usePromotedStore((state) => state.typeForm);
   const promoted = usePromotedStore((state) => state.promoted);
@@ -87,7 +87,7 @@ const PromotedRegister = () => {
       case "post":
         (async () => {
           const { data } = await postPromoted(newValues);
-          
+
           // addPromoted(data);
         })();
         break;
@@ -103,7 +103,7 @@ const PromotedRegister = () => {
       default:
         break;
     }
-    navigate('/promovidos')
+    navigate("/promovidos");
     form.resetFields();
   };
 
@@ -245,7 +245,13 @@ const PromotedRegister = () => {
           <Col span={24}></Col>
         </Row>
         <Form.Item style={{ display: "flex", justifyContent: "end" }}>
-          <Button type="primary" htmlType="submit">
+          <Button
+            style={{
+              backgroundColor: "#1C1C1C",
+            }}
+            type="primary"
+            htmlType="submit"
+          >
             Registrar
           </Button>
         </Form.Item>

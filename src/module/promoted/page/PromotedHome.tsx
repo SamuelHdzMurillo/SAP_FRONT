@@ -51,7 +51,13 @@ const PromotedHome = () => {
           gap: 10,
         }}
       >
-        <Button type="primary" onClick={() => handleOpenModal("post")}>
+        <Button
+          style={{
+            backgroundColor: "#1C1C1C",
+          }}
+          type="primary"
+          onClick={() => handleOpenModal("post")}
+        >
           {" "}
           Importar{" "}
         </Button>
@@ -92,7 +98,13 @@ const PromotedHome = () => {
                 setFileImport(e.target.files?.[0]);
               }}
             />
-            <Button type="primary" onClick={handleImport}>
+            <Button
+              style={{
+                backgroundColor: "#1C1C1C",
+              }}
+              type="primary"
+              onClick={handleImport}
+            >
               Importar
             </Button>
           </div>

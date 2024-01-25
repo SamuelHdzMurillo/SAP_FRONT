@@ -205,7 +205,13 @@ const PromotorsForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
           )}
         </Row>
         <Form.Item style={{ display: "flex", justifyContent: "end" }}>
-          <Button type="primary" htmlType="submit">
+          <Button
+            style={{
+              backgroundColor: "#1C1C1C",
+            }}
+            type="primary"
+            htmlType="submit"
+          >
             Registrar
           </Button>
         </Form.Item>

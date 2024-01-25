@@ -2,7 +2,9 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 import { Dropdown, Layout, Menu, Space, Typography, theme } from "antd";
-import logo from "../assets/imgs/logo.svg";
+import logo from "../assets/imgs/HD_LOGOTIPOS_V_S.png";
+import { postLogout } from "@/module/auth/api";
+import { useAuthStore } from "@/module/auth/auth";
 const { Header, Sider } = Layout;
 
 const MainC = () => {
@@ -11,6 +13,11 @@ const MainC = () => {
   } = theme.useToken();
 
   const navigate = useNavigate();
+  const userAuth = useAuthStore((state) => state.user);
+  const user_type = useAuthStore((state) => state.user_type);
+  const setToken = useAuthStore((state) => state.setToken);
+  const setUser = useAuthStore((state) => state.setUserData);
+  const setUserType = useAuthStore((state) => state.setUserType);
   const { pathname: pathLocation } = useLocation();
   const items2 = [
     {
@@ -49,7 +56,44 @@ const MainC = () => {
       ],
     },
   ];
-  const handleLogout = async () => {};
+  const items3 = [
+    {
+      label: "Problemas",
+      key: "/problemas",
+      onClick: () => navigate("/problemas"),
+      icon: <UserOutlined />,
+    },
+    {
+      label: "Promovidos",
+      key: "/promovidos-menu",
+      icon: <UserOutlined />,
+      children: [
+        {
+          label: "Registrar",
+          key: "/promovidos-registrar",
+          onClick: () => navigate("/promovidos-registrar"),
+        },
+        {
+          label: "Administrar",
+          key: "/promovidos",
+          onClick: () => navigate("/promovidos"),
+        },
+      ],
+    },
+  ];
+  const handleLogout = async () => {
+    await postLogout();
+    setToken("");
+    setUserType("");
+    setUser({
+      id: 0,
+      name: "",
+      email: "",
+      password: "",
+      phone_number: "",
+    });
+    navigate("/login");
+  };
   return (
     // <ProtectedRoute redirectTo={"/login"}>
     <Layout>
@@ -60,9 +104,17 @@ const MainC = () => {
           alignItems: "center",
           alignContent: "center",
           height: "48px",
+          backgroundColor: "#1C1C1C",
         }}
       >
-        <img src={logo} alt="Logo tendencia" srcSet="" />
+        <img
+          style={{
+            maxWidth: "120px",
+          }}
+          src={logo}
+          alt="Logo tendencia"
+          srcSet=""
+        />
         <Dropdown
           menu={{
             items: [
@@ -80,7 +132,7 @@ const MainC = () => {
               color: "#FFFFFF",
             }}
           >
-            <Space>{``}</Space>
+            <Space>{`${userAuth.name} (${userAuth.email})`}</Space>
           </Typography.Paragraph>
         </Dropdown>
       </Header>
@@ -101,7 +153,7 @@ const MainC = () => {
               height: "100%",
               borderRight: 0,
             }}
-            items={items2}
+            items={user_type === "promotor" ? items3 : items2}
           />
         </Sider>
 

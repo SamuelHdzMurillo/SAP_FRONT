@@ -31,7 +31,11 @@ const TableC = <T,>({
   return (
     <>
       {handleAdd && (
-        <Button onClick={handleAdd} type="primary" style={{ marginBottom: 16 }}>
+        <Button
+          onClick={handleAdd}
+          type="primary"
+          style={{ marginBottom: 16, backgroundColor: "#1C1C1C" }}
+        >
           {children}
         </Button>
       )}

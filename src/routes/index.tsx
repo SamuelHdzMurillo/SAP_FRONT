@@ -6,6 +6,7 @@ import PromotedRegister from "@/module/promoted/page/PromotedRegister";
 import PromotedHome from "@/module/promoted/page/PromotedHome";
 import PromotorHome from "@/module/promotor/page/PromotorHome";
 import ProblemHome from "@/module/problem/page/ProblemHome";
+import LoginPage from "@/module/auth/page/LoginPage";
 
 export const router = createBrowserRouter([
   {
@@ -37,5 +38,9 @@ export const router = createBrowserRouter([
         element: <ProblemHome />,
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
   },
 ]);
