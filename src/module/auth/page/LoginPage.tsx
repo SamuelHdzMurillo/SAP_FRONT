@@ -88,7 +88,6 @@ const LoginPage = () => {
             alt=""
             srcSet=""
           />
-          <h4>Login</h4>
           <form className="loginForm" onSubmit={(e) => handleLogin(e)}>
             <div
               style={{

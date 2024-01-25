@@ -97,9 +97,6 @@ const PromotedRegister = () => {
           // updatePromoted(data);
         })();
         break;
-      case "password":
-        console.log("password");
-        break;
       default:
         break;
     }
