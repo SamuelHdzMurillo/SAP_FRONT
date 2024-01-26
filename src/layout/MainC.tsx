@@ -1,6 +1,6 @@
 // import { createElement, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { UserOutlined } from "@ant-design/icons";
+import { BarChartOutlined, UserOutlined } from "@ant-design/icons";
 import { Dropdown, Layout, Menu, Space, Typography, theme } from "antd";
 import logo from "../assets/imgs/HD_LOGOTIPOS_V_S.png";
 import { postLogout } from "@/module/auth/api";
@@ -20,6 +20,19 @@ const MainC = () => {
   const setUserType = useAuthStore((state) => state.setUserType);
   const { pathname: pathLocation } = useLocation();
   const items2 = [
+    {
+      label: "Dashboard",
+      key: "/dashboard",
+
+      icon: <BarChartOutlined />,
+      children: [
+        {
+          label: "Grafia por Promotor",
+          key:"/grafica-promotor",
+          onClick: () => navigate("/"),
+        },
+      ],
+    },
     {
       label: "Usuarios",
       key: "/usuarios",

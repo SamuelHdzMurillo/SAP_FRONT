@@ -7,12 +7,17 @@ import PromotedHome from "@/module/promoted/page/PromotedHome";
 import PromotorHome from "@/module/promotor/page/PromotorHome";
 import ProblemHome from "@/module/problem/page/ProblemHome";
 import LoginPage from "@/module/auth/page/LoginPage";
+import Dashboard from "@/module/dashboard/Dashboard";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainC />,
     children: [
+      {
+        path: "/",
+        element: <Dashboard />,
+      },
       {
         path: "/usuarios",
         element: <UserHome />,
