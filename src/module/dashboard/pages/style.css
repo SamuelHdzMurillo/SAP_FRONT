@@ -25,7 +25,7 @@ p {
 
 .widget {
   padding: 10px;
-  border-radius: 20px;
+ width: 15rem ;
 }
 
 .widget-title {
