@@ -8,6 +8,7 @@ import PromotorHome from "@/module/promotor/page/PromotorHome";
 import ProblemHome from "@/module/problem/page/ProblemHome";
 import LoginPage from "@/module/auth/page/LoginPage";
 import Dashboard from "@/module/dashboard/pages/Dashboard";
+import DashboardMap from "@/module/dashboard/pages/DashboardMap";
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Dashboard />,
+      },
+      {
+        path: "/mapa",
+        element: <DashboardMap />,
       },
       {
         path: "/usuarios",
