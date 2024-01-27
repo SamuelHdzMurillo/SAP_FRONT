@@ -59,7 +59,6 @@ const UsersForm = ({ form, handleCloseModal }: UsersFormProps) => {
 
   return (
     <div className="form-register">
-      {typeForm}
       <Form
         form={form}
         name="basic"
@@ -76,7 +75,7 @@ const UsersForm = ({ form, handleCloseModal }: UsersFormProps) => {
           <Col span={24}>
             <InputText required label="Nombre Completo" name="name" />
           </Col>
-          <Col span={12}>
+          <Col xs={{ span: 24 }} lg={{ span: 12 }}>
             <InputText
               label="Número de contacto"
               name="phone_number"
@@ -97,7 +96,7 @@ const UsersForm = ({ form, handleCloseModal }: UsersFormProps) => {
               ]}
             />
           </Col>
-          <Col span={12}>
+          <Col xs={{ span: 24 }} lg={{ span: 12 }}>
             <InputText
               required
               label="Correo Electrónico"
@@ -113,7 +112,7 @@ const UsersForm = ({ form, handleCloseModal }: UsersFormProps) => {
 
           {typeForm === "post" && (
             <>
-              <Col span={12}>
+              <Col xs={{ span: 24 }} lg={{ span: 12 }}>
                 <InputText
                   required
                   label="Contraseña"
@@ -128,7 +127,7 @@ const UsersForm = ({ form, handleCloseModal }: UsersFormProps) => {
                   ]}
                 />
               </Col>
-              <Col span={12}>
+              <Col xs={{ span: 24 }} lg={{ span: 12 }}>
                 <InputText
                   required
                   label="Confirmar Contraseña"
@@ -152,7 +151,8 @@ const UsersForm = ({ form, handleCloseModal }: UsersFormProps) => {
                   ]}
                 />
               </Col>
-              <Col span={24}>
+              <Col span={24} style={{ marginBottom: 20 }}>
+                <label>Imagen de perfil</label>
                 <input
                   type="file"
                   name="profile_img_path"

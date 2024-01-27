@@ -91,7 +91,7 @@ const PromotorsForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
           <Col span={24}>
             <InputText required label="Nombre Completo" name="name" />
           </Col>
-          <Col span={12}>
+          <Col xs={{ span: 24 }} lg={{ span: 12 }}>
             <InputText
               label="Número de contacto"
               name="phone_number"
@@ -112,7 +112,7 @@ const PromotorsForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
               ]}
             />
           </Col>
-          <Col span={12}>
+          <Col xs={{ span: 24 }} lg={{ span: 12 }}>
             <InputText
               required
               label="Correo Electrónico"
@@ -125,10 +125,10 @@ const PromotorsForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
               ]}
             />
           </Col>
-          <Col span={12}>
+          <Col xs={{ span: 24 }} lg={{ span: 12 }}>
             <InputText required label="Posición" name="position" />
           </Col>
-          <Col span={12}>
+          <Col xs={{ span: 24 }} lg={{ span: 12 }}>
             <Form.Item
               name="municipal_id"
               label="Municipio"
@@ -148,7 +148,7 @@ const PromotorsForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
 
           {typeForm === "post" && (
             <>
-              <Col span={12}>
+              <Col xs={{ span: 24 }} lg={{ span: 12 }}>
                 <InputText
                   required
                   label="Contraseña"
@@ -163,7 +163,7 @@ const PromotorsForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
                   ]}
                 />
               </Col>
-              <Col span={12}>
+              <Col xs={{ span: 24 }} lg={{ span: 12 }}>
                 <InputText
                   required
                   label="Confirmar Contraseña"
@@ -188,13 +188,15 @@ const PromotorsForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
                 />
               </Col>
               <Col span={24}>
+                <label htmlFor="profile_img_path">Foto de perfil</label>
                 <input
                   type="file"
                   name="profile_img_path"
                   onChange={(e) => setProfileImg(e.target.files![0])}
                 />
               </Col>
-              <Col span={24}>
+              <Col span={24} style={{ marginBottom: 20 }}>
+                <label htmlFor="ine_path">INE</label>
                 <input
                   type="file"
                   name="ine_path"

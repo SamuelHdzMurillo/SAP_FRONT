@@ -12,6 +12,7 @@ import {
 } from "@/api/CatalogHttp";
 import "../promoted.css";
 import { useNavigate, useParams } from "react-router-dom";
+import LayoutC from "@/components/LayoutC";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export interface MunicipalCatalog {
@@ -118,142 +119,158 @@ const PromotedRegister = () => {
     setSections(data);
   };
   return (
-    <div className="form-register">
-      <h1>Registro de Promovidos</h1>
-      <Form
-        form={form}
-        name="basic"
-        style={{
-          maxWidth: 800,
-          width: "100%",
-        }}
-        layout="vertical"
-        onFinish={onFinish}
-        autoComplete="off"
-        onValuesChange={(e) => onChange(e)}
-      >
-        <Row gutter={[10, 10]}>
-          <Col span={12}>
-            <InputText required label="Nombre (s)" name="name" />
-          </Col>
-          <Col span={12}>
-            <InputText required label="Apellidos" name="last_name" />
-          </Col>
-          <Col span={12}>
-            <InputText
-              label="Número de contacto"
-              name="phone_number"
-              required
-              rules={[
-                {
-                  max: 10,
-                  message: "¡Ups! Solo se permiten 10 caracteres.",
-                },
-                {
-                  min: 10,
-                  message: "¡Ups! Solo se permiten 10 caracteres.",
-                },
-                {
-                  pattern: /^[0-9]+$/,
-                  message: "¡Ups! Solo se permiten números.",
-                },
-              ]}
-            />
-          </Col>
-          <Col span={12}>
-            <InputText
-              required
-              label="Correo Electrónico"
-              name="email"
-              rules={[
-                {
-                  type: "email",
-                  message: "No es un correo electrónico válido",
-                },
-              ]}
-            />
-          </Col>
-          <Col span={12}>
-            <InputText required label="Dirección" name="adress" />
-          </Col>
-          <Col span={12}>
-            <InputText required label="Llave Electoral" name="electoral_key" />
-          </Col>
-          <Col span={12}>
-            <InputText required label="CURP" name="curp" />
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              name="municipal_id"
-              label="Municipio"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Ups! Olvidaste completar este campo.",
-                },
-              ]}
-            >
-              <Select
-                placeholder="Selecciona tu municipio"
-                options={municipal}
-                onChange={(e) => {
-                  handleGetDistrictByMunicap(e);
-                }}
+    <LayoutC
+      items={[
+        {
+          title: "Promovidos",
+        },
+        {
+          title: "Registro",
+        }
+      ]}
+      title={"Promovidos"}
+    >
+      <div className="form-register">
+        <h1>Registro de Promovidos</h1>
+        <Form
+          form={form}
+          name="basic"
+          style={{
+            maxWidth: 800,
+            width: "100%",
+          }}
+          layout="vertical"
+          onFinish={onFinish}
+          autoComplete="off"
+          onValuesChange={(e) => onChange(e)}
+        >
+          <Row gutter={[10, 10]}>
+            <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+              <InputText required label="Nombre (s)" name="name" />
+            </Col>
+            <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+              <InputText required label="Apellidos" name="last_name" />
+            </Col>
+            <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+              <InputText
+                label="Número de contacto"
+                name="phone_number"
+                required
+                rules={[
+                  {
+                    max: 10,
+                    message: "¡Ups! Solo se permiten 10 caracteres.",
+                  },
+                  {
+                    min: 10,
+                    message: "¡Ups! Solo se permiten 10 caracteres.",
+                  },
+                  {
+                    pattern: /^[0-9]+$/,
+                    message: "¡Ups! Solo se permiten números.",
+                  },
+                ]}
               />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              name="district_id"
-              label="Distrito"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Ups! Olvidaste completar este campo.",
-                },
-              ]}
-            >
-              <Select
-                placeholder="Selecciona un distrito"
-                options={districts}
-                onChange={(e) => {
-                  handleGetSectionsByDistrict(e);
-                }}
+            </Col>
+            <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+              <InputText
+                required
+                label="Correo Electrónico"
+                name="email"
+                rules={[
+                  {
+                    type: "email",
+                    message: "No es un correo electrónico válido",
+                  },
+                ]}
               />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              name="section_id"
-              label="Sección"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Ups! Olvidaste completar este campo.",
-                },
-              ]}
-            >
-              <Select
-                placeholder="Selecciona tu municipio"
-                options={sections}
+            </Col>
+            <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+              <InputText required label="Dirección" name="adress" />
+            </Col>
+            <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+              <InputText
+                required
+                label="Llave Electoral"
+                name="electoral_key"
               />
-            </Form.Item>
-          </Col>
-          <Col span={24}></Col>
-        </Row>
-        <Form.Item style={{ display: "flex", justifyContent: "end" }}>
-          <Button
-            style={{
-              backgroundColor: "#1C1C1C",
-            }}
-            type="primary"
-            htmlType="submit"
-          >
-            Registrar
-          </Button>
-        </Form.Item>
-      </Form>
-    </div>
+            </Col>
+            <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+              <InputText required label="CURP" name="curp" />
+            </Col>
+            <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+              <Form.Item
+                name="municipal_id"
+                label="Municipio"
+                rules={[
+                  {
+                    required: true,
+                    message: "¡Ups! Olvidaste completar este campo.",
+                  },
+                ]}
+              >
+                <Select
+                  placeholder="Selecciona tu municipio"
+                  options={municipal}
+                  onChange={(e) => {
+                    handleGetDistrictByMunicap(e);
+                  }}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+              <Form.Item
+                name="district_id"
+                label="Distrito"
+                rules={[
+                  {
+                    required: true,
+                    message: "¡Ups! Olvidaste completar este campo.",
+                  },
+                ]}
+              >
+                <Select
+                  placeholder="Selecciona un distrito"
+                  options={districts}
+                  onChange={(e) => {
+                    handleGetSectionsByDistrict(e);
+                  }}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+              <Form.Item
+                name="section_id"
+                label="Sección"
+                rules={[
+                  {
+                    required: true,
+                    message: "¡Ups! Olvidaste completar este campo.",
+                  },
+                ]}
+              >
+                <Select
+                  placeholder="Selecciona tu municipio"
+                  options={sections}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={24}></Col>
+          </Row>
+          <Form.Item style={{ display: "flex", justifyContent: "end" }}>
+            <Button
+              style={{
+                backgroundColor: "#1C1C1C",
+              }}
+              type="primary"
+              htmlType="submit"
+            >
+              Registrar
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+    </LayoutC>
   );
 };
 
