@@ -843,10 +843,10 @@
   resolved "https://registry.npmjs.org/@types/estree/-/estree-1.0.5.tgz"
   integrity sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==
 
-"@types/google.maps@^3.54.10":
-  version "3.54.10"
-  resolved "https://registry.yarnpkg.com/@types/google.maps/-/google.maps-3.54.10.tgz#f3101dda3e873f3602ae664cf518592686ca215b"
-  integrity sha512-N6gwM01mKhooXaw+IKbUH7wJcIJCn8U60VoaVvom5EiQjmfgevhQ+0+/r17beXW5j8ad2x+WPr0iyOUodCw4/w==
+"@types/google.maps@^3.55.0":
+  version "3.55.0"
+  resolved "https://registry.yarnpkg.com/@types/google.maps/-/google.maps-3.55.0.tgz#023ed5c8789ec7de29c0be02fb4b1dd1f64f5678"
+  integrity sha512-NgG6kmQeN+/azhwY/SlcggeJq39T5jQoKQYtvLb/e8nDkVLLRAzSztRgXgrB1VzQJhEJnttJFPkyxLMgkFiFOA==
 
 "@types/history@^4.7.11":
   version "4.7.11"
