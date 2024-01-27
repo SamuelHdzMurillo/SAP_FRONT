@@ -69,6 +69,9 @@ const PromotedRegister = () => {
         },
         (error: GeolocationPositionError) => {
           console.error(`Error Code = ${error.code} - ${error.message}`);
+        },
+        {
+          enableHighAccuracy: true,
         }
       );
     } else {
@@ -126,7 +129,7 @@ const PromotedRegister = () => {
         },
         {
           title: "Registro",
-        }
+        },
       ]}
       title={"Promovidos"}
     >
