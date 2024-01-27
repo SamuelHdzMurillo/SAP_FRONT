@@ -1,14 +1,27 @@
-import { Status, Wrapper } from "@googlemaps/react-wrapper";
+import { Wrapper } from "@googlemaps/react-wrapper";
 import MapComponent from "../components/MapComponent";
-
+import { SpinC } from "../components/Spinner";
+import { useEffect, useState } from "react";
+import { getPromoteds } from "@/api/MapHttp";
+export interface PromotedMarker {
+  id: number;
+  lat: string;
+  lng: string;
+}
 const KEY_GOOGLE = import.meta.env.VITE_API_KEY_GOOGLE;
 const DashboardMap = () => {
-  const render = (status: Status) => <h1>{status}</h1>;
-  console.log(KEY_GOOGLE);
+  const [promoteds, setPromoteds] = useState<PromotedMarker[]>([]);
+  useEffect(() => {
+    const handleGetPromoteds = async () => {
+      const { data } = await getPromoteds();
+      setPromoteds(data);
+    };
+    handleGetPromoteds();
+  }, []);
   return (
-    <div style={{ height: "95vh", maxWidth: 1280, width: "100%" }}>
-      <Wrapper apiKey={KEY_GOOGLE} render={render}>
-        <MapComponent />
+    <div style={{ height: "96vh", width: "100%", margin: "0 auto" }}>
+      <Wrapper apiKey={KEY_GOOGLE} render={SpinC}>
+        <MapComponent promoteds={promoteds} />
       </Wrapper>
     </div>
   );
