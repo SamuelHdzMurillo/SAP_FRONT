@@ -28,8 +28,13 @@ const MainC = () => {
       children: [
         {
           label: "Grafia por Promotor",
-          key:"/grafica-promotor",
+          key: "/grafica-promotor",
           onClick: () => navigate("/"),
+        },
+        {
+          label: "Grafia por Fecha",
+          key: "/grafica-promotor-fecha",
+          onClick: () => navigate("/promovidos-fecha"),
         },
       ],
     },
