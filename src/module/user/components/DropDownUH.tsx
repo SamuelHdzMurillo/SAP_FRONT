@@ -4,12 +4,14 @@ import { ExclamationCircleFilled } from "@ant-design/icons";
 import DropDownC from "@/components/DropDownC";
 import { User, useUserStore } from "../store";
 import { destroyUser } from "../api";
+import { useNavigate } from "react-router-dom";
 interface DropDownUHProps {
   record: User;
   handleOpenModal: (type: string, record: User) => void;
 }
 const DropDownUH = ({ record, handleOpenModal }: DropDownUHProps) => {
   const deleteUser = useUserStore((state) => state.deleteUser);
+  const naviagate = useNavigate();
 
   const handleGetItemsDropdown = (record: User) => {
     return [
@@ -18,11 +20,11 @@ const DropDownUH = ({ record, handleOpenModal }: DropDownUHProps) => {
         label: "Editar",
         onClick: () => handleOpenModal("put", record),
       },
-      // {
-      //   key: "2",
-      //   label: "Cambiar contraseña",
-      //   onClick: () => handleOpenModal("password", record),
-      // },
+      {
+        key: "2",
+        label: "Detalles",
+        onClick: () => naviagate(`/usuarios/${record.id}`),
+      },
       {
         key: "1",
         label: "Eliminar",

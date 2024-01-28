@@ -11,7 +11,7 @@ import { useAuthStore } from "../auth";
 const LoginPage = () => {
   //   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [message, setMessage] = useState<string>("");
   const setToken = useAuthStore((state) => state.setToken);
   const setUserData = useAuthStore((state) => state.setUserData);
   const setUserType = useAuthStore((state) => state.setUserType);
@@ -37,6 +37,10 @@ const LoginPage = () => {
       await validationSchema.validate(loginData, { abortEarly: false });
       const data = await postLogin(loginData);
       console.log(data);
+      if (data.message) {
+        setMessage(data.message);
+        return;
+      }
       setToken(data.token);
       setUserData(data.user);
       setUserType(data.user_type);
@@ -94,6 +98,13 @@ const LoginPage = () => {
                 marginBottom: "20px",
               }}
             >
+              {message && (
+                <Alert
+                  message={message}
+                  type="error"
+                  style={{ marginBottom: 20 }}
+                />
+              )}
               <Input
                 className="login-input"
                 prefix={<UserOutlined className="site-form-item-icon" />}

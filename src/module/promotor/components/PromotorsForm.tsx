@@ -10,11 +10,16 @@ import { MunicipalCatalog } from "@/module/promoted/page/PromotedRegister";
 interface PromotorsFormProps {
   form: FormInstance<Promotor>;
   handleCloseModal?: () => void;
+  isDetail?: boolean;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
 
-const PromotorsForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
+const PromotorsForm = ({
+  form,
+  handleCloseModal,
+  isDetail,
+}: PromotorsFormProps) => {
   const setPromotor = usePromotorStore((state) => state.setPromotor);
   const addPromotor = usePromotorStore((state) => state.addPromotor);
   const updatePromotor = usePromotorStore((state) => state.updatePromotor);
@@ -64,8 +69,11 @@ const PromotorsForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
       default:
         break;
     }
-    form.resetFields();
-    handleCloseModal();
+    if (handleCloseModal) {
+      handleCloseModal();
+      form.resetFields();
+    }
+    // handleCloseModal();
   };
 
   const onChange = (changedValues: AnyObject) => {
@@ -91,7 +99,7 @@ const PromotorsForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
           <Col span={24}>
             <InputText required label="Nombre Completo" name="name" />
           </Col>
-          <Col span={12}>
+          <Col xs={{ span: 24 }} lg={{ span: 12 }}>
             <InputText
               label="Número de contacto"
               name="phone_number"
@@ -112,7 +120,7 @@ const PromotorsForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
               ]}
             />
           </Col>
-          <Col span={12}>
+          <Col xs={{ span: 24 }} lg={{ span: 12 }}>
             <InputText
               required
               label="Correo Electrónico"
@@ -125,10 +133,10 @@ const PromotorsForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
               ]}
             />
           </Col>
-          <Col span={12}>
+          <Col xs={{ span: 24 }} lg={{ span: 12 }}>
             <InputText required label="Posición" name="position" />
           </Col>
-          <Col span={12}>
+          <Col xs={{ span: 24 }} lg={{ span: 12 }}>
             <Form.Item
               name="municipal_id"
               label="Municipio"
@@ -146,9 +154,9 @@ const PromotorsForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
             </Form.Item>
           </Col>
 
-          {typeForm === "post" && (
+          {typeForm === "post" && !isDetail && (
             <>
-              <Col span={12}>
+              <Col xs={{ span: 24 }} lg={{ span: 12 }}>
                 <InputText
                   required
                   label="Contraseña"
@@ -163,7 +171,7 @@ const PromotorsForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
                   ]}
                 />
               </Col>
-              <Col span={12}>
+              <Col xs={{ span: 24 }} lg={{ span: 12 }}>
                 <InputText
                   required
                   label="Confirmar Contraseña"
@@ -188,13 +196,15 @@ const PromotorsForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
                 />
               </Col>
               <Col span={24}>
+                <label htmlFor="profile_img_path">Foto de perfil</label>
                 <input
                   type="file"
                   name="profile_img_path"
                   onChange={(e) => setProfileImg(e.target.files![0])}
                 />
               </Col>
-              <Col span={24}>
+              <Col span={24} style={{ marginBottom: 20 }}>
+                <label htmlFor="ine_path">INE</label>
                 <input
                   type="file"
                   name="ine_path"

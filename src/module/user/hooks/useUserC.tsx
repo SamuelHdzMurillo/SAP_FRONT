@@ -2,8 +2,9 @@ import { Form, type TableColumnsType } from "antd";
 import { User, useUserStore } from "../store";
 import DropDownUH from "../components/DropDownUH";
 import { TablePaginationConfig, TableProps } from "antd";
-import { getAllUser } from "../api";
+import { getAllUser, getUser } from "../api";
 import { useState } from "react";
+import { useFilterTable } from "@/components/filterTable/useFilterTable";
 const URL = import.meta.env.VITE_API_URL;
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -22,6 +23,24 @@ export const useUserC = () => {
       pageSize: 10,
       total: 50,
     },
+  });
+
+  const handleGetUser = async (id: number) => {
+    const data = await getUser(id);
+    form.setFieldsValue(data);
+    setTypeForm("put");
+    setUser(data);
+  };
+  const handleGetFilterData = async (
+    value: string,
+    dataIndex: string | number
+  ) => {
+    const { data } = await getAllUser({ [`${dataIndex}`]: value, page: "1" });
+    setUsers(data);
+    return data;
+  };
+  const { getColumnSearchProps } = useFilterTable({
+    onFilter: handleGetFilterData,
   });
   // const [typeForm, setTypeForm] = useState<"post" | "put" | "password">("post");
   const columns: TableColumnsType<User> = [
@@ -43,18 +62,21 @@ export const useUserC = () => {
       dataIndex: "name",
       key: "name",
       render: (text) => <a>{text}</a>,
+      ...getColumnSearchProps("name"),
     },
     {
       title: "Correo Electronico",
       dataIndex: "email",
       key: "email",
       responsive: ["md"],
+      ...getColumnSearchProps("email"),
     },
     {
       title: "Numero de telefono",
       dataIndex: "phone_number",
       key: "phone_number",
       responsive: ["lg"],
+      ...getColumnSearchProps("phone_number"),
     },
     {
       title: "Action",
@@ -65,7 +87,6 @@ export const useUserC = () => {
     },
   ];
   const handleOpenModal = (type = "post", record = {}) => {
-    // console.log(record, "useUserC")
     form.resetFields();
     setTypeForm("post");
     if (type === "put") {
@@ -112,14 +133,15 @@ export const useUserC = () => {
   };
   return {
     columns,
-    handleCloseModal,
     isModalOpen,
     form,
-    handleOpenModal,
     loading,
+    tableParams,
+    handleCloseModal,
+    handleOpenModal,
     setLoading,
     handleGetUsers,
     handleTableChange,
-    tableParams,
+    handleGetUser,
   };
 };

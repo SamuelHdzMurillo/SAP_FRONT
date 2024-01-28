@@ -2,13 +2,20 @@ import { Form, type TableColumnsType } from "antd";
 import { Promoted, usePromotedStore } from "../store";
 import DropDownPV from "../components/DropDownPV";
 import { TablePaginationConfig, TableProps } from "antd";
-import { exportPromoteds, getAllPromoted, importPromoteds } from "../api";
+import {
+  exportPromoteds,
+  getAllPromoted,
+  getPromoted,
+  importPromoteds,
+} from "../api";
 import { useState } from "react";
+import { useFilterTable } from "@/components/filterTable/useFilterTable";
 interface TableParams {
   pagination?: TablePaginationConfig;
 }
 export const usePromotedC = () => {
   const setPromoteds = usePromotedStore((state) => state.setPromoteds);
+  const setPromoted = usePromotedStore((state) => state.setPromoted);
   const setTypeForm = usePromotedStore((state) => state.setTypeForm);
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,46 +28,71 @@ export const usePromotedC = () => {
       total: 50,
     },
   });
+  const handleGetPromtoed = async (id: string) => {
+    const { data } = await getPromoted({ id });
+    setPromoted(data);
+  };
+  const handleGetFilterData = async (
+    value: string,
+    dataIndex: string | number
+  ) => {
+    const { data } = await getAllPromoted({
+      [`${dataIndex}`]: value,
+      page: "1",
+    });
+    setPromoteds(data);
+    return data;
+  };
+  const { getColumnSearchProps } = useFilterTable({
+    onFilter: handleGetFilterData,
+  });
   const columns: TableColumnsType<Promoted> = [
     {
       title: "Nombre",
       dataIndex: "name",
       key: "name",
+
       render: (_, record) => (
         <a>
           {record.name} {record.last_name}
         </a>
       ),
+      ...getColumnSearchProps("name"),
     },
     {
       title: "Correo Electronico",
       dataIndex: "email",
       key: "email",
       responsive: ["md"],
+      ...getColumnSearchProps("email"),
     },
     {
       title: "Numero de telefono",
       dataIndex: "phone_number",
       key: "phone_number",
       responsive: ["lg"],
+      ...getColumnSearchProps("phone_number"),
     },
     {
       title: "Dirección",
       dataIndex: "adress",
       key: "adress",
       responsive: ["lg"],
+      ...getColumnSearchProps("adress"),
     },
     {
       title: "Llave Electoral",
       dataIndex: "electoral_key",
       key: "electoral_key",
       responsive: ["lg"],
+      ...getColumnSearchProps("electoral_key"),
     },
     {
       title: "CURP",
       dataIndex: "curp",
       key: "curp",
       responsive: ["lg"],
+      ...getColumnSearchProps("curp"),
     },
     {
       title: "Action",
@@ -142,5 +174,6 @@ export const usePromotedC = () => {
     handleExportExcel,
     setFileImport,
     handleImport,
+    handleGetPromtoed,
   };
 };

@@ -1,3 +1,4 @@
+import { Promoted } from "@/module/promoted/store";
 import { create } from "zustand";
 
 export interface Promotor {
@@ -11,6 +12,7 @@ export interface Promotor {
   municipal_id: number;
   position: string;
   password_confirmation?: string;
+  promoteds?: Promoted[];
 }
 
 interface PromotorState {

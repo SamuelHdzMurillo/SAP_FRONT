@@ -9,6 +9,9 @@ import ProblemHome from "@/module/problem/page/ProblemHome";
 import LoginPage from "@/module/auth/page/LoginPage";
 import Dashboard from "@/module/dashboard/pages/Dashboard";
 import DashboardMap from "@/module/dashboard/pages/DashboardMap";
+import UserDetail from "@/module/user/page/UserDetail";
+import PromotorDetail from "@/module/promotor/page/PromotorDetail";
+import PromotedDetail from "@/module/promoted/page/PromotedDetail";
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +31,10 @@ export const router = createBrowserRouter([
         element: <UserHome />,
       },
       {
+        path: "/usuarios/:id",
+        element: <UserDetail />,
+      },
+      {
         path: "/promovidos",
         element: <PromotedHome />,
       },
@@ -40,8 +47,16 @@ export const router = createBrowserRouter([
         element: <PromotedRegister />,
       },
       {
+        path: "/promovidos/:id",
+        element: <PromotedDetail />,
+      },
+      {
         path: "/promotores",
         element: <PromotorHome />,
+      },
+      {
+        path: "/promotores/:id",
+        element: <PromotorDetail />,
       },
       {
         path: "/Problemas",

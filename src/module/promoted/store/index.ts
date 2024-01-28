@@ -1,3 +1,4 @@
+import { Problem } from "@/module/problem/store";
 import { create } from "zustand";
 
 export interface Promoted {
@@ -11,6 +12,7 @@ export interface Promoted {
   latitude: string;
   longitude: string;
   section_id: number;
+  problems?: Problem[];
   promotor_id: number;
 }
 
@@ -37,6 +39,7 @@ export const usePromotedStore = create<PromotedState>((set) => ({
     phone_number: "",
     latitude: "",
     longitude: "",
+    problems: [],
     section_id: 0,
     promotor_id: 0,
   },

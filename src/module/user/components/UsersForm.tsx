@@ -8,16 +8,22 @@ import { useState } from "react";
 interface UsersFormProps {
   form: FormInstance<User>;
   handleCloseModal?: () => void;
+  isDetail?: boolean;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
 
-const UsersForm = ({ form, handleCloseModal }: UsersFormProps) => {
+const UsersForm = ({
+  form,
+  handleCloseModal,
+  isDetail = false,
+}: UsersFormProps) => {
   const setUser = useUserStore((state) => state.setUser);
   const addUser = useUserStore((state) => state.addUser);
   const updateUser = useUserStore((state) => state.updateUser);
   const typeForm = useUserStore((state) => state.typeForm);
   const user = useUserStore((state) => state.user);
+  console.log(user);
   const [profileImg, setProfileImg] = useState<File | null>(null);
   const onFinish = async (values: User) => {
     let formData = new FormData();
@@ -48,8 +54,10 @@ const UsersForm = ({ form, handleCloseModal }: UsersFormProps) => {
       default:
         break;
     }
-    form.resetFields();
-    handleCloseModal();
+    if (handleCloseModal) {
+      form.resetFields();
+      handleCloseModal();
+    }
   };
 
   const onChange = (changedValues: AnyObject) => {
@@ -59,7 +67,6 @@ const UsersForm = ({ form, handleCloseModal }: UsersFormProps) => {
 
   return (
     <div className="form-register">
-      {typeForm}
       <Form
         form={form}
         name="basic"
@@ -76,7 +83,7 @@ const UsersForm = ({ form, handleCloseModal }: UsersFormProps) => {
           <Col span={24}>
             <InputText required label="Nombre Completo" name="name" />
           </Col>
-          <Col span={12}>
+          <Col xs={{ span: 24 }} lg={{ span: 12 }}>
             <InputText
               label="Número de contacto"
               name="phone_number"
@@ -97,7 +104,7 @@ const UsersForm = ({ form, handleCloseModal }: UsersFormProps) => {
               ]}
             />
           </Col>
-          <Col span={12}>
+          <Col xs={{ span: 24 }} lg={{ span: 12 }}>
             <InputText
               required
               label="Correo Electrónico"
@@ -111,9 +118,9 @@ const UsersForm = ({ form, handleCloseModal }: UsersFormProps) => {
             />
           </Col>
 
-          {typeForm === "post" && (
+          {typeForm === "post" && !isDetail && (
             <>
-              <Col span={12}>
+              <Col xs={{ span: 24 }} lg={{ span: 12 }}>
                 <InputText
                   required
                   label="Contraseña"
@@ -128,7 +135,7 @@ const UsersForm = ({ form, handleCloseModal }: UsersFormProps) => {
                   ]}
                 />
               </Col>
-              <Col span={12}>
+              <Col xs={{ span: 24 }} lg={{ span: 12 }}>
                 <InputText
                   required
                   label="Confirmar Contraseña"
@@ -152,7 +159,8 @@ const UsersForm = ({ form, handleCloseModal }: UsersFormProps) => {
                   ]}
                 />
               </Col>
-              <Col span={24}>
+              <Col span={24} style={{ marginBottom: 20 }}>
+                <label>Imagen de perfil</label>
                 <input
                   type="file"
                   name="profile_img_path"

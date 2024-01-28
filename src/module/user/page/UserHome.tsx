@@ -15,12 +15,12 @@ const UserHome = () => {
     columns,
     form,
     isModalOpen,
+    loading,
+    tableParams,
     handleCloseModal,
     handleOpenModal,
-    loading,
     handleGetUsers,
     handleTableChange,
-    tableParams,
   } = useUserC();
 
   const usersStore = useUserStore((state) => state.users);
