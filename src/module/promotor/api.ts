@@ -15,6 +15,12 @@ export const postPromotor = async (data: FormData) => {
   return resp.data;
 };
 
+export const getPromotor = async (id: number) => {
+  const resp = await requestHttp.get(`/api/promotores/${id}`);
+  const data = await resp.data;
+  return data;
+};
+
 export const destroyPromotor = async (id: number) => {
   const resp = await requestHttp.delete(`/api/promotores/${id}`);
   return resp.data;

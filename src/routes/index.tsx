@@ -10,6 +10,7 @@ import LoginPage from "@/module/auth/page/LoginPage";
 import Dashboard from "@/module/dashboard/pages/Dashboard";
 import DashboardMap from "@/module/dashboard/pages/DashboardMap";
 import UserDetail from "@/module/user/page/UserDetail";
+import PromotorDetail from "@/module/promotor/page/PromotorDetail";
 
 export const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ export const router = createBrowserRouter([
       {
         path: "/promotores",
         element: <PromotorHome />,
+      },
+      {
+        path: "/promotores/:id",
+        element: <PromotorDetail />,
       },
       {
         path: "/Problemas",

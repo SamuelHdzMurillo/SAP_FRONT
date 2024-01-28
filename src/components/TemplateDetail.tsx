@@ -15,20 +15,26 @@ const beforeUpload = (file: FileType) => {
   }
   return isJpgOrPng && isLt2M;
 };
-const getBase64 = (img: FileType, callback: (url: string) => void) => {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result as string));
-  reader.readAsDataURL(img);
-};
+
 const TemplateDetail = ({
   title,
+  titleTable,
   form,
   isProfilePhoto = false,
   data,
+  isTable = false,
+  module = "superAdmins",
+  attributeProfile = "profile_img_path",
+  table = <></>,
 }: {
   title: string;
+  module?: string;
+  titleTable?: string;
+  attributeProfile?: string;
   form: ReactNode;
+  table?: ReactNode;
   isProfilePhoto?: boolean;
+  isTable?: boolean;
   data: AnyObject;
 }) => {
   const [loading, setLoading] = useState(false);
@@ -41,7 +47,8 @@ const TemplateDetail = ({
     if (info.file.status === "done") {
       // Get this url from response in real world.
       setLoading(false);
-      data.profile_img_path = info.file.response.data.profile_img_path;
+      data[`${attributeProfile}`] =
+        info.file.response.data[`${attributeProfile}`];
     }
   };
   const uploadButton = (
@@ -60,13 +67,13 @@ const TemplateDetail = ({
               listType="picture-card"
               className="avatar-uploader"
               showUploadList={false}
-              action={`${URL}/api/superAdmins/${data.id}/upload-image`}
+              action={`${URL}/api/${module}/${data.id}/upload-image`}
               beforeUpload={beforeUpload}
               onChange={handleChange}
             >
-              {data.profile_img_path ? (
+              {data[`${attributeProfile}`] ? (
                 <img
-                  src={`${URL}/storage/${data.profile_img_path}`}
+                  src={`${URL}/storage/${data[`${attributeProfile}`]}`}
                   alt="avatar"
                   style={{
                     width: "100%",
@@ -83,9 +90,13 @@ const TemplateDetail = ({
           {form}
         </Card>
       </Col>
-      <Col span={24}>
-        <h1>Template Detail</h1>
-      </Col>
+      {isTable && (
+        <Col span={24}>
+          <Card title={titleTable} bordered={false} style={{ width: "100%" }}>
+            {table}
+          </Card>
+        </Col>
+      )}
     </Row>
   );
 };

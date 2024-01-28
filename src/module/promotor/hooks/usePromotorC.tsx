@@ -1,7 +1,7 @@
 import { Form, type TableColumnsType } from "antd";
 import { Promotor, usePromotorStore } from "../store";
 import { TablePaginationConfig, TableProps } from "antd";
-import { getAllPromotor } from "../api";
+import { getAllPromotor, getPromotor } from "../api";
 import { useState } from "react";
 import DropDownPromo from "../components/DropDownPromo";
 const URL = import.meta.env.VITE_API_URL;
@@ -23,6 +23,13 @@ export const usePromotorC = () => {
       total: 50,
     },
   });
+
+  const handleGetPromotor = async (id: number) => {
+    const data = await getPromotor(id);
+    form.setFieldsValue(data);  
+    setTypeForm("put");
+    setPromotor(data);
+  };
   // const [typeForm, setTypeForm] = useState<"post" | "put" | "password">("post");
   const columns: TableColumnsType<Promotor> = [
     {
@@ -122,6 +129,7 @@ export const usePromotorC = () => {
     setLoading,
     handleGetPromotors,
     handleTableChange,
+    handleGetPromotor,
     tableParams,
   };
 };

@@ -10,11 +10,16 @@ import { MunicipalCatalog } from "@/module/promoted/page/PromotedRegister";
 interface PromotorsFormProps {
   form: FormInstance<Promotor>;
   handleCloseModal?: () => void;
+  isDetail?: boolean;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
 
-const PromotorsForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
+const PromotorsForm = ({
+  form,
+  handleCloseModal,
+  isDetail,
+}: PromotorsFormProps) => {
   const setPromotor = usePromotorStore((state) => state.setPromotor);
   const addPromotor = usePromotorStore((state) => state.addPromotor);
   const updatePromotor = usePromotorStore((state) => state.updatePromotor);
@@ -64,8 +69,11 @@ const PromotorsForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
       default:
         break;
     }
-    form.resetFields();
-    handleCloseModal();
+    if (handleCloseModal) {
+      handleCloseModal();
+      form.resetFields();
+    }
+    // handleCloseModal();
   };
 
   const onChange = (changedValues: AnyObject) => {
@@ -146,7 +154,7 @@ const PromotorsForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
             </Form.Item>
           </Col>
 
-          {typeForm === "post" && (
+          {typeForm === "post" && !isDetail && (
             <>
               <Col xs={{ span: 24 }} lg={{ span: 12 }}>
                 <InputText

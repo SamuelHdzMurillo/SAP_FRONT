@@ -23,12 +23,21 @@ const UserDetail = () => {
       ]}
       title={""}
     >
-      <TemplateDetail
-        title="Detalle del Usuario"
-        data={userStore}
-        isProfilePhoto={true}
-        form={<UsersForm form={form} isDetail={true} />}
-      />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+        }}
+      >
+        <TemplateDetail
+          title="Detalle del Usuario"
+          data={userStore}
+          isProfilePhoto={true}
+          form={<UsersForm form={form} isDetail={true} />}
+        />
+      </div>
     </LayoutC>
   );
 };
