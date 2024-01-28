@@ -6,101 +6,59 @@ import {
   getDashboardByPromotor,
   getDashboardCountByPromotor,
   getPromotedByDatesPage,
+  gettotalPromotedsByMunicipality
 } from "../api";
+import { Card } from 'antd';
+
 import { Column } from "@ant-design/charts";
 import "./style.css";
 import { BarChartOutlined, UsergroupAddOutlined } from "@ant-design/icons";
+import { Pie } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+ChartJS.register(ArcElement, Tooltip, Legend);
+
 import Widgets from "../components/Widgets";
-import { Bar, Column as ColumnStack } from "@ant-design/plots";
-const data = [
-  {
-    name: "London",
-    mes: "Jan.",
-    value: 18.9,
-  },
-  {
-    name: "London",
-    mes: "Feb.",
-    value: 28.8,
-  },
-  {
-    name: "London",
-    mes: "Mar.",
-    value: 39.3,
-  },
-  {
-    name: "London",
-    mes: "Apr.",
-    value: 81.4,
-  },
-  {
-    name: "London",
-    mes: "May",
-    value: 47,
-  },
-  {
-    name: "London",
-    mes: "Jun.",
-    value: 20.3,
-  },
-  {
-    name: "London",
-    mes: "Jul.",
-    value: 24,
-  },
-  {
-    name: "London",
-    mes: "Aug.",
-    value: 35.6,
-  },
-  {
-    name: "Berlin",
-    mes: "Jan.",
-    value: 12.4,
-  },
-  {
-    name: "Berlin",
-    mes: "Feb.",
-    value: 23.2,
-  },
-  {
-    name: "Berlin",
-    mes: "Mar.",
-    value: 34.5,
-  },
-  {
-    name: "Berlin",
-    mes: "Apr.",
-    value: 99.7,
-  },
-  {
-    name: "Berlin",
-    mes: "May",
-    value: 52.6,
-  },
-  {
-    name: "Berlin",
-    mes: "Jun.",
-    value: 35.5,
-  },
-  {
-    name: "Berlin",
-    mes: "Jul.",
-    value: 37.4,
-  },
-  {
-    name: "Berlin",
-    mes: "Aug.",
-    value: 42.4,
-  },
-];
+
+
+const date = new Date();
+      const day = date.getDay();
+      const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+      
+      const startOfWeek = new Date(date.setDate(diff));
+      const endOfWeek = new Date(date.setDate(diff + 6));
+      
+      const startOfWeekString = startOfWeek.toLocaleDateString("default");
+      const endOfWeekString = endOfWeek.toLocaleDateString("default");
+      
+      console.log(`La semana actual es de  ${startOfWeekString} a ${endOfWeekString}`);
+
+     const week = `${startOfWeekString} a ${endOfWeekString}`
+
+
 const Dashboard = () => {
   const [itemsChart, setItemsChart] = useState<any[]>([]);
   const [itemsChartByDates, setItemsChartByDates] = useState<any[]>([]);
   const [promoter_count_mont, setPromoterCountMonth] = useState<number>(0);
+  const [promoter_count_sem, setPromoterCountsem] = useState<number>(0);
+ 
   const [promoter_countTotal, setPromoterCountTotal] = useState<number>(0);
+  
+  const radialConfig = {
+    data: itemsChart, // Asegúrate de que esto esté configurado con tus datos
+    innerRadius: 20,
+    outerRadius: 140,
+    barSize: 10,
+    // ...otros ajustes que necesites
+  };
+
+  
   useEffect(() => {
+    
     const handleGetPromotedsByPromoters = async () => {
+      const totalByMunicipalityData = await gettotalPromotedsByMunicipality({});
+      const municipalNames = totalByMunicipalityData.municipals.map(item => item.municipal_name);
+      const totalPromoveds = totalByMunicipalityData.municipals.map(item => item.total_promoveds);
+  
       const { data } = await getDashboardByPromotor({
         filter: "all",
       });
@@ -110,38 +68,64 @@ const Dashboard = () => {
       const promoter_count_total = await getDashboardCountByPromotor({
         filter: "all",
       });
+
+      const promoter_count_sem = await getDashboardCountByPromotor({
+        filter: "week",
+      });
       const { promoteds } = await getPromotedByDatesPage({
         filter: "all",
       });
+
+      
+      
+
+      setPieData({
+        labels: municipalNames,
+        datasets: [
+          {
+            label: 'Cant. de Promovidos',
+            data: totalPromoveds,
+            backgroundColor: [
+              'rgb(14,185,128)',
+              'rgb(247,144,10)',
+              'rgb(99,102,241)',
+              // ... agregar más colores según sea necesario
+            ],
+            borderColor: [
+              'rgb(14,185,128)',
+              'rgb(247,144,10)',
+              'rgb(99,102,241)',
+              // ... agregar más colores según sea necesario
+            ],
+            borderWidth: 1,
+          },
+        ],
+      });
+      
       setPromoterCountMonth(promoter_count_mont.promoteds_count);
+      setPromoterCountsem(promoter_count_sem.promoteds_count);
       setPromoterCountTotal(promoter_count_total.promoteds_count);
       setItemsChart(data);
       setItemsChartByDates(promoteds);
     };
     handleGetPromotedsByPromoters();
+    
   }, []);
-  const config = {
-    data: itemsChart,
-    xField: "promotor",
-    yField: "value",
-    label: {
-      position: "bottom",
-      style: {
-        fill: "#FFFFFF",
-        opacity: 0.6,
-      },
-    },
-    xAxis: {
-      label: {
-        autoHide: true,
-        autoRotate: false,
-      },
-    },
-    slider: {
-      start: 0.1,
-      end: 0.2,
-    },
-  };
+
+  
+
+  const [pieData, setPieData] = useState({
+    labels: [],
+    datasets: [{
+      label: 'Cant. de Promovidos',
+      data: [],
+      backgroundColor: [],
+      borderColor: [],
+      borderWidth: 1
+    }]
+  });
+  
+  
   const configByDates = {
     data: itemsChartByDates,
     xField: "day",
@@ -160,53 +144,8 @@ const Dashboard = () => {
       },
     },
   };
-  const config2 = {
-    data,
-    isGroup: true,
-    xField: "mes",
-    yField: "value",
-    seriesField: "name",
+ 
 
-    /** 设置颜色 */
-    color: ["#1ca9e6", "#f88c24"],
-    // marginRatio: 0.1,
-
-    /** 设置间距 */
-    // marginRatio: 0.1,
-    label: {
-      // 可手动配置 label 数据标签位置
-      position: "bottom",
-      // 'top', 'middle', 'bottom'
-      // 可配置附加的布局方法
-      layout: [
-        // 柱形图数据标签位置自动调整
-        {
-          type: "interval-adjust-position",
-        }, // 数据标签防遮挡
-        {
-          type: "interval-hide-overlap",
-        }, // 数据标签文颜色自动调整
-        {
-          type: "adjust-color",
-        },
-      ],
-    },
-  };
-  const [filter, setFilter] = useState("");
-
-  const handleFilterChange = async (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setFilter(event.target.value);
-    const { data } = await getDashboardByPromotor({
-      filter: event.target.value,
-    });
-    const { promoteds } = await getPromotedByDatesPage({
-      filter: "all",
-    });
-    setItemsChart(data);
-    setItemsChartByDates(promoteds);
-  };
   const date = new Date();
   const month = date.toLocaleString("default", { month: "long" });
   const widgets = [
@@ -220,44 +159,44 @@ const Dashboard = () => {
       value: promoter_count_mont,
       title: `Promovidos ${month}`,
     },
+    {
+      icon: <BarChartOutlined />,
+      value: promoter_count_sem,
+      title: `Promovidos semanal`,
+    },
+    {
+      icon: <BarChartOutlined />,
+      value: promoter_count_sem,
+      title: `Promovidos semanal`,
+    },
+    
   ];
   return (
-    <LayoutC
-      items={[
-        {
-          title: "Usuarios",
-        },
-      ]}
-      title={""}
-    >
-      <h1>Dashboard</h1>
-      <div className="dashboard-container">
-        <div className="select-container">
-          <select value={filter} onChange={handleFilterChange}>
-            <option value="">Selecciona un filtro</option>
-            <option value="week">Esta semana</option>
-            <option value="month">Este mes</option>
-            <option value="all">Resetear</option>
-          </select>
-        </div>
-        <Widgets widgets={widgets} />
-        <div className="chart-container">
-          <div className="column-container">
-            <Column {...configByDates} />
-          </div>
+    <LayoutC items={[{ title: "Usuarios" }]} title={""}>
+  <h1>Promovidos </h1>
+  <div className="dashboard-container">
+    <div className="select-container">
+      {/* ... selector de filtro ... */}
+    </div>
+    <Widgets widgets={widgets} />
+    <div className="chart-container">
+      
+      {/* Card para el gráfico Column by Dates */}
+      <Card title="Promovidos por Mes" >
+        <Column {...configByDates} />
+      </Card>
 
-          <div className="column-container">
-            <Bar {...config} />
-          </div>
-          <div className="column-container">
-            <ColumnStack {...config2} />
-          </div>
-          <div className="column-container">
-            <Bar {...configByDates} />
-          </div>
+      {/* Card para el gráfico de Pastel */}
+      <Card title="Total Promovidos por Municipio" >
+        <div className="pie-container">
+          <Pie data={pieData} />
         </div>
-      </div>
-    </LayoutC>
+      </Card>
+
+    </div>
+  </div>
+</LayoutC>
+
   );
 };
 
