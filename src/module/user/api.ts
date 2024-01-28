@@ -21,7 +21,7 @@ export const getAllUser = async ({
   if (name) {
     params = params.concat(`&name=${name}`);
   }
-  const resp = await requestHttp.get(`/api/superAdmins?page=${page}?${params}`);
+  const resp = await requestHttp.get(`/api/superAdmins?page=${page}${params}`);
   const data = await resp.data;
   return data;
 };

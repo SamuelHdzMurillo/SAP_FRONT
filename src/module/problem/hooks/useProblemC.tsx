@@ -1,4 +1,4 @@
-import { Form, type TableColumnsType } from "antd";
+import { Form, Tag, type TableColumnsType } from "antd";
 import { Problem, useProblemStore } from "../store";
 import DropDownPMS from "../components/DropDownPMS";
 import { TablePaginationConfig, TableProps } from "antd";
@@ -24,6 +24,18 @@ export const useProblemC = () => {
       title: "Title",
       dataIndex: "title",
       key: "title",
+    },
+    {
+      title: "Promovido",
+      dataIndex: "promoted_name",
+      key: "promoted_name",
+      render: (text) => <Tag color="rgb(143, 143, 42)">{text}</Tag>,
+    },
+    {
+      title: "Numero de seccion",
+      dataIndex: "section_number",
+      key: "section_number",
+      render: (text) => <Tag color="rgb(42, 43, 43)">{text}</Tag>,
     },
     {
       title: "Action",

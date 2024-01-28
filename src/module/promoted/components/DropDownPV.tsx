@@ -20,7 +20,12 @@ const DropDownPV = ({ record, handleOpenModal }: DropDownPVProps) => {
         onClick: () => navigate(`/promovidos-editar/${record.id}`),
       },
       {
-        key: "3",
+        key: "4",
+        label: "Mostar Detalles",
+        onClick: () => navigate(`/promovidos/${record.id}`),
+      },
+      {
+        key: "2",
         label: "Generar un problema",
         onClick: () => handleOpenModal("problem", record),
       },

@@ -28,3 +28,9 @@ export const getMunicipalCatalog = async () => {
   });
   return newData;
 };
+
+export const getUsersCatalog = async () => {
+  const resp = await requestHttp.get(`/api/catalog/users`);
+  const data = await resp.data;
+  return data;
+};

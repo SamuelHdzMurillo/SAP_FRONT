@@ -111,6 +111,10 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
     navigate("/promovidos");
     form.resetFields();
   };
+  const filterOption = (
+    input: string,
+    option?: { label: string; value: string }
+  ) => (`${option?.label}` ?? "").toLowerCase().includes(input.toLowerCase());
   return (
     <div className="form-register">
       {isTitle && <h1>Registro de Promovidos</h1>}
@@ -121,6 +125,7 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
         style={{
           maxWidth: 800,
           width: "100%",
+          margin: "0 auto",
         }}
         layout="vertical"
         onFinish={onFinish}
@@ -189,6 +194,9 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
               ]}
             >
               <Select
+                showSearch
+                optionFilterProp="children"
+                filterOption={filterOption}
                 placeholder="Selecciona tu municipio"
                 options={municipal}
                 onChange={(e) => {
@@ -209,6 +217,9 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
               ]}
             >
               <Select
+                showSearch
+                optionFilterProp="children"
+                filterOption={filterOption}
                 placeholder="Selecciona un distrito"
                 options={districts}
                 onChange={(e) => {
@@ -229,6 +240,9 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
               ]}
             >
               <Select
+                showSearch
+                optionFilterProp="children"
+                filterOption={filterOption}
                 placeholder="Selecciona tu municipio"
                 options={sections}
               />
