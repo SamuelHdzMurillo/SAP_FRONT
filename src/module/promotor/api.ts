@@ -1,7 +1,27 @@
 import { requestHttp } from "@/api/requestHttp";
 import { Promotor } from "./store";
-export const getAllPromotor = async ({ page }: { page: string }) => {
-  const resp = await requestHttp.get(`/api/promotores?page=${page}`);
+export const getAllPromotor = async ({
+  page,
+  name,
+  email,
+  phone_number,
+}: {
+  page: string;
+  phone_number?: string;
+  email?: string;
+  name?: string;
+}) => {
+  let params = "";
+  if (phone_number) {
+    params = params.concat(`&phone_number=${phone_number}`);
+  }
+  if (email) {
+    params = params.concat(`&email=${email}`);
+  }
+  if (name) {
+    params = params.concat(`&name=${name}`);
+  }
+  const resp = await requestHttp.get(`/api/promotores?page=${page}?${params}`);
   const data = await resp.data;
   return data;
 };

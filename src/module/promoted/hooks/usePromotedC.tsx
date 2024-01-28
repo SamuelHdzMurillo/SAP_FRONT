@@ -9,6 +9,7 @@ import {
   importPromoteds,
 } from "../api";
 import { useState } from "react";
+import { useFilterTable } from "@/components/filterTable/useFilterTable";
 interface TableParams {
   pagination?: TablePaginationConfig;
 }
@@ -31,46 +32,67 @@ export const usePromotedC = () => {
     const { data } = await getPromoted({ id });
     setPromoted(data);
   };
+  const handleGetFilterData = async (
+    value: string,
+    dataIndex: string | number
+  ) => {
+    const { data } = await getAllPromoted({
+      [`${dataIndex}`]: value,
+      page: "1",
+    });
+    setPromoteds(data);
+    return data;
+  };
+  const { getColumnSearchProps } = useFilterTable({
+    onFilter: handleGetFilterData,
+  });
   const columns: TableColumnsType<Promoted> = [
     {
       title: "Nombre",
       dataIndex: "name",
       key: "name",
+
       render: (_, record) => (
         <a>
           {record.name} {record.last_name}
         </a>
       ),
+      ...getColumnSearchProps("name"),
     },
     {
       title: "Correo Electronico",
       dataIndex: "email",
       key: "email",
       responsive: ["md"],
+      ...getColumnSearchProps("email"),
     },
     {
       title: "Numero de telefono",
       dataIndex: "phone_number",
       key: "phone_number",
       responsive: ["lg"],
+      ...getColumnSearchProps("phone_number"),
     },
     {
       title: "Dirección",
       dataIndex: "adress",
       key: "adress",
       responsive: ["lg"],
+      ...getColumnSearchProps("adress"),
     },
     {
       title: "Llave Electoral",
       dataIndex: "electoral_key",
       key: "electoral_key",
       responsive: ["lg"],
+      ...getColumnSearchProps("electoral_key"),
     },
     {
       title: "CURP",
       dataIndex: "curp",
       key: "curp",
       responsive: ["lg"],
+      ...getColumnSearchProps("curp"),
     },
     {
       title: "Action",

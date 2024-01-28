@@ -4,6 +4,7 @@ import { TablePaginationConfig, TableProps } from "antd";
 import { getAllPromotor, getPromotor } from "../api";
 import { useState } from "react";
 import DropDownPromo from "../components/DropDownPromo";
+import { useFilterTable } from "@/components/filterTable/useFilterTable";
 const URL = import.meta.env.VITE_API_URL;
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -26,10 +27,24 @@ export const usePromotorC = () => {
 
   const handleGetPromotor = async (id: number) => {
     const data = await getPromotor(id);
-    form.setFieldsValue(data);  
+    form.setFieldsValue(data);
     setTypeForm("put");
     setPromotor(data);
   };
+  const handleGetFilterData = async (
+    value: string,
+    dataIndex: string | number
+  ) => {
+    const { data } = await getAllPromotor({
+      [`${dataIndex}`]: value,
+      page: "1",
+    });
+    setPromotors(data);
+    return data;
+  };
+  const { getColumnSearchProps } = useFilterTable({
+    onFilter: handleGetFilterData,
+  });
   // const [typeForm, setTypeForm] = useState<"post" | "put" | "password">("post");
   const columns: TableColumnsType<Promotor> = [
     {
@@ -50,18 +65,21 @@ export const usePromotorC = () => {
       dataIndex: "name",
       key: "name",
       render: (text) => <a>{text}</a>,
+      ...getColumnSearchProps("name"),
     },
     {
       title: "Correo Electronico",
       dataIndex: "email",
       key: "email",
       responsive: ["md"],
+      ...getColumnSearchProps("email"),
     },
     {
       title: "Numero de telefono",
       dataIndex: "phone_number",
       key: "phone_number",
       responsive: ["lg"],
+      ...getColumnSearchProps("phone_number"),
     },
     {
       title: "Action",
