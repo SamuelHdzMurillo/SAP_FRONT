@@ -2,7 +2,7 @@ import { Form, type TableColumnsType } from "antd";
 import { User, useUserStore } from "../store";
 import DropDownUH from "../components/DropDownUH";
 import { TablePaginationConfig, TableProps } from "antd";
-import { getAllUser } from "../api";
+import { getAllUser, getUser } from "../api";
 import { useState } from "react";
 const URL = import.meta.env.VITE_API_URL;
 interface TableParams {
@@ -23,6 +23,13 @@ export const useUserC = () => {
       total: 50,
     },
   });
+
+  const handleGetUser = async (id: number) => {
+    const data = await getUser(id);
+    form.setFieldsValue(data);  
+    setTypeForm("put");
+    setUser(data);
+  };
   // const [typeForm, setTypeForm] = useState<"post" | "put" | "password">("post");
   const columns: TableColumnsType<User> = [
     {
@@ -112,14 +119,15 @@ export const useUserC = () => {
   };
   return {
     columns,
-    handleCloseModal,
     isModalOpen,
     form,
-    handleOpenModal,
     loading,
+    tableParams,
+    handleCloseModal,
+    handleOpenModal,
     setLoading,
     handleGetUsers,
     handleTableChange,
-    tableParams,
+    handleGetUser,
   };
 };

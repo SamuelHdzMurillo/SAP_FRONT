@@ -15,6 +15,11 @@ export const postUser = async (data: FormData) => {
   return resp.data;
 };
 
+export const getUser = async (id: number) => {
+  const resp = await requestHttp.get(`/api/superAdmins/${id}`);
+  return resp.data;
+}
+
 export const destroyUser = async (id: number) => {
   const resp = await requestHttp.delete(`/api/superAdmins/${id}`);
   return resp.data;
