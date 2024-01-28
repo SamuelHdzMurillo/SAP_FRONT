@@ -2,13 +2,19 @@ import { Form, type TableColumnsType } from "antd";
 import { Promoted, usePromotedStore } from "../store";
 import DropDownPV from "../components/DropDownPV";
 import { TablePaginationConfig, TableProps } from "antd";
-import { exportPromoteds, getAllPromoted, importPromoteds } from "../api";
+import {
+  exportPromoteds,
+  getAllPromoted,
+  getPromoted,
+  importPromoteds,
+} from "../api";
 import { useState } from "react";
 interface TableParams {
   pagination?: TablePaginationConfig;
 }
 export const usePromotedC = () => {
   const setPromoteds = usePromotedStore((state) => state.setPromoteds);
+  const setPromoted = usePromotedStore((state) => state.setPromoted);
   const setTypeForm = usePromotedStore((state) => state.setTypeForm);
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,6 +27,10 @@ export const usePromotedC = () => {
       total: 50,
     },
   });
+  const handleGetPromtoed = async (id: string) => {
+    const { data } = await getPromoted({ id });
+    setPromoted(data);
+  };
   const columns: TableColumnsType<Promoted> = [
     {
       title: "Nombre",
@@ -142,5 +152,6 @@ export const usePromotedC = () => {
     handleExportExcel,
     setFileImport,
     handleImport,
+    handleGetPromtoed,
   };
 };

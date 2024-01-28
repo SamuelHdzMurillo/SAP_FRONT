@@ -26,16 +26,24 @@ const TemplateDetail = ({
   module = "superAdmins",
   attributeProfile = "profile_img_path",
   table = <></>,
+  problem = <></>,
+  map = <></>,
+  isProblem = false,
+  isMap = false,
 }: {
   title: string;
   module?: string;
   titleTable?: string;
   attributeProfile?: string;
   form: ReactNode;
+  problem?: ReactNode;
   table?: ReactNode;
   isProfilePhoto?: boolean;
+  isProblem?: boolean;
   isTable?: boolean;
   data: AnyObject;
+  map?: ReactNode;
+  isMap?: boolean;
 }) => {
   const [loading, setLoading] = useState(false);
   const handleChange: UploadProps["onChange"] = (info) => {
@@ -94,6 +102,20 @@ const TemplateDetail = ({
         <Col span={24}>
           <Card title={titleTable} bordered={false} style={{ width: "100%" }}>
             {table}
+          </Card>
+        </Col>
+      )}
+      {isProblem && (
+        <Col span={24}>
+          <Card title={titleTable} bordered={false} style={{ width: "100%" }}>
+            {problem}
+          </Card>
+        </Col>
+      )}
+      {isMap && (
+        <Col span={24}>
+          <Card bordered={false} style={{ width: "100%" }}>
+            {map}
           </Card>
         </Col>
       )}

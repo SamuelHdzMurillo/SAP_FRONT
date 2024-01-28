@@ -11,6 +11,7 @@ import Dashboard from "@/module/dashboard/pages/Dashboard";
 import DashboardMap from "@/module/dashboard/pages/DashboardMap";
 import UserDetail from "@/module/user/page/UserDetail";
 import PromotorDetail from "@/module/promotor/page/PromotorDetail";
+import PromotedDetail from "@/module/promoted/page/PromotedDetail";
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
       {
         path: "/promovidos-editar/:id",
         element: <PromotedRegister />,
+      },
+      {
+        path: "/promovidos/:id",
+        element: <PromotedDetail />,
       },
       {
         path: "/promotores",
