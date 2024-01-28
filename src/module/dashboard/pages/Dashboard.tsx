@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import LayoutC from "@/components/LayoutC";
 import { useEffect, useState } from "react";
 import {
@@ -9,75 +8,92 @@ import {
   gettotalPromotedsByMunicipality
 } from "../api";
 import { Card } from 'antd';
-
 import { Column } from "@ant-design/charts";
 import "./style.css";
 import { BarChartOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-ChartJS.register(ArcElement, Tooltip, Legend);
-
 import Widgets from "../components/Widgets";
 
+import ReactApexChart from 'react-apexcharts';
 
-const date = new Date();
-      const day = date.getDay();
-      const diff = date.getDate() - day + (day === 0 ? -6 : 1);
-      
-      const startOfWeek = new Date(date.setDate(diff));
-      const endOfWeek = new Date(date.setDate(diff + 6));
-      
-      const startOfWeekString = startOfWeek.toLocaleDateString("default");
-      const endOfWeekString = endOfWeek.toLocaleDateString("default");
-      
-      console.log(`La semana actual es de  ${startOfWeekString} a ${endOfWeekString}`);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
-     const week = `${startOfWeekString} a ${endOfWeekString}`
+const colors = ['#FF4560', '#00E396', '#008FFB', '#FEB019', '#775DD0', '#FF4560', '#00E396', '#008FFB'];
 
+
+  
 
 const Dashboard = () => {
-  const [itemsChart, setItemsChart] = useState<any[]>([]);
   const [itemsChartByDates, setItemsChartByDates] = useState<any[]>([]);
   const [promoter_count_mont, setPromoterCountMonth] = useState<number>(0);
   const [promoter_count_sem, setPromoterCountsem] = useState<number>(0);
- 
+  const [promoter_count_day, setPromoterCountday] = useState<number>(0);
   const [promoter_countTotal, setPromoterCountTotal] = useState<number>(0);
-  
-  const radialConfig = {
-    data: itemsChart, // Asegúrate de que esto esté configurado con tus datos
-    innerRadius: 20,
-    outerRadius: 140,
-    barSize: 10,
-    // ...otros ajustes que necesites
-  };
+  const [pieData, setPieData] = useState({
+    labels: [],
+    datasets: [{
+      label: 'Cant. de Promovidos',
+      data: [],
+      backgroundColor: [],
+      borderColor: [],
+      borderWidth: 1
+    }]
+  });
 
-  
+  const transformedSeries = [{
+    name: "Value", // Puedes cambiar este nombre según tus necesidades
+    data: itemsChartByDates.map(item => item.value),
+  }];
+
+  const apexOptions = {
+    chart: {
+      height: 350,
+      type: 'bar',
+    },
+    plotOptions: {
+      bar: {
+        columnWidth: '45%',
+        distributed: true,
+      }
+    },
+    dataLabels: {
+      enabled: false
+    },
+    legend: {
+      show: false
+    },
+    xaxis: {
+      categories: itemsChartByDates.map(item => item.day),
+      labels: {
+        style: {
+          fontSize: '12px'
+        }
+      }
+    },
+    colors: colors, // Asegúrate de que `colors` esté definido
+  };
   useEffect(() => {
-    
     const handleGetPromotedsByPromoters = async () => {
       const totalByMunicipalityData = await gettotalPromotedsByMunicipality({});
       const municipalNames = totalByMunicipalityData.municipals.map(item => item.municipal_name);
       const totalPromoveds = totalByMunicipalityData.municipals.map(item => item.total_promoveds);
-  
-      const { data } = await getDashboardByPromotor({
-        filter: "all",
-      });
-      const promoter_count_mont = await getDashboardCountByPromotor({
+
+      const promoter_count_mont_data = await getDashboardCountByPromotor({
         filter: "month",
       });
-      const promoter_count_total = await getDashboardCountByPromotor({
+      const promoter_count_total_data = await getDashboardCountByPromotor({
         filter: "all",
       });
-
-      const promoter_count_sem = await getDashboardCountByPromotor({
+      const promoter_count_day_data = await getDashboardCountByPromotor({
+        filter: "day",
+      });
+      const promoter_count_sem_data = await getDashboardCountByPromotor({
         filter: "week",
       });
-      const { promoteds } = await getPromotedByDatesPage({
+      const promotedsByDatesData = await getPromotedByDatesPage({
         filter: "all",
       });
-
-      
-      
 
       setPieData({
         labels: municipalNames,
@@ -89,43 +105,26 @@ const Dashboard = () => {
               'rgb(14,185,128)',
               'rgb(247,144,10)',
               'rgb(99,102,241)',
-              // ... agregar más colores según sea necesario
             ],
             borderColor: [
               'rgb(14,185,128)',
               'rgb(247,144,10)',
               'rgb(99,102,241)',
-              // ... agregar más colores según sea necesario
             ],
             borderWidth: 1,
           },
         ],
       });
-      
-      setPromoterCountMonth(promoter_count_mont.promoteds_count);
-      setPromoterCountsem(promoter_count_sem.promoteds_count);
-      setPromoterCountTotal(promoter_count_total.promoteds_count);
-      setItemsChart(data);
-      setItemsChartByDates(promoteds);
+
+      setPromoterCountMonth(promoter_count_mont_data.promoteds_count);
+      setPromoterCountsem(promoter_count_sem_data.promoteds_count);
+      setPromoterCountday(promoter_count_day_data.promoteds_count);
+      setPromoterCountTotal(promoter_count_total_data.promoteds_count);
+      setItemsChartByDates(promotedsByDatesData.promoteds);
     };
     handleGetPromotedsByPromoters();
-    
   }, []);
 
-  
-
-  const [pieData, setPieData] = useState({
-    labels: [],
-    datasets: [{
-      label: 'Cant. de Promovidos',
-      data: [],
-      backgroundColor: [],
-      borderColor: [],
-      borderWidth: 1
-    }]
-  });
-  
-  
   const configByDates = {
     data: itemsChartByDates,
     xField: "day",
@@ -133,7 +132,7 @@ const Dashboard = () => {
     label: {
       position: "bottom",
       style: {
-        fill: "#FFFFFF",
+        fill: "#321331",
         opacity: 0.6,
       },
     },
@@ -144,7 +143,6 @@ const Dashboard = () => {
       },
     },
   };
- 
 
   const date = new Date();
   const month = date.toLocaleString("default", { month: "long" });
@@ -166,37 +164,34 @@ const Dashboard = () => {
     },
     {
       icon: <BarChartOutlined />,
-      value: promoter_count_sem,
-      title: `Promovidos semanal`,
+      value: promoter_count_day,
+      title: `Promovidos Hoy`,
     },
-    
   ];
+
   return (
     <LayoutC items={[{ title: "Usuarios" }]} title={""}>
-  <h1>Promovidos </h1>
-  <div className="dashboard-container">
-    <div className="select-container">
-      {/* ... selector de filtro ... */}
-    </div>
-    <Widgets widgets={widgets} />
-    <div className="chart-container">
-      
-      {/* Card para el gráfico Column by Dates */}
-      <Card title="Promovidos por Mes" >
-        <Column {...configByDates} />
-      </Card>
-
-      {/* Card para el gráfico de Pastel */}
-      <Card title="Total Promovidos por Municipio" >
-        <div className="pie-container">
-          <Pie data={pieData} />
+      <h1>Promovidos </h1>
+      <div className="dashboard-container">
+        <div className="select-container">
+          {/* Selector de filtro */}
         </div>
+        <Widgets widgets={widgets} />
+        <div className="chart-container">
+         
+        <Card title="Promovidos por Mes">
+        <ReactApexChart options={apexOptions} series={transformedSeries} type="bar" height={500} />
       </Card>
+          <Card title="Total Promovidos por Municipio" >
+            <div className="pie-container">
+              <Pie data={pieData} />
+            </div>
+          </Card>
 
-    </div>
-  </div>
-</LayoutC>
-
+          
+        </div>
+      </div>
+    </LayoutC>
   );
 };
 
