@@ -21,7 +21,7 @@ export const getAllPromotor = async ({
   if (name) {
     params = params.concat(`&name=${name}`);
   }
-  const resp = await requestHttp.get(`/api/promotores?page=${page}?${params}`);
+  const resp = await requestHttp.get(`/api/promotores?page=${page}${params}`);
   const data = await resp.data;
   return data;
 };

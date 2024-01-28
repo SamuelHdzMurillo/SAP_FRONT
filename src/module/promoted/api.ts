@@ -37,7 +37,7 @@ export const getAllPromoted = async ({
   if (adress) {
     params = params.concat(`&adress=${adress}`);
   }
-  const resp = await requestHttp.get(`/api/${MODULE}?page=${page}?${params}`);
+  const resp = await requestHttp.get(`/api/${MODULE}?page=${page}${params}`);
   const data = await resp.data;
   return data;
 };

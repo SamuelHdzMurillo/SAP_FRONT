@@ -10,14 +10,17 @@ import {
 } from "../api";
 import { useState } from "react";
 import { useFilterTable } from "@/components/filterTable/useFilterTable";
+import { useAuthStore } from "@/module/auth/auth";
 interface TableParams {
   pagination?: TablePaginationConfig;
 }
 export const usePromotedC = () => {
   const setPromoteds = usePromotedStore((state) => state.setPromoteds);
   const setPromoted = usePromotedStore((state) => state.setPromoted);
+  const auth = useAuthStore((state) => state.user);
   const setTypeForm = usePromotedStore((state) => state.setTypeForm);
   const [form] = Form.useForm();
+  const [promotorSelected, setPromotorSelected] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [fileImport, setFileImport] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
@@ -138,7 +141,10 @@ export const usePromotedC = () => {
     }
     const formData = new FormData();
     formData.append("file", fileImport);
-    await importPromoteds(formData, 1);
+    await importPromoteds(
+      formData,
+      promotorSelected === 0 ? auth.id : promotorSelected
+    );
     await handleGetUsers();
     handleCloseModal();
   };
@@ -175,5 +181,6 @@ export const usePromotedC = () => {
     setFileImport,
     handleImport,
     handleGetPromtoed,
+    setPromotorSelected,
   };
 };
