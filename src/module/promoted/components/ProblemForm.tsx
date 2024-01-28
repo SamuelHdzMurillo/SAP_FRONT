@@ -57,7 +57,8 @@ const ProblemForm = ({ form, handleCloseModal }: ProblemFormProps) => {
               <TextArea rows={4} />
             </Form.Item>
           </Col>
-          <Col span={24}>
+          <Col span={24} style={{marginBottom: 20}}>
+            <label>Imagen del problema</label>
             <input
               type="file"
               name="problem_img_path"

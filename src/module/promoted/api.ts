@@ -1,8 +1,43 @@
 import { requestHttp } from "@/api/requestHttp";
 import { Promoted } from "./store";
 const MODULE = "promoted";
-export const getAllPromoted = async ({ page }: { page: string }) => {
-  const resp = await requestHttp.get(`/api/${MODULE}?page=${page}`);
+export const getAllPromoted = async ({
+  page,
+  name,
+  email,
+  phone_number,
+  adress,
+  electoral_key,
+  curp,
+}: {
+  page: string;
+  curp?: string;
+  email?: string;
+  adress?: string;
+  phone_number?: string;
+  electoral_key?: string;
+  name?: string;
+}) => {
+  let params = "";
+  if (phone_number) {
+    params = params.concat(`&phone_number=${phone_number}`);
+  }
+  if (email) {
+    params = params.concat(`&email=${email}`);
+  }
+  if (name) {
+    params = params.concat(`&name=${name}`);
+  }
+  if (curp) {
+    params = params.concat(`&curp=${curp}`);
+  }
+  if (electoral_key) {
+    params = params.concat(`&electoral_key=${electoral_key}`);
+  }
+  if (adress) {
+    params = params.concat(`&adress=${adress}`);
+  }
+  const resp = await requestHttp.get(`/api/${MODULE}?page=${page}?${params}`);
   const data = await resp.data;
   return data;
 };
