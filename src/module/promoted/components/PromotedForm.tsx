@@ -11,6 +11,7 @@ import {
 import { Promoted, usePromotedStore } from "../store";
 import { getPromoted, postPromoted, putPromoted } from "../api";
 import { useNavigate, useParams } from "react-router-dom";
+import { useAlertStore } from "@/components/alerts/alertStore";
 interface PromotorsFormProps {
   form: FormInstance<Promoted>;
   isTitle?: boolean;
@@ -24,6 +25,8 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
   const setPromoted = usePromotedStore((state) => state.setPromoted);
   const promoted = usePromotedStore((state) => state.promoted);
   const setTypeForm = usePromotedStore((state) => state.setTypeForm);
+  const setAlert = useAlertStore((state) => state.setAlert);
+  const clearAlert = useAlertStore((state) => state.clearAlert);
   const [municipal, setMunicipal] = useState<MunicipalCatalog[]>([]);
   const [districts, setDistricts] = useState<MunicipalCatalog[]>([]);
   const [sections, setSections] = useState<MunicipalCatalog[]>([]);
@@ -94,14 +97,40 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
     switch (typeForm) {
       case "post":
         (async () => {
-          await postPromoted(newValues);
+          try {
+            await postPromoted(newValues);
+            setAlert({
+              type: "success",
+              message: "Promovido registrado correctamente",
+              isShow: true,
+            });
+          } catch (error) {
+            setAlert({
+              type: "error",
+              message: "Ocurrio un error al registrar el promovido",
+              isShow: true,
+            });
+          }
 
           // addPromoted(data);
         })();
         break;
       case "put":
         (async () => {
-          await putPromoted(promoted);
+          try {
+            await putPromoted(promoted);
+            setAlert({
+              type: "success",
+              message: "Promovido actualizado correctamente",
+              isShow: true,
+            });
+          } catch (error) {
+            setAlert({
+              type: "error",
+              message: "Ocurrio un error al actualizar el promovido",
+              isShow: true,
+            });
+          }
           // updatePromoted(data);
         })();
         break;
@@ -110,6 +139,7 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
     }
     navigate("/promovidos");
     form.resetFields();
+    clearAlert();
   };
   const filterOption = (
     input: string,

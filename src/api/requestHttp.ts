@@ -28,6 +28,12 @@ requestHttp.interceptors.response.use(
       localStorage.removeItem("token");
       localStorage.removeItem("userAuth");
       location.href = `${partBeforeSlash}/login`;
+    }else if (error.response.status === 500) {
+      // Manejar error interno del servidor
+      console.error("Ocurrió un error en el servidor");
+    } else if (error.response.status === 404) {
+      // Manejar recurso no encontrado
+      console.error("Recurso no encontrado");
     }
     return Promise.reject(error);
   }

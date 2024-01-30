@@ -17,6 +17,7 @@ interface TableParams {
 export const usePromotedC = () => {
   const setPromoteds = usePromotedStore((state) => state.setPromoteds);
   const setPromoted = usePromotedStore((state) => state.setPromoted);
+  const promoted = usePromotedStore((state) => state.promoted);
   const auth = useAuthStore((state) => state.user);
   const setTypeForm = usePromotedStore((state) => state.setTypeForm);
   const [form] = Form.useForm();
@@ -112,9 +113,13 @@ export const usePromotedC = () => {
       ),
     },
   ];
-  const handleOpenModal = (type: "post" | "put" | "problem", record = {}) => {
+  const handleOpenModal = (type: "post" | "put" | "problem", record = {} as Promoted) => {
     // console.log(record, "usePromotedC")
     form.resetFields();
+    setPromoted({
+      ...promoted,
+      id: record.id,
+    });
     setTypeForm(type);
     setIsModalOpen(true);
   };
