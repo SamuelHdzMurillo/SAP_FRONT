@@ -10,7 +10,6 @@ export const useFilterTable = ({
 }: {
   onFilter: (value: string, dataIndex: string | number) => Promise<void>;
 }) => {
-  const [searchText, setSearchText] = useState("");
   const searchInput = useRef<InputRef>(null);
   const handleSearch = (selectedKeys: string[], dataIndex: DataIndex) => {
     onFilter(selectedKeys[0], dataIndex as string);
@@ -18,7 +17,7 @@ export const useFilterTable = ({
 
   const handleReset = (clearFilters: () => void) => {
     clearFilters();
-    setSearchText("");
+    onFilter("", "");
   };
   const getColumnSearchProps = (
     dataIndex: DataIndex

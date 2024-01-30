@@ -5,7 +5,7 @@ import PromotedForm from "../components/PromotedForm";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export interface MunicipalCatalog {
-  value: number;
+  value: string;
   label: string;
 }
 
@@ -24,7 +24,9 @@ const PromotedRegister = () => {
       ]}
       title={"Promovidos"}
     >
-      <PromotedForm form={form} />
+      <div>
+        <PromotedForm form={form} />
+      </div>
     </LayoutC>
   );
 };

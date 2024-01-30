@@ -1,4 +1,4 @@
-import { Form, type TableColumnsType } from "antd";
+import { Form, Tag, type TableColumnsType } from "antd";
 import { Promotor, usePromotorStore } from "../store";
 import { TablePaginationConfig, TableProps } from "antd";
 import { getAllPromotor, getPromotor } from "../api";
@@ -80,6 +80,22 @@ export const usePromotorC = () => {
       key: "phone_number",
       responsive: ["lg"],
       ...getColumnSearchProps("phone_number"),
+    },
+    {
+      title: "Municpio",
+      dataIndex: "municipal_name",
+      key: "municipal_name",
+      responsive: ["lg"],
+      ...getColumnSearchProps("municipal_name"),
+      render: (text) => <Tag color="rgb(42, 143, 43)">{text}</Tag>,
+    },
+    {
+      title: "Posición",
+      dataIndex: "position",
+      key: "position",
+      responsive: ["lg"],
+      ...getColumnSearchProps("position"),
+      render: (text) => <Tag color="rgb(42, 143, 143)">{text}</Tag>,
     },
     {
       title: "Action",

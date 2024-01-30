@@ -3,12 +3,14 @@
 import LayoutC from "@/components/LayoutC";
 import TableC from "@/components/TableC";
 import { usePromotedC } from "../hooks/usePromotedC";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { usePromotedStore } from "../store";
-import { Button } from "antd";
+import { Button, Select } from "antd";
 import ModalC from "@/components/ModalC";
 import ProblemForm from "../components/ProblemForm";
+import { useAuthStore } from "@/module/auth/auth";
+import { getUsersCatalog } from "@/api/CatalogHttp";
 
 const PromotedHome = () => {
   const {
@@ -18,20 +20,31 @@ const PromotedHome = () => {
     isModalOpen,
     form,
     setFileImport,
-    handleGetUsers,
+    handleGetUsers: handleGetPromoteds,
     handleTableChange,
     handleExportExcel,
     handleOpenModal,
     handleCloseModal,
     handleImport,
+    setPromotorSelected,
   } = usePromotedC();
 
   const promotedsStore = usePromotedStore((state) => state.promoteds);
   const type = usePromotedStore((state) => state.typeForm);
-
+  const user_type = useAuthStore((state) => state.user_type);
+  const [usersCatalog, setUsersCatalog] = useState([]);
   useEffect(() => {
-    handleGetUsers();
+    handleGetPromoteds();
+    const handleGetUsersCatalog = async () => {
+      const { data } = await getUsersCatalog();
+      setUsersCatalog(data);
+    };
+    handleGetUsersCatalog();
   }, []);
+  const filterOption = (
+    input: string,
+    option?: { label: string; value: string }
+  ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
   return (
     <LayoutC
@@ -98,6 +111,17 @@ const PromotedHome = () => {
                 setFileImport(e.target.files?.[0]);
               }}
             />
+            {user_type == "superadmin" && (
+              <Select
+                showSearch
+                placeholder="Selecciona un Promotor"
+                optionFilterProp="children"
+                filterOption={filterOption}
+                options={usersCatalog}
+                onChange={(value) => setPromotorSelected(value)}
+              />
+            )}
+
             <Button
               style={{
                 backgroundColor: "#1C1C1C",

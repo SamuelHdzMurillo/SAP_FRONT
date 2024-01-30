@@ -10,6 +10,7 @@ export interface Promotor {
   profile_path: string;
   ine_path: string;
   municipal_id: number;
+  municipal_name?: string;
   position: string;
   password_confirmation?: string;
   promoteds?: Promoted[];
