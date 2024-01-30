@@ -23,6 +23,7 @@ export const getDashboardCountByPromotor = async ({
   console.log(data);
   return data;
 };
+
 export const getPromotedByDatesPage = async ({
   filter = "all",
 }: {
@@ -30,6 +31,19 @@ export const getPromotedByDatesPage = async ({
 }) => {
   const resp = await requestHttp.get(
     `/api/dashboard/promoteds-count-by-dates?filter=${filter}`
+  );
+  const data = await resp.data;
+  console.log(data);
+  return data;
+};
+
+export const gettotalPromotedsByMunicipality = async ({
+  filter = "week",
+}: {
+  filter: string;
+}) => {
+  const resp = await requestHttp.get(
+    `/api/municipals/total-promoteds?filter=${filter}`
   );
   const data = await resp.data;
   console.log(data);
