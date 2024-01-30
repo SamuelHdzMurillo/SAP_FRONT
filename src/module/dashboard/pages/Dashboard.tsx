@@ -21,6 +21,21 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const colors = ['#FF4560', '#00E396', '#008FFB', '#FEB019', '#775DD0', '#FF4560', '#00E396', '#008FFB'];
 
+const date = new Date();
+const day = date.getDay();
+
+// Calcular el inicio y fin de la semana, una semana atrás
+const diff = date.getDate() - day - 7 + (day === 0 ? -6 : 1); // Ajustar para la semana anterior
+
+// Crear nuevas fechas para evitar modificar la fecha original
+const startOfLastWeek = new Date(date.getFullYear(), date.getMonth(), diff);
+const endOfLastWeek = new Date(date.getFullYear(), date.getMonth(), diff + 6);
+
+const startOfLastWeekString = startOfLastWeek.toLocaleDateString("default");
+const endOfLastWeekString = endOfLastWeek.toLocaleDateString("default");
+
+const week = `${startOfLastWeekString} - ${endOfLastWeekString}`;
+
 
   
 
@@ -160,7 +175,7 @@ const Dashboard = () => {
     {
       icon: <BarChartOutlined />,
       value: promoter_count_sem,
-      title: `Promovidos semanal`,
+      title: `Promovidos semanal ${week} `,
     },
     {
       icon: <BarChartOutlined />,
