@@ -39,9 +39,16 @@ export const usePromotedC = () => {
     value: string,
     dataIndex: string | number
   ) => {
-    const { data } = await getAllPromoted({
+    const { data, meta } = await getAllPromoted({
       [`${dataIndex}`]: value,
       page: "1",
+    });
+    setTableParams({
+      ...tableParams,
+      pagination: {
+        ...tableParams.pagination,
+        total: meta.total,
+      },
     });
     setPromoteds(data);
     return data;

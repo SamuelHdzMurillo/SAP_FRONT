@@ -12,7 +12,7 @@ requestHttp.interceptors.request.use((config) => {
   if (token.length > 0) {
     config.headers.Authorization = `Bearer ${token}`;
   } else {
-    location.href(`${partBeforeSlash}/login`);
+    location.href = `${partBeforeSlash}/login`;
   }
   return config;
 });

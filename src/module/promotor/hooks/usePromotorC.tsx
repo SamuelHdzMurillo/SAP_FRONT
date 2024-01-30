@@ -35,9 +35,16 @@ export const usePromotorC = () => {
     value: string,
     dataIndex: string | number
   ) => {
-    const { data } = await getAllPromotor({
+    const { data, meta } = await getAllPromotor({
       [`${dataIndex}`]: value,
       page: "1",
+    });
+    setTableParams({
+      ...tableParams,
+      pagination: {
+        ...tableParams.pagination,
+        total: meta.total,
+      },
     });
     setPromotors(data);
     return data;

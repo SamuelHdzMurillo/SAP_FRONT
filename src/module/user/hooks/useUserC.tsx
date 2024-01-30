@@ -35,7 +35,14 @@ export const useUserC = () => {
     value: string,
     dataIndex: string | number
   ) => {
-    const { data } = await getAllUser({ [`${dataIndex}`]: value, page: "1" });
+    const { data, meta } = await getAllUser({ [`${dataIndex}`]: value, page: "1" });
+    setTableParams({
+      ...tableParams,
+      pagination: {
+        ...tableParams.pagination,
+        total: meta.total,
+      },
+    });
     setUsers(data);
     return data;
   };

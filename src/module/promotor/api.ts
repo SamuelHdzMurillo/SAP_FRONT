@@ -5,11 +5,15 @@ export const getAllPromotor = async ({
   name,
   email,
   phone_number,
+  municipal_name,
+  position,
 }: {
   page: string;
   phone_number?: string;
   email?: string;
   name?: string;
+  municipal_name?: string;
+  position?: string;
 }) => {
   let params = "";
   if (phone_number) {
@@ -20,6 +24,12 @@ export const getAllPromotor = async ({
   }
   if (name) {
     params = params.concat(`&name=${name}`);
+  }
+  if (municipal_name) {
+    params = params.concat(`&municipal_name=${municipal_name}`);
+  }
+  if (position) {
+    params = params.concat(`&position=${position}`);
   }
   const resp = await requestHttp.get(`/api/promotores?page=${page}${params}`);
   const data = await resp.data;

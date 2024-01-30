@@ -59,7 +59,7 @@ const PromotorsForm = ({
         break;
       case "put":
         (async () => {
-          const { data } = await putPromotor(promotor);
+          const data = await putPromotor(promotor);
           updatePromotor(data);
         })();
         break;
