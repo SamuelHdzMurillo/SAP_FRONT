@@ -7,12 +7,13 @@ import { AnyObject } from "antd/es/_util/type";
 import { useEffect, useState } from "react";
 import { getMunicipalCatalog } from "@/api/CatalogHttp";
 import { MunicipalCatalog } from "@/module/promoted/page/PromotedRegister";
+import { useAlertStore } from "@/components/alerts/alertStore";
 interface PromotorsFormProps {
   form: FormInstance<Promotor>;
   handleCloseModal?: () => void;
   isDetail?: boolean;
 }
-
+const MODULE = "Promotor";
 // eslint-disable-next-line react-refresh/only-export-components
 
 const PromotorsForm = ({
@@ -28,6 +29,9 @@ const PromotorsForm = ({
   const [profileImg, setProfileImg] = useState<File | null>(null);
   const [inePath, setInePath] = useState<File | null>(null);
   const [municipal, setMunicipal] = useState<MunicipalCatalog[]>([]);
+  const setAlert = useAlertStore((state) => state.setAlert);
+  const clearAlert = useAlertStore((state) => state.clearAlert);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const handleGetMunicipal = async () => {
       const data = await getMunicipalCatalog();
@@ -36,6 +40,7 @@ const PromotorsForm = ({
     handleGetMunicipal();
   }, []);
   const onFinish = async (values: Promotor) => {
+    setLoading(true);
     let formData = new FormData();
     formData.append("name", values.name);
     formData.append("phone_number", values.phone_number);
@@ -52,26 +57,50 @@ const PromotorsForm = ({
     }
     switch (typeForm) {
       case "post":
-        (async () => {
+        try {
           const { data } = await postPromotor(formData);
           addPromotor(data);
-        })();
+          setAlert({
+            type: "success",
+            message: `${MODULE} registrado correctamente`,
+            isShow: true,
+          });
+        } catch (error) {
+          setAlert({
+            type: "error",
+            message: `Ocurrio un error al registrar el ${MODULE}`,
+            isShow: true,
+          });
+        }
         break;
       case "put":
-        (async () => {
+        try {
           const data = await putPromotor(promotor);
           updatePromotor(data);
-        })();
-        break;
-      case "password":
-        console.log("password");
+          setAlert({
+            type: "success",
+            message: `${MODULE} actualizado correctamente`,
+            isShow: true,
+          });
+        } catch (error) {
+          setAlert({
+            type: "error",
+            message: `Ocurrio un error al actualizar el ${MODULE}`,
+            isShow: true,
+          });
+        }
         break;
       default:
         break;
     }
+
     if (handleCloseModal) {
+      setLoading(false);
       handleCloseModal();
       form.resetFields();
+      setTimeout(() => {
+        clearAlert();
+      }, 3000);
     }
     // handleCloseModal();
   };
@@ -200,7 +229,20 @@ const PromotorsForm = ({
                 <input
                   type="file"
                   name="profile_img_path"
-                  onChange={(e) => setProfileImg(e.target.files![0])}
+                  required
+                  onChange={(e) => {
+                    const file = e.target.files![0];
+                    if (file.size > 50 * 1024 * 1024) {
+                      // 50 MB
+                      setAlert({
+                        type: "error",
+                        message: `La foto no debe pesar más de 50 MB`,
+                        isShow: true,
+                      });
+                    } else {
+                      setProfileImg(file);
+                    }
+                  }}
                 />
               </Col>
               <Col span={24} style={{ marginBottom: 20 }}>
@@ -208,7 +250,20 @@ const PromotorsForm = ({
                 <input
                   type="file"
                   name="ine_path"
-                  onChange={(e) => setInePath(e.target.files![0])}
+                  required
+                  onChange={(e) => {
+                    const file = e.target.files![0];
+                    if (file.size > 50 * 1024 * 1024) {
+                      // 50 MB
+                      setAlert({
+                        type: "error",
+                        message: `La Imagen no debe pesar más de 50 MB`,
+                        isShow: true,
+                      });
+                    } else {
+                      setInePath(file);
+                    }
+                  }}
                 />
               </Col>
             </>
@@ -221,6 +276,7 @@ const PromotorsForm = ({
             }}
             type="primary"
             htmlType="submit"
+            loading={loading}
           >
             Registrar
           </Button>

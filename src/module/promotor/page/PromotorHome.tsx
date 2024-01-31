@@ -15,12 +15,13 @@ const PromotorHome = () => {
     columns,
     form,
     isModalOpen,
+    loading,
+    tableParams,
+    titleModal,
     handleCloseModal,
     handleOpenModal,
-    loading,
     handleGetPromotors,
     handleTableChange,
-    tableParams,
   } = usePromotorC();
 
   const promotorsStore = usePromotorStore((state) => state.promotors);
@@ -48,7 +49,7 @@ const PromotorHome = () => {
         children={"Agregar Promotor"}
       />
       <ModalC
-        title="Agregar Promotor"
+        title={titleModal}
         isModalOpen={isModalOpen}
         handleOk={handleOpenModal}
         handleCancel={handleCloseModal}

@@ -27,6 +27,7 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
   const setTypeForm = usePromotedStore((state) => state.setTypeForm);
   const setAlert = useAlertStore((state) => state.setAlert);
   const clearAlert = useAlertStore((state) => state.clearAlert);
+  const [loading, setLoading] = useState(false);
   const [municipal, setMunicipal] = useState<MunicipalCatalog[]>([]);
   const [districts, setDistricts] = useState<MunicipalCatalog[]>([]);
   const [sections, setSections] = useState<MunicipalCatalog[]>([]);
@@ -49,6 +50,9 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
         });
         form.setFieldsValue(data);
       })();
+    } else {
+      setTypeForm("post");
+      form.resetFields();
     }
     handleGetMunicipal();
     if (navigator.geolocation) {
@@ -87,6 +91,7 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
     setSections(data);
   };
   const onFinish = async (values: Promoted) => {
+    setLoading(true);
     const { latitude, longitude } = position;
     const newValues = {
       ...promoted,
@@ -96,47 +101,41 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
     };
     switch (typeForm) {
       case "post":
-        (async () => {
-          try {
-            await postPromoted(newValues);
-            setAlert({
-              type: "success",
-              message: "Promovido registrado correctamente",
-              isShow: true,
-            });
-          } catch (error) {
-            setAlert({
-              type: "error",
-              message: "Ocurrio un error al registrar el promovido",
-              isShow: true,
-            });
-          }
-
-          // addPromoted(data);
-        })();
+        try {
+          await postPromoted(newValues);
+          setAlert({
+            type: "success",
+            message: "Promovido registrado correctamente",
+            isShow: true,
+          });
+        } catch (error) {
+          setAlert({
+            type: "error",
+            message: "Ocurrio un error al registrar el promovido",
+            isShow: true,
+          });
+        }
         break;
       case "put":
-        (async () => {
-          try {
-            await putPromoted(promoted);
-            setAlert({
-              type: "success",
-              message: "Promovido actualizado correctamente",
-              isShow: true,
-            });
-          } catch (error) {
-            setAlert({
-              type: "error",
-              message: "Ocurrio un error al actualizar el promovido",
-              isShow: true,
-            });
-          }
-          // updatePromoted(data);
-        })();
+        try {
+          await putPromoted(promoted);
+          setAlert({
+            type: "success",
+            message: "Promovido actualizado correctamente",
+            isShow: true,
+          });
+        } catch (error) {
+          setAlert({
+            type: "error",
+            message: "Ocurrio un error al actualizar el promovido",
+            isShow: true,
+          });
+        }
         break;
       default:
         break;
     }
+    setLoading(false);
     navigate("/promovidos");
     form.resetFields();
     clearAlert();
@@ -147,7 +146,13 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
   ) => (`${option?.label}` ?? "").toLowerCase().includes(input.toLowerCase());
   return (
     <div className="form-register">
-      {isTitle && <h1>Registro de Promovidos</h1>}
+      {isTitle ? (
+        params.id ? (
+          <h1>Editar Promovido</h1>
+        ) : (
+          <h1>Registro de Promovidos</h1>
+        )
+      ) : null}
       {/* <h1>Registro de Promovidos</h1> */}
       <Form
         form={form}
@@ -287,6 +292,7 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
             }}
             type="primary"
             htmlType="submit"
+            loading={loading}
           >
             Registrar
           </Button>
