@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import * as echarts from 'echarts';
-import LayoutC from "@/components/LayoutC";
+import { Card } from 'antd';
+
 import { gettotalPromotedsByMunicipalitybydate } from "./api";
 
 const Municipals: React.FC = () => {
@@ -32,9 +33,9 @@ const Municipals: React.FC = () => {
   }, [treeData]);
 
   return (
-    <LayoutC items={[{ title: "Grafica por Fecha " }]} title={""}>
-      <div>
-        <h1>Conteo de promovidos por distrito y fecha</h1>
+    
+      <div className="dashboard-container">
+        <Card title="Promovidos por Distrito ">
         <select value={selectedMunicipality} onChange={e => setSelectedMunicipality(e.target.value)}>
           <option value="ALL">Todos los municipios</option>
           <option value="LA PAZ">LA PAZ</option>
@@ -44,8 +45,9 @@ const Municipals: React.FC = () => {
           {/* Agrega más opciones según sea necesario */}
         </select>
         <div id="main-chart" style={{ width: '100%', height: '500px' }}></div>
+        </Card>
       </div>
-    </LayoutC>
+    
   );
 };
 
@@ -74,7 +76,7 @@ function transformData(counts, selectedMunicipality) {
 function getChartOption(data) {
   return {
     title: {
-      text: 'Conteo de Promovidos por Distrito y Fecha',
+      text: '',
       left: 'center'
     },
     tooltip: {

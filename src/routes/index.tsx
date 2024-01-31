@@ -14,6 +14,7 @@ import PromotorDetail from "@/module/promotor/page/PromotorDetail";
 import PromotedDetail from "@/module/promoted/page/PromotedDetail";
 import Municipal from "@/module/charts/pages/Municipals";
 import Date from "@/module/charts/pages/Date";
+import Count from "@/module/charts/pages/Countchart";
 
 export const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ export const router = createBrowserRouter([
       {
         path: "/municipals",
         element: <Municipal />,
+      },
+      {
+        path: "/Count",
+        element: <Count />,
       },
       {
         path: "/mapa",
