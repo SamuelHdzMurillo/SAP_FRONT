@@ -17,6 +17,7 @@ const UserHome = () => {
     isModalOpen,
     loading,
     tableParams,
+    titleModal,
     handleCloseModal,
     handleOpenModal,
     handleGetUsers,
@@ -48,7 +49,7 @@ const UserHome = () => {
         children={"Agregar Usuario"}
       />
       <ModalC
-        title="Agregar Usuario"
+        title={titleModal}
         isModalOpen={isModalOpen}
         handleOk={handleOpenModal}
         handleCancel={handleCloseModal}

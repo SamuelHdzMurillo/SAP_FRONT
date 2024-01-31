@@ -2,6 +2,7 @@ import { Content } from "antd/es/layout/layout";
 // import BreadCrum from "./BreadCrum";
 import { theme } from "antd";
 import BreadCrum from "./BreadCrum";
+import AlertC from "./alerts/AlertC";
 interface Item {
   title: string;
 }
@@ -26,6 +27,8 @@ const LayoutC = ({ children, items, title }: LayoutCProps) => {
           background: colorBgContainer,
         }}
       >
+        
+        <AlertC />
         {children}
       </Content>
     </>

@@ -5,6 +5,7 @@ import { TablePaginationConfig, TableProps } from "antd";
 import { getAllUser, getUser } from "../api";
 import { useState } from "react";
 import { useFilterTable } from "@/components/filterTable/useFilterTable";
+import profilePhoto from "@/assets/imgs/foto_default.png";
 const URL = import.meta.env.VITE_API_URL;
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -13,6 +14,7 @@ interface TableParams {
 export const useUserC = () => {
   const setUsers = useUserStore((state) => state.setUsers);
   const setUser = useUserStore((state) => state.setUser);
+  const [titleModal, setTitleModal] = useState("Agregar Usuario");
   const setTypeForm = useUserStore((state) => state.setTypeForm);
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,6 +28,7 @@ export const useUserC = () => {
   });
 
   const handleGetUser = async (id: number) => {
+    setTitleModal("Editar Usuario");
     const data = await getUser(id);
     form.setFieldsValue(data);
     setTypeForm("put");
@@ -35,7 +38,17 @@ export const useUserC = () => {
     value: string,
     dataIndex: string | number
   ) => {
-    const { data } = await getAllUser({ [`${dataIndex}`]: value, page: "1" });
+    const { data, meta } = await getAllUser({
+      [`${dataIndex}`]: value,
+      page: "1",
+    });
+    setTableParams({
+      ...tableParams,
+      pagination: {
+        ...tableParams.pagination,
+        total: meta.total,
+      },
+    });
     setUsers(data);
     return data;
   };
@@ -51,7 +64,11 @@ export const useUserC = () => {
       responsive: ["md"],
       render: (text) => (
         <img
-          src={`${URL}/storage/${text}`}
+          src={
+            text !== null || text.length > 0
+              ? `${URL}/storage/${text}`
+              : profilePhoto
+          }
           alt="profile"
           style={{ width: "50px", height: "50px", borderRadius: "50%" }}
         />
@@ -87,9 +104,11 @@ export const useUserC = () => {
     },
   ];
   const handleOpenModal = (type = "post", record = {}) => {
+    setTitleModal("Agregar Usuario");
     form.resetFields();
     setTypeForm("post");
     if (type === "put") {
+      setTitleModal("Editar Usuario");
       form.setFieldsValue(record);
       setTypeForm("put");
       setUser(record as User);
@@ -137,6 +156,7 @@ export const useUserC = () => {
     form,
     loading,
     tableParams,
+    titleModal,
     handleCloseModal,
     handleOpenModal,
     setLoading,

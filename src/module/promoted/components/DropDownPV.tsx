@@ -5,6 +5,7 @@ import DropDownC from "@/components/DropDownC";
 import { Promoted, usePromotedStore } from "../store";
 import { destroyPromoted } from "../api";
 import { useNavigate } from "react-router-dom";
+import { useAlertStore } from "@/components/alerts/alertStore";
 interface DropDownPVProps {
   record: Promoted;
   handleOpenModal: (type: string, record: Promoted) => void;
@@ -12,6 +13,8 @@ interface DropDownPVProps {
 const DropDownPV = ({ record, handleOpenModal }: DropDownPVProps) => {
   const deletePromoted = usePromotedStore((state) => state.deletePromoted);
   const navigate = useNavigate();
+  const setAlert = useAlertStore((state) => state.setAlert);
+  const clearAlert = useAlertStore((state) => state.clearAlert);
   const handleGetItemsDropdown = (record: Promoted) => {
     return [
       {
@@ -43,8 +46,24 @@ const DropDownPV = ({ record, handleOpenModal }: DropDownPVProps) => {
       content:
         "Si le das a Ok, se eliminará por completo y no habrá vuelta atrás",
       async onOk() {
-        const { data } = await destroyPromoted(record.id);
-        deletePromoted(data.id);
+        try {
+          const { data } = await destroyPromoted(record.id);
+          deletePromoted(data.id);
+          setAlert({
+            type: "success",
+            message: "Promovido eliminado correctamente",
+            isShow: true,
+          });
+        } catch (error) {
+          setAlert({
+            type: "error",
+            message: "Ocurrio un error al eliminar el promovido",
+            isShow: true,
+          });
+        }
+        setTimeout(() => {
+          clearAlert();
+        }, 3000);
       },
       onCancel() {},
     });
