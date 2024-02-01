@@ -1,7 +1,10 @@
 // import { createElement, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { BarChartOutlined, UserOutlined } from "@ant-design/icons";
+import { BarChartOutlined, UserOutlined ,PieChartOutlined , UserAddOutlined, UsergroupAddOutlined} from "@ant-design/icons";
 import { Dropdown, Layout, Menu, Space, Typography, theme } from "antd";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMap ,faUserTie ,faChartSimple ,faAddressBook , faTriangleExclamation ,faUsers} from '@fortawesome/free-solid-svg-icons';
+
 import logo from "../assets/imgs/HD_LOGOTIPOS_V_S.png";
 import { postLogout } from "@/module/auth/api";
 import { useAuthStore } from "@/module/auth/auth";
@@ -25,59 +28,51 @@ const MainC = () => {
     {
       label: "Dashboard",
       key: "/Dashboard",
-  
-      icon: <BarChartOutlined />,
-      children: [
-        {
-          label: "Inicio",
-          key: "/",
-          onClick: () => navigate("/"),
-        },
-        {
-          label: "Grafia por Fecha",
-          key: "/graficas-por-fecha",
-          onClick: () => navigate("/graficas-por-fecha"),
-        },
-        {
-          label: "Municipios",
-          key: "/municipals",
-          onClick: () => navigate("/municipals"),
-        },
-  
-      ],
+      onClick: () => navigate("/"),
+      icon: <FontAwesomeIcon icon={faChartSimple} />
+     
+    },
+    {
+      label: "Mapa",
+      key: "/mapa",
+      onClick: () => navigate("/mapa"),
+      icon: <FontAwesomeIcon icon={faMap} />,
+     
     },
     {
       label: "Usuarios",
       key: "/usuarios",
       onClick: () => navigate("/usuarios"),
-      icon: <UserOutlined />,
+      icon: <FontAwesomeIcon icon={faUserTie} />
     },
     {
       label: "Promotores",
       key: "/promotores",
       onClick: () => navigate("/promotores"),
-      icon: <UserOutlined />,
+      icon: <FontAwesomeIcon icon={faAddressBook} />
     },
     {
       label: "Problemas",
       key: "/problemas",
       onClick: () => navigate("/problemas"),
-      icon: <UserOutlined />,
+      icon: <FontAwesomeIcon icon={faTriangleExclamation} />
     },
     {
       label: "Promovidos",
       key: "/promovidos-menu",
-      icon: <UserOutlined />,
+      icon: <FontAwesomeIcon icon={faUsers} />,
       children: [
         {
           label: "Registrar",
           key: "/promovidos-registrar",
           onClick: () => navigate("/promovidos-registrar"),
+          icon: <UserAddOutlined />
         },
         {
           label: "Administrar",
           key: "/promovidos",
           onClick: () => navigate("/promovidos"),
+          icon: <UsergroupAddOutlined />
         },
       ],
     },
@@ -87,7 +82,7 @@ const MainC = () => {
       label: "Problemas",
       key: "/problemas",
       onClick: () => navigate("/problemas"),
-      icon: <UserOutlined />,
+      icon: <FontAwesomeIcon icon={faTriangleExclamation} />
     },
     {
       label: "Promovidos",
@@ -97,11 +92,13 @@ const MainC = () => {
         {
           label: "Registrar",
           key: "/promovidos-registrar",
+          icon: <UserAddOutlined />,
           onClick: () => navigate("/promovidos-registrar"),
         },
         {
           label: "Administrar",
           key: "/promovidos",
+          icon: <UsergroupAddOutlined />,
           onClick: () => navigate("/promovidos"),
         },
       ],
