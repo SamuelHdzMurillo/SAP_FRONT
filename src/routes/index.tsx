@@ -12,6 +12,9 @@ import DashboardMap from "@/module/dashboard/pages/DashboardMap";
 import UserDetail from "@/module/user/page/UserDetail";
 import PromotorDetail from "@/module/promotor/page/PromotorDetail";
 import PromotedDetail from "@/module/promoted/page/PromotedDetail";
+import Municipal from "@/module/charts/pages/Municipals";
+import Date from "@/module/charts/pages/Date";
+import Count from "@/module/charts/pages/Countchart";
 
 export const router = createBrowserRouter([
   {
@@ -21,6 +24,18 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Dashboard />,
+      },
+      {
+        path: "/graficas-por-fecha",
+        element: <Date />,
+      },
+      {
+        path: "/municipals",
+        element: <Municipal />,
+      },
+      {
+        path: "/Count",
+        element: <Count />,
       },
       {
         path: "/mapa",

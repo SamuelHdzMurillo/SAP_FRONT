@@ -1,13 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import LayoutC from "@/components/LayoutC";
 import { useEffect, useState } from "react";
+
+import Municipals from '@/module/charts/pages/Municipals';
+import Charts from '@/module/charts/pages/Countchart';
 import {
   getDashboardByPromotor,
   getDashboardCountByPromotor,
   getPromotedByDatesPage,
   gettotalPromotedsByMunicipality
 } from "../api";
-import { Card } from 'antd';
+import {DatePicker, Card } from 'antd';
+const { RangePicker } = DatePicker;
 import { Column } from "@ant-design/charts";
 import "./style.css";
 import { BarChartOutlined, UsergroupAddOutlined } from "@ant-design/icons";
@@ -21,10 +25,28 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const colors = ['#FF4560', '#00E396', '#008FFB', '#FEB019', '#775DD0', '#FF4560', '#00E396', '#008FFB'];
 
+const date = new Date();
+const day = date.getDay();
+
+// Calcular el inicio y fin de la semana, una semana atrás
+const diff = date.getDate() - day - 7 + (day === 0 ? -6 : 1); // Ajustar para la semana anterior
+
+// Crear nuevas fechas para evitar modificar la fecha original
+const startOfLastWeek = new Date(date.getFullYear(), date.getMonth(), diff);
+const endOfLastWeek = new Date(date.getFullYear(), date.getMonth(), diff + 6);
+
+const startOfLastWeekString = startOfLastWeek.toLocaleDateString("default");
+const endOfLastWeekString = endOfLastWeek.toLocaleDateString("default");
+
+const week = `${startOfLastWeekString} - ${endOfLastWeekString}`;
+
 
   
 
 const Dashboard = () => {
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  
   const [itemsChartByDates, setItemsChartByDates] = useState<any[]>([]);
   const [promoter_count_mont, setPromoterCountMonth] = useState<number>(0);
   const [promoter_count_sem, setPromoterCountsem] = useState<number>(0);
@@ -40,6 +62,16 @@ const Dashboard = () => {
       borderWidth: 1
     }]
   });
+
+  <div className="select-container">
+  <RangePicker
+    onChange={(dates) => {
+      setStartDate(dates ? dates[0].startOf('day').toISOString() : null);
+      setEndDate(dates ? dates[1].endOf('day').toISOString() : null);
+    }}
+  />
+</div>
+
 
   const transformedSeries = [{
     name: "Value", // Puedes cambiar este nombre según tus necesidades
@@ -91,9 +123,14 @@ const Dashboard = () => {
       const promoter_count_sem_data = await getDashboardCountByPromotor({
         filter: "week",
       });
+      
       const promotedsByDatesData = await getPromotedByDatesPage({
         filter: "all",
+        startDate: startDate,
+        endDate: endDate,
       });
+
+     
 
       setPieData({
         labels: municipalNames,
@@ -105,11 +142,15 @@ const Dashboard = () => {
               'rgb(14,185,128)',
               'rgb(247,144,10)',
               'rgb(99,102,241)',
+              'rgb(38,160,252)',
+              'rgb(255,97,120)',
             ],
             borderColor: [
               'rgb(14,185,128)',
               'rgb(247,144,10)',
               'rgb(99,102,241)',
+              'rgb(38,160,252)',
+              'rgb(255,97,120)',
             ],
             borderWidth: 1,
           },
@@ -160,7 +201,7 @@ const Dashboard = () => {
     {
       icon: <BarChartOutlined />,
       value: promoter_count_sem,
-      title: `Promovidos semanal`,
+      title: `Promovidos semanal ${week} `,
     },
     {
       icon: <BarChartOutlined />,
@@ -168,6 +209,7 @@ const Dashboard = () => {
       title: `Promovidos Hoy`,
     },
   ];
+  
 
   return (
     <LayoutC items={[{ title: "Usuarios" }]} title={""}>
@@ -188,7 +230,8 @@ const Dashboard = () => {
             </div>
           </Card>
 
-          
+          <Municipals/>
+          <Charts/>
         </div>
       </div>
     </LayoutC>

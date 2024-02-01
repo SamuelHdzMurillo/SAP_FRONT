@@ -24,20 +24,26 @@ const MainC = () => {
   const items2 = [
     {
       label: "Dashboard",
-      key: "/dashboard",
-
+      key: "/Dashboard",
+  
       icon: <BarChartOutlined />,
       children: [
         {
-          label: "Grafia por Promotor",
-          key: "/grafica-promotor",
+          label: "Inicio",
+          key: "/",
           onClick: () => navigate("/"),
         },
         {
           label: "Grafia por Fecha",
-          key: "/grafica-promotor-fecha",
-          onClick: () => navigate("/promovidos-fecha"),
+          key: "/graficas-por-fecha",
+          onClick: () => navigate("/graficas-por-fecha"),
         },
+        {
+          label: "Municipios",
+          key: "/municipals",
+          onClick: () => navigate("/municipals"),
+        },
+  
       ],
     },
     {
