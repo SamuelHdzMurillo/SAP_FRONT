@@ -11,6 +11,7 @@ import ModalC from "@/components/ModalC";
 import ProblemForm from "../components/ProblemForm";
 import { useAuthStore } from "@/module/auth/auth";
 import { getUsersCatalog } from "@/api/CatalogHttp";
+import { useAlertStore } from "@/components/alerts/alertStore";
 
 const PromotedHome = () => {
   const {
@@ -30,6 +31,7 @@ const PromotedHome = () => {
   } = usePromotedC();
 
   const promotedsStore = usePromotedStore((state) => state.promoteds);
+  const clearAlert = useAlertStore((state) => state.clearAlert);
   const type = usePromotedStore((state) => state.typeForm);
   const user_type = useAuthStore((state) => state.user_type);
   const [usersCatalog, setUsersCatalog] = useState([]);
@@ -39,6 +41,9 @@ const PromotedHome = () => {
       const { data } = await getUsersCatalog();
       setUsersCatalog(data);
     };
+    setTimeout(() => {
+      clearAlert();
+    }, 3000);
     handleGetUsersCatalog();
   }, []);
   const filterOption = (

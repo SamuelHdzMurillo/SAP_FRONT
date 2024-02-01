@@ -4,6 +4,8 @@ import InputText from "@/components/InputText";
 import { useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { postProblem } from "@/module/promotor/api";
+import { usePromotedStore } from "../store";
+import { useAlertStore } from "@/components/alerts/alertStore";
 interface Problem {
   title: string;
   description: string;
@@ -19,20 +21,38 @@ interface ProblemFormProps {
 
 const ProblemForm = ({ form, handleCloseModal }: ProblemFormProps) => {
   const [problemPath, setProblemPath] = useState<File | null>(null);
+  const promoted = usePromotedStore((state) => state.promoted);
+  const setAlert = useAlertStore((state) => state.setAlert);
+  const clearAlert = useAlertStore((state) => state.clearAlert);
   const onFinish = async (values: Problem) => {
-    let formData = new FormData();
-    formData.append("title", values.title);
-    formData.append("description", values.description);
-    formData.append("promoted_id", "1");
-    if (problemPath) {
-      formData.append("problem_img_path", problemPath);
+    try {
+      let formData = new FormData();
+      formData.append("title", values.title);
+      formData.append("description", values.description);
+      formData.append("promoted_id", promoted.id?.toString());
+      if (problemPath) {
+        formData.append("problem_img_path", problemPath);
+      }
+      (async () => {
+        await postProblem(formData);
+      })();
+      setAlert({
+        type: "success",
+        message: "Se genero un problema correctamente",
+        isShow: true,
+      });
+    } catch (error) {
+      setAlert({
+        type: "error",
+        message: "Ocurrio un error al crear un problema",
+        isShow: true,
+      });
     }
-    (async () => {
-      await postProblem(formData);
-      //   addPromotor(data);
-    })();
+
     form.resetFields();
     handleCloseModal();
+    setProblemPath(null);
+    clearAlert();
   };
 
   return (
@@ -57,7 +77,7 @@ const ProblemForm = ({ form, handleCloseModal }: ProblemFormProps) => {
               <TextArea rows={4} />
             </Form.Item>
           </Col>
-          <Col span={24} style={{marginBottom: 20}}>
+          <Col span={24} style={{ marginBottom: 20 }}>
             <label>Imagen del problema</label>
             <input
               type="file"

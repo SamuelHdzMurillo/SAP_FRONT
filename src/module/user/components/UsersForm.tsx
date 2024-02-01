@@ -5,6 +5,8 @@ import { postUser, putUser } from "../api";
 import { User, useUserStore } from "../store";
 import { AnyObject } from "antd/es/_util/type";
 import { useState } from "react";
+import { useAlertStore } from "@/components/alerts/alertStore";
+import AlertC from "@/components/alerts/AlertC";
 interface UsersFormProps {
   form: FormInstance<User>;
   handleCloseModal?: () => void;
@@ -12,7 +14,7 @@ interface UsersFormProps {
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
-
+const MODULE = "Usuario";
 const UsersForm = ({
   form,
   handleCloseModal,
@@ -23,9 +25,12 @@ const UsersForm = ({
   const updateUser = useUserStore((state) => state.updateUser);
   const typeForm = useUserStore((state) => state.typeForm);
   const user = useUserStore((state) => state.user);
-  console.log(user);
   const [profileImg, setProfileImg] = useState<File | null>(null);
+  const setAlert = useAlertStore((state) => state.setAlert);
+  const clearAlert = useAlertStore((state) => state.clearAlert);
+  const [loading, setLoading] = useState(false);
   const onFinish = async (values: User) => {
+    setLoading(true);
     let formData = new FormData();
     formData.append("name", values.name);
     formData.append("phone_number", values.phone_number);
@@ -37,26 +42,49 @@ const UsersForm = ({
     }
     switch (typeForm) {
       case "post":
-        (async () => {
+        try {
           const { data } = await postUser(formData);
           addUser(data);
-        })();
+          setAlert({
+            type: "success",
+            message: `${MODULE} registrado correctamente`,
+            isShow: true,
+          });
+        } catch (error) {
+          setAlert({
+            type: "error",
+            message: `Ocurrio un error al registrar el ${MODULE}`,
+            isShow: true,
+          });
+        }
         break;
       case "put":
-        (async () => {
+        try {
           const { data } = await putUser(user);
           updateUser(data);
-        })();
-        break;
-      case "password":
-        console.log("password");
+          setAlert({
+            type: "success",
+            message: `${MODULE} actualizado correctamente`,
+            isShow: true,
+          });
+        } catch (error) {
+          setAlert({
+            type: "error",
+            message: `Ocurrio un error al actualizar el ${MODULE}`,
+            isShow: true,
+          });
+        }
         break;
       default:
         break;
     }
     if (handleCloseModal) {
       form.resetFields();
+      setLoading(false);
       handleCloseModal();
+      setTimeout(() => {
+        clearAlert();
+      }, 3000);
     }
   };
 
@@ -80,6 +108,9 @@ const UsersForm = ({
         onValuesChange={(e) => onChange(e)}
       >
         <Row gutter={[10, 10]}>
+          <Col span={24}>
+            <AlertC />
+          </Col>
           <Col span={24}>
             <InputText required label="Nombre Completo" name="name" />
           </Col>
@@ -164,7 +195,20 @@ const UsersForm = ({
                 <input
                   type="file"
                   name="profile_img_path"
-                  onChange={(e) => setProfileImg(e.target.files![0])}
+                  onChange={(e) => {
+                    const file = e.target.files![0];
+                    if (file.size > 50 * 1024 * 1024) {
+                      // 50 MB
+                      setAlert({
+                        type: "error",
+                        message: `La foto no debe pesar más de 50 MB`,
+                        isShow: true,
+                      });
+                    } else {
+                      setProfileImg(file);
+                    }
+                  }}
+                  required
                 />
               </Col>
             </>
@@ -177,6 +221,7 @@ const UsersForm = ({
             }}
             type="primary"
             htmlType="submit"
+            loading={loading}
           >
             Registrar
           </Button>

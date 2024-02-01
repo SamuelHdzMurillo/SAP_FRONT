@@ -12,7 +12,7 @@ requestHttp.interceptors.request.use((config) => {
   if (token.length > 0) {
     config.headers.Authorization = `Bearer ${token}`;
   } else {
-    location.href(`${partBeforeSlash}/login`);
+    location.href = `${partBeforeSlash}/login`;
   }
   return config;
 });
@@ -28,6 +28,12 @@ requestHttp.interceptors.response.use(
       localStorage.removeItem("token");
       localStorage.removeItem("userAuth");
       location.href = `${partBeforeSlash}/login`;
+    }else if (error.response.status === 500) {
+      // Manejar error interno del servidor
+      console.error("Ocurrió un error en el servidor");
+    } else if (error.response.status === 404) {
+      // Manejar recurso no encontrado
+      console.error("Recurso no encontrado");
     }
     return Promise.reject(error);
   }

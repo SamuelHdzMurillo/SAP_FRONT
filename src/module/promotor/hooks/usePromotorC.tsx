@@ -5,6 +5,7 @@ import { getAllPromotor, getPromotor } from "../api";
 import { useState } from "react";
 import DropDownPromo from "../components/DropDownPromo";
 import { useFilterTable } from "@/components/filterTable/useFilterTable";
+import profilePhoto from "@/assets/imgs/foto_default.png";
 const URL = import.meta.env.VITE_API_URL;
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -14,6 +15,7 @@ export const usePromotorC = () => {
   const setPromotors = usePromotorStore((state) => state.setPromotors);
   const setPromotor = usePromotorStore((state) => state.setPromotor);
   const setTypeForm = usePromotorStore((state) => state.setTypeForm);
+  const [titleModal, setTitleModal] = useState("Agregar Usuario");
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -26,6 +28,7 @@ export const usePromotorC = () => {
   });
 
   const handleGetPromotor = async (id: number) => {
+    setTitleModal("Editar Promotor");
     const data = await getPromotor(id);
     form.setFieldsValue(data);
     setTypeForm("put");
@@ -35,9 +38,16 @@ export const usePromotorC = () => {
     value: string,
     dataIndex: string | number
   ) => {
-    const { data } = await getAllPromotor({
+    const { data, meta } = await getAllPromotor({
       [`${dataIndex}`]: value,
       page: "1",
+    });
+    setTableParams({
+      ...tableParams,
+      pagination: {
+        ...tableParams.pagination,
+        total: meta.total,
+      },
     });
     setPromotors(data);
     return data;
@@ -54,7 +64,11 @@ export const usePromotorC = () => {
       responsive: ["md"],
       render: (text) => (
         <img
-          src={`${URL}/storage/${text}`}
+          src={
+            text !== null || text.length > 0
+              ? `${URL}/storage/${text}`
+              : profilePhoto
+          }
           alt="profile"
           style={{ width: "50px", height: "50px", borderRadius: "50%" }}
         />
@@ -108,8 +122,10 @@ export const usePromotorC = () => {
   const handleOpenModal = (type = "post", record = {}) => {
     // console.log(record, "usePromotorC")
     form.resetFields();
+    setTitleModal("Agregar Promotor");
     setTypeForm("post");
     if (type === "put") {
+      setTitleModal("Editar Promotor");
       form.setFieldsValue(record);
       setTypeForm("put");
       setPromotor(record as Promotor);
@@ -155,15 +171,16 @@ export const usePromotorC = () => {
   };
   return {
     columns,
-    handleCloseModal,
     isModalOpen,
     form,
-    handleOpenModal,
     loading,
+    tableParams,
+    titleModal,
+    handleOpenModal,
+    handleCloseModal,
     setLoading,
     handleGetPromotors,
     handleTableChange,
     handleGetPromotor,
-    tableParams,
   };
 };

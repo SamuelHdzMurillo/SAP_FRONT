@@ -5,6 +5,8 @@ import { Dropdown, Layout, Menu, Space, Typography, theme } from "antd";
 import logo from "../assets/imgs/HD_LOGOTIPOS_V_S.png";
 import { postLogout } from "@/module/auth/api";
 import { useAuthStore } from "@/module/auth/auth";
+import profilePhoto from "@/assets/imgs/foto_default.png";
+const URL = import.meta.env.VITE_API_URL;
 const { Header, Sider } = Layout;
 
 const MainC = () => {
@@ -156,7 +158,28 @@ const MainC = () => {
               color: "#FFFFFF",
             }}
           >
-            <Space>{`${userAuth.name} (${userAuth.email})`}</Space>
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "10px"
+            }}>
+              <img
+                src={
+                  userAuth.profile_img_path !== null ||
+                  userAuth.profile_img_path.length > 0
+                    ? `${URL}/storage/${userAuth.profile_img_path}`
+                    : profilePhoto
+                }
+                alt="profile"
+                style={{
+                  width: "30px",
+                  height: "30px",
+                  borderRadius: "50%",
+                }}
+              />
+              {`${userAuth.name}`}
+            </div>
           </Typography.Paragraph>
         </Dropdown>
       </Header>
