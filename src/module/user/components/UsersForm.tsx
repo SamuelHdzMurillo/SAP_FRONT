@@ -78,14 +78,15 @@ const UsersForm = ({
       default:
         break;
     }
+    setLoading(false);
+
     if (handleCloseModal) {
       form.resetFields();
-      setLoading(false);
       handleCloseModal();
-      setTimeout(() => {
-        clearAlert();
-      }, 3000);
     }
+    setTimeout(() => {
+      clearAlert();
+    }, 3000);
   };
 
   const onChange = (changedValues: AnyObject) => {

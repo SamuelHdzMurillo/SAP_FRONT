@@ -6,13 +6,23 @@ import { useProblemC } from "../hooks/useProblemC";
 import { useEffect } from "react";
 
 import { useProblemStore } from "../store";
+import ModalC from "@/components/ModalC";
+import ProblemC from "@/module/promoted/components/Problems/ProblemC";
 
 const ProblemHome = () => {
-  const { columns, loading, tableParams, handleGetUsers, handleTableChange } =
-    useProblemC();
+  const {
+    columns,
+    isModalOpen,
+    loading,
+    tableParams,
+    handleGetUsers,
+    handleTableChange,
+    handleOpenModal,
+    handleCloseModal,
+  } = useProblemC();
 
   const problemsStore = useProblemStore((state) => state.problems);
-
+  const problem = useProblemStore((state) => state.problem);
   useEffect(() => {
     handleGetUsers();
   }, []);
@@ -34,6 +44,14 @@ const ProblemHome = () => {
         loading={loading}
         children={"Agregar Usuario"}
       />
+      <ModalC
+        title="Mostrar Problema"
+        isModalOpen={isModalOpen}
+        handleOk={() => handleOpenModal("post")}
+        handleCancel={handleCloseModal}
+      >
+        <ProblemC {...problem} />
+      </ModalC>
     </LayoutC>
   );
 };

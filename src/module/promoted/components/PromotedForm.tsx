@@ -1,7 +1,7 @@
 import InputText from "@/components/InputText";
 import { Col, Row, Form, Select, Button, FormInstance } from "antd";
 import { useEffect, useState } from "react";
-import { AnyObject } from "yup";
+import type { AnyObject } from "yup";
 import { MunicipalCatalog } from "../page/PromotedRegister";
 import {
   getDistrictByMunicipal,
@@ -20,11 +20,13 @@ interface position {
   latitude: string;
   longitude: string;
 }
+const MODULE = "Promovido";
 const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
   const params = useParams<{ id: string }>();
   const setPromoted = usePromotedStore((state) => state.setPromoted);
   const promoted = usePromotedStore((state) => state.promoted);
   const setTypeForm = usePromotedStore((state) => state.setTypeForm);
+  const alert = useAlertStore((state) => state.alert);
   const setAlert = useAlertStore((state) => state.setAlert);
   const clearAlert = useAlertStore((state) => state.clearAlert);
   const [loading, setLoading] = useState(false);
@@ -105,7 +107,7 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
           await postPromoted(newValues);
           setAlert({
             type: "success",
-            message: "Promovido registrado correctamente",
+            message: `${MODULE} registrado correctamente`,
             isShow: true,
           });
         } catch (error) {
@@ -136,9 +138,11 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
         break;
     }
     setLoading(false);
-    navigate("/promovidos");
     form.resetFields();
-    clearAlert();
+    setTimeout(() => {
+      clearAlert();
+    }, 3000);
+    navigate("/promovidos");
   };
   const filterOption = (
     input: string,

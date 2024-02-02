@@ -44,7 +44,8 @@ const LoginPage = () => {
       setToken(data.token);
       setUserData(data.user);
       setUserType(data.user_type);
-      navigate("/");
+      if (data.user_type === "promotor") navigate("/promovidos");
+      else navigate("/");
       //   // await onFinish(initialValues);
     } catch (error) {
       if (error instanceof Yup.ValidationError) {

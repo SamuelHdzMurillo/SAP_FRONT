@@ -15,6 +15,7 @@ import PromotedDetail from "@/module/promoted/page/PromotedDetail";
 import Municipal from "@/module/charts/pages/Municipals";
 import Date from "@/module/charts/pages/Date";
 import Count from "@/module/charts/pages/Countchart";
+import PrivateRoute from "@/components/PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -23,7 +24,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Dashboard />,
+        element: <PrivateRoute component={Dashboard} role="superadmin" />,
       },
       {
         path: "/graficas-por-fecha",

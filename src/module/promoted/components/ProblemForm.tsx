@@ -73,7 +73,7 @@ const ProblemForm = ({ form, handleCloseModal }: ProblemFormProps) => {
             <InputText required label="Titulo" name="title" />
           </Col>
           <Col span={24}>
-            <Form.Item label="Descripcion" name={"descripcion"}>
+            <Form.Item label="Descripcion" name="description">
               <TextArea rows={4} />
             </Form.Item>
           </Col>

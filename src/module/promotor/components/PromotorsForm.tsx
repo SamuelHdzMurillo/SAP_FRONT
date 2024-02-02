@@ -94,14 +94,14 @@ const PromotorsForm = ({
         break;
     }
 
+    setLoading(false);
     if (handleCloseModal) {
-      setLoading(false);
       handleCloseModal();
       form.resetFields();
-      setTimeout(() => {
-        clearAlert();
-      }, 3000);
     }
+    setTimeout(() => {
+      clearAlert();
+    }, 3000);
     // handleCloseModal();
   };
 

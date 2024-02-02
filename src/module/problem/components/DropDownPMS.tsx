@@ -16,7 +16,7 @@ const DropDownPMS = ({ record, handleOpenModal }: DropDownPMSProps) => {
       {
         key: "3",
         label: "Mostrar",
-        onClick: () => console.log("Mostrar"),
+        onClick: () => handleOpenModal("problem", record),
       },
       {
         key: "1",

@@ -31,6 +31,7 @@ const PromotedHome = () => {
   } = usePromotedC();
 
   const promotedsStore = usePromotedStore((state) => state.promoteds);
+
   const clearAlert = useAlertStore((state) => state.clearAlert);
   const type = usePromotedStore((state) => state.typeForm);
   const user_type = useAuthStore((state) => state.user_type);
@@ -79,10 +80,12 @@ const PromotedHome = () => {
           {" "}
           Importar{" "}
         </Button>
-        <Button type="default" onClick={handleExportExcel}>
-          {" "}
-          Exportar{" "}
-        </Button>
+        {user_type === "superadmin" && (
+          <Button type="default" onClick={handleExportExcel}>
+            {" "}
+            Exportar{" "}
+          </Button>
+        )}
       </div>
       <TableC
         dataSource={promotedsStore}
