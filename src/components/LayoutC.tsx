@@ -3,6 +3,7 @@ import { Content } from "antd/es/layout/layout";
 import { theme } from "antd";
 import BreadCrum from "./BreadCrum";
 import AlertC from "./alerts/AlertC";
+import { useLocation } from "react-router-dom";
 interface Item {
   title: string;
 }
@@ -16,9 +17,10 @@ const LayoutC = ({ children, items, title }: LayoutCProps) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  const location = useLocation();
+  const match = location.pathname.match(/\/usuarios\/\d+/);
   return (
     <>
-      <BreadCrum items={items} title={title} />
       <Content
         style={{
           padding: 24,
@@ -27,8 +29,8 @@ const LayoutC = ({ children, items, title }: LayoutCProps) => {
           background: colorBgContainer,
         }}
       >
-        
-        <AlertC />
+        {!match && <AlertC />}
+        <BreadCrum items={items} title={title} />
         {children}
       </Content>
     </>

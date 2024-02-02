@@ -19,7 +19,7 @@ const PromotedDetail = () => {
     <LayoutC
       items={[
         {
-          title: "Usuarios",
+          title: "Promovidos",
         },
         { title: "Detalles" },
       ]}

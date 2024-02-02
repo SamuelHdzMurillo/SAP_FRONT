@@ -77,8 +77,8 @@ export const useProblemC = () => {
   };
 
   const handleGetUsers = async () => {
-    const { data, meta } = await getAllProblem({ page: "1" });
     setLoading(true);
+    const { data, meta } = await getAllProblem({ page: "1" });
 
     setProblems(data);
     setTableParams({

@@ -68,7 +68,11 @@ const TemplateDetail = ({
   return (
     <Row gutter={[20, 20]}>
       <Col span={24}>
-        <Card title={title} bordered={false} style={{ width: "100%" }}>
+        <Card
+          title={title}
+          bordered={false}
+          style={{ maxWidth: "100%", width: 700, margin: "0 auto" }}
+        >
           {isProfilePhoto && (
             <Upload
               name="profile_img_path"
