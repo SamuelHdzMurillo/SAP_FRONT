@@ -42,6 +42,7 @@ export const useUserC = () => {
       [`${dataIndex}`]: value,
       page: "1",
     });
+    setLoading(true);
     setTableParams({
       ...tableParams,
       pagination: {
@@ -50,6 +51,7 @@ export const useUserC = () => {
       },
     });
     setUsers(data);
+    setLoading(false);
     return data;
   };
   const { getColumnSearchProps } = useFilterTable({
@@ -137,8 +139,9 @@ export const useUserC = () => {
     setLoading(false);
   };
   const handleGetUsers = async () => {
-    const { data, meta } = await getAllUser({ page: "1" });
+    
     setLoading(true);
+    const { data, meta } = await getAllUser({ page: "1" });
 
     setUsers(data);
     setTableParams({
