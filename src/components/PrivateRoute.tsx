@@ -17,15 +17,15 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
 
   if (auth === null) {
     navigate("/login");
-    return null;
+    return;
   }
 
   if (userType !== role) {
     navigate("/login");
-    return null;
+    return;
   }
 
-  return <Route {...rest} element={<Component />} />;
+  return <Component />;
 };
 
 export default PrivateRoute;
