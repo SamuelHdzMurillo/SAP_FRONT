@@ -1,5 +1,5 @@
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { Card, Col, Row, Upload, UploadProps, message } from "antd";
+import { Card, Col, Row, Spin, Upload, UploadProps, message } from "antd";
 import { AnyObject, GetProp } from "antd/es/_util/type";
 import { ReactNode, useState } from "react";
 const URL = import.meta.env.VITE_API_URL;
@@ -20,6 +20,7 @@ const TemplateDetail = ({
   title,
   titleTable,
   form,
+  loading,
   isProfilePhoto = false,
   data,
   isTable = false,
@@ -32,6 +33,7 @@ const TemplateDetail = ({
   isMap = false,
 }: {
   title: string;
+  loading: boolean;
   module?: string;
   titleTable?: string;
   attributeProfile?: string;
@@ -45,85 +47,106 @@ const TemplateDetail = ({
   map?: ReactNode;
   isMap?: boolean;
 }) => {
-  const [loading, setLoading] = useState(false);
+  const [loadingUpload, setLoadingUpload] = useState(false);
   const handleChange: UploadProps["onChange"] = (info) => {
-    console.log(info);
     if (info.file.status === "uploading") {
-      setLoading(true);
+      setLoadingUpload(true);
       return;
     }
     if (info.file.status === "done") {
       // Get this url from response in real world.
-      setLoading(false);
+      setLoadingUpload(false);
       data[`${attributeProfile}`] =
         info.file.response.data[`${attributeProfile}`];
     }
   };
   const uploadButton = (
     <button style={{ border: 0, background: "none" }} type="button">
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      {loadingUpload ? <LoadingOutlined /> : <PlusOutlined />}
       <div style={{ marginTop: 8 }}>Upload</div>
     </button>
   );
   return (
-    <Row gutter={[20, 20]}>
-      <Col span={24}>
-        <Card
-          title={title}
-          bordered={false}
-          style={{ maxWidth: "100%", width: 700, margin: "0 auto" }}
-        >
-          {isProfilePhoto && (
-            <Upload
-              name="profile_img_path"
-              listType="picture-card"
-              className="avatar-uploader"
-              showUploadList={false}
-              action={`${URL}/api/${module}/${data.id}/upload-image`}
-              beforeUpload={beforeUpload}
-              onChange={handleChange}
+    <>
+      {loading ? (
+        <Spin tip="Loading" size="large">
+          <div
+            style={{
+              padding: "50px",
+              background: "rgba(0, 0, 0, 0.05)",
+              borderRadius: "4px",
+            }}
+          />
+        </Spin>
+      ) : (
+        <Row gutter={[20, 20]}>
+          <Col span={24}>
+            <Card
+              title={title}
+              bordered={false}
+              style={{ maxWidth: "100%", width: 700, margin: "0 auto" }}
             >
-              {data[`${attributeProfile}`] ? (
-                <img
-                  src={`${URL}/storage/${data[`${attributeProfile}`]}`}
-                  alt="avatar"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    borderRadius: "5px",
-                  }}
-                />
-              ) : (
-                uploadButton
+              {isProfilePhoto && (
+                <Upload
+                  name="profile_img_path"
+                  listType="picture-card"
+                  className="avatar-uploader"
+                  showUploadList={false}
+                  action={`${URL}/api/${module}/${data.id}/upload-image`}
+                  beforeUpload={beforeUpload}
+                  onChange={handleChange}
+                >
+                  {data[`${attributeProfile}`] ? (
+                    <img
+                      src={`${URL}/storage/${data[`${attributeProfile}`]}`}
+                      alt="avatar"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        borderRadius: "5px",
+                      }}
+                    />
+                  ) : (
+                    uploadButton
+                  )}
+                </Upload>
               )}
-            </Upload>
+              {form}
+            </Card>
+          </Col>
+          {isTable && (
+            <Col span={24}>
+              <Card
+                title={titleTable}
+                bordered={false}
+                style={{ width: "100%" }}
+              >
+                {table}
+              </Card>
+            </Col>
           )}
-          {form}
-        </Card>
-      </Col>
-      {isTable && (
-        <Col span={24}>
-          <Card title={titleTable} bordered={false} style={{ width: "100%" }}>
-            {table}
-          </Card>
-        </Col>
+          {isProblem && (
+            <Col span={24}>
+              <Card
+                title={titleTable}
+                bordered={false}
+                style={{ width: "100%" }}
+              >
+                {problem}
+              </Card>
+            </Col>
+          )}
+          {isMap && (
+            <Col span={24}>
+              <Card bordered={false} style={{ width: "100%" }}>
+                {map}
+              </Card>
+            </Col>
+          )}
+        </Row>
       )}
-      {isProblem && (
-        <Col span={24}>
-          <Card title={titleTable} bordered={false} style={{ width: "100%" }}>
-            {problem}
-          </Card>
-        </Col>
-      )}
-      {isMap && (
-        <Col span={24}>
-          <Card bordered={false} style={{ width: "100%" }}>
-            {map}
-          </Card>
-        </Col>
-      )}
-    </Row>
+    </>
   );
 };
 
