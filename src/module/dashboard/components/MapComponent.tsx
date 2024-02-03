@@ -39,15 +39,15 @@ export default function MapComponent({
   }, [map, markerCluster]);
 
   // New Code markers 3
-  useEffect(() => {
-    if (marker && markerCluster) {
-      markerCluster.addMarker(
-        new window.google.maps.Marker({
-          position: { lat: marker.lat, lng: marker.lng },
-        })
-      );
-    }
-  }, [marker, markerCluster]);
+  // useEffect(() => {
+  //   if (marker && markerCluster) {
+  //     markerCluster.addMarker(
+  //       new window.google.maps.Marker({
+  //         position: { lat: marker.lat, lng: marker.lng },
+  //       })
+  //     );
+  //   }
+  // }, [marker, markerCluster]);
   useEffect(() => {
     if (map && promoteds.length > 0) {
       const markers = promoteds.map(
