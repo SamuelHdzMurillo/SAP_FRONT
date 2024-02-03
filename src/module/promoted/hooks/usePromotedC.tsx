@@ -33,13 +33,16 @@ export const usePromotedC = () => {
     },
   });
   const handleGetPromtoed = async (id: string) => {
+    setLoading(true);
     const { data } = await getPromoted({ id });
     setPromoted(data);
+    setLoading(false);
   };
   const handleGetFilterData = async (
     value: string,
     dataIndex: string | number
   ) => {
+    setLoading(true);
     const { data, meta } = await getAllPromoted({
       [`${dataIndex}`]: value,
       page: "1",
@@ -52,6 +55,7 @@ export const usePromotedC = () => {
       },
     });
     setPromoteds(data);
+    setLoading(false);
     return data;
   };
   const { getColumnSearchProps } = useFilterTable({
@@ -113,8 +117,12 @@ export const usePromotedC = () => {
       ),
     },
   ];
-  const handleOpenModal = (type: "post" | "put" | "problem", record = {} as Promoted) => {
+  const handleOpenModal = (
+    type: "post" | "put" | "problem",
+    record = {} as Promoted
+  ) => {
     // console.log(record, "usePromotedC")
+    setLoading(true);
     form.resetFields();
     setPromoted({
       ...promoted,
@@ -122,6 +130,7 @@ export const usePromotedC = () => {
     });
     setTypeForm(type);
     setIsModalOpen(true);
+    setLoading(false);
   };
 
   const handleCloseModal = () => {
@@ -161,8 +170,8 @@ export const usePromotedC = () => {
     handleCloseModal();
   };
   const handleGetUsers = async () => {
-    const { data, meta } = await getAllPromoted({ page: "1" });
     setLoading(true);
+    const { data, meta } = await getAllPromoted({ page: "1" });
 
     setPromoteds(data);
     setTableParams({

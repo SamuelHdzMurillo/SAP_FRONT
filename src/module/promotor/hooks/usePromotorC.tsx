@@ -28,16 +28,19 @@ export const usePromotorC = () => {
   });
 
   const handleGetPromotor = async (id: number) => {
+    setLoading(true);
     setTitleModal("Editar Promotor");
     const data = await getPromotor(id);
     form.setFieldsValue(data);
     setTypeForm("put");
     setPromotor(data);
+    setLoading(false);
   };
   const handleGetFilterData = async (
     value: string,
     dataIndex: string | number
   ) => {
+    setLoading(true);
     const { data, meta } = await getAllPromotor({
       [`${dataIndex}`]: value,
       page: "1",
@@ -50,6 +53,7 @@ export const usePromotorC = () => {
       },
     });
     setPromotors(data);
+    setLoading(false);
     return data;
   };
   const { getColumnSearchProps } = useFilterTable({
@@ -156,8 +160,8 @@ export const usePromotorC = () => {
     setLoading(false);
   };
   const handleGetPromotors = async () => {
-    const { data, meta } = await getAllPromotor({ page: "1" });
     setLoading(true);
+    const { data, meta } = await getAllPromotor({ page: "1" });
 
     setPromotors(data);
     setTableParams({
