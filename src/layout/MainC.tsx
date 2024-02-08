@@ -26,7 +26,7 @@ const MainC = () => {
   const { pathname: pathLocation } = useLocation();
   const items2 = [
     {
-      label: "Dashboard",
+      label: "Estadisticas",
       key: "/Dashboard",
       onClick: () => navigate("/"),
       icon: <FontAwesomeIcon icon={faChartSimple} />
@@ -40,7 +40,7 @@ const MainC = () => {
      
     },
     {
-      label: "Usuarios",
+      label: "Administradores",
       key: "/usuarios",
       onClick: () => navigate("/usuarios"),
       icon: <FontAwesomeIcon icon={faUserTie} />
