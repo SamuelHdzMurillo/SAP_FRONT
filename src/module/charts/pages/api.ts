@@ -20,3 +20,15 @@ export const gettotalPromotedsByMunicipalitybydate = async () => {
     console.log(data);
     return data;
   };
+
+  export const getPromotedsCountByMunicipality = async (promotorId) => {
+    try {
+      const resp = await requestHttp.get(`/api/promotors/${promotorId}/promoteds-count-by-municipality`);
+      const data = resp.data;
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.error('Error al obtener el conteo de promovidos por municipio:', error);
+      // Aquí puedes manejar el error como prefieras
+    }
+  };

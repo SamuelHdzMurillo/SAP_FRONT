@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import LayoutC from "@/components/LayoutC";
 import {gettotalPromotedsByMunicipalitybydate} from "./api";
+import Card from 'antd/es/card/Card';
+import ChartPromotorDetail from "./ChartPromotorDetail"
 
 const DateComponent: React.FC = () => {
   const [chartData, setChartData] = useState({
@@ -24,7 +26,7 @@ const DateComponent: React.FC = () => {
       }
     }
   });
-
+  const promotorId = 100;
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -53,6 +55,7 @@ const DateComponent: React.FC = () => {
   return (
     <LayoutC items={[{ title: "Grafica por Fecha " }]} title={""}>
       <div>
+        <Card title="winas">
         <h1>hola mundo</h1>
         <ReactApexChart
           options={chartData.options}
@@ -60,6 +63,11 @@ const DateComponent: React.FC = () => {
           type="bar"
           height={350}
         />
+
+            <ChartPromotorDetail promotorId={promotorId} />
+
+        </Card>
+        
       </div>
     </LayoutC>
   );
