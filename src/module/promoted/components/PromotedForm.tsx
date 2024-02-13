@@ -12,6 +12,7 @@ import { Promoted, usePromotedStore } from "../store";
 import { getPromoted, postPromoted, putPromoted } from "../api";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAlertStore } from "@/components/alerts/alertStore";
+import { useAuthStore } from "@/module/auth/auth";
 interface PromotorsFormProps {
   form: FormInstance<Promoted>;
   isTitle?: boolean;
@@ -24,6 +25,7 @@ const MODULE = "Promovido";
 const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
   const params = useParams<{ id: string }>();
   const setPromoted = usePromotedStore((state) => state.setPromoted);
+  const authStore = useAuthStore((state) => state.user);
   const promoted = usePromotedStore((state) => state.promoted);
   const setTypeForm = usePromotedStore((state) => state.setTypeForm);
   // const alert = useAlertStore((state) => state.alert);
@@ -99,7 +101,7 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
       ...promoted,
       latitude,
       longitude,
-      promotor_id: 1,
+      promotor_id: authStore.id,
     };
     const formData = new FormData();
     for (const key in newValues) {

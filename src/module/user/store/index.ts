@@ -6,6 +6,7 @@ export interface User {
   email: string;
   password: string;
   phone_number: string;
+  profile_path?: string;
   profile_img_path?: string;
   password_confirmation?: string;
 }

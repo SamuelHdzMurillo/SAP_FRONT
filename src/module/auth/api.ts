@@ -8,10 +8,23 @@ export const postLogin = async (dataUser: {
   try {
     const resp = await requestHttp.post(`/api/login`, dataUser);
     const data = await resp.data;
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("userAuth", JSON.stringify(data.user));
-    localStorage.setItem("user_type", data.user_type);
-    return data;
+    const { token, user, user_type } = data;
+    const userAuth = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      password: user.password,
+      phone_number: user.phone_number,
+      profile_img_path: user.profile_img_path ?? user.profile_path ?? "",
+    };
+    localStorage.setItem("token", token);
+    localStorage.setItem("userAuth", JSON.stringify(userAuth));
+    localStorage.setItem("user_type", user_type);
+    return {
+      token,
+      user_type,
+      user: userAuth,
+    };
   } catch (error) {
     if (error.response) {
       // El servidor respondió con un estado de error
