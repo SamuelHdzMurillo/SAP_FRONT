@@ -16,6 +16,7 @@ import Municipal from "@/module/charts/pages/Municipals";
 import Date from "@/module/charts/pages/Date";
 import Count from "@/module/charts/pages/Countchart";
 import PrivateRoute from "@/components/PrivateRoute";
+import GoalPage from "@/module/goals/pages/GoalPage";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <PrivateRoute component={Dashboard} role="superadmin" />,
+      },
+      {
+        path: "/metas",
+        element: <GoalPage />,
       },
       {
         path: "/graficas-por-fecha",

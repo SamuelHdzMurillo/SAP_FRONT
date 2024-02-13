@@ -1,3 +1,4 @@
+import ChartPromotorDetail from "@/module/charts/pages/ChartPromotorDetail";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Card, Col, Row, Spin, Upload, UploadProps, message } from "antd";
 import { AnyObject, GetProp } from "antd/es/_util/type";
@@ -80,11 +81,11 @@ const TemplateDetail = ({
         </Spin>
       ) : (
         <Row gutter={[20, 20]}>
-          <Col span={24}>
+          <Col lg={module === "promotores" ? 12 : 24} sm={24}>
             <Card
               title={title}
               bordered={false}
-              style={{ maxWidth: "100%", width: 700, margin: "0 auto" }}
+              style={{ maxWidth: "100%", width: "100%", margin: "0 auto" }}
             >
               {isProfilePhoto && (
                 <Upload
@@ -115,6 +116,11 @@ const TemplateDetail = ({
               {form}
             </Card>
           </Col>
+          {module === "promotores" && (
+            <Col span={12}>
+              <ChartPromotorDetail promotorId={data.id} />
+            </Col>
+          )}
           {isTable && (
             <Col span={24}>
               <Card

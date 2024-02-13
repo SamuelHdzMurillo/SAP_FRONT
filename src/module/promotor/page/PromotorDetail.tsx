@@ -7,8 +7,7 @@ import { useParams } from "react-router-dom";
 import { usePromotorStore } from "../store";
 import TableC from "@/components/TableC";
 import { usePromotedC } from "@/module/promoted/hooks/usePromotedC";
-import ChartPromotorDetail from "@/module/charts/pages/ChartPromotorDetail"
-import { Card, Select, Button } from 'antd'; // Importa Card, Select y Button de antd
+import { Button } from "antd"; // Importa Card, Select y Button de antd
 
 const URL = import.meta.env.VITE_API_URL;
 const PromotorDetail = () => {
@@ -30,87 +29,83 @@ const PromotorDetail = () => {
   }, []);
   return (
     <LayoutC
-    items={[
-      {
-        title: "Promotores",
-      },
-      { title: "Detalles" },
-    ]}
-    title={""}
-  >
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100%",
-      }}
+      items={[
+        {
+          title: "Promotores",
+        },
+        { title: "Detalles" },
+      ]}
+      title={""}
     >
-      <div>
-        
-      </div>
-      <TemplateDetail
-        loading={loading}
-        title="Detalle del Promotor"
-        module="promotores"
-        attributeProfile="profile_path"
-        data={promotorStore}
-        isProfilePhoto={true}
-        form={
-          <div
-            style={{
-              margin: "0 auto",
-              width: 700,
-              maxWidth: "100%",
-            }}
-          >
-            <PromotorsForm form={form} isDetail={true} />
-            <p
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+        }}
+      >
+        <TemplateDetail
+          loading={loading}
+          title="Detalle del Promotor"
+          module="promotores"
+          attributeProfile="profile_path"
+          data={promotorStore}
+          isProfilePhoto={true}
+          form={
+            <div
               style={{
-                fontSize: 20,
-                fontWeight: "bold",
-                marginTop: 20,
-                marginBottom: 0,
+                margin: "0 auto",
+                width: 700,
+                maxWidth: "100%",
               }}
             >
-              Ine
-            </p>
-            {/* Botón para mostrar/ocultar la imagen */}
-            <Button onClick={toggleImageVisibility}>
-              {showImage ? 'Ocultar INE' : 'Mostrar INE'}
-            </Button>
-            {/* Muestra la imagen solo si showImage es true */}
-            {showImage && (
-              <img
-                src={`${URL}/storage/${promotorStore.ine_path}`}
+              <PromotorsForm form={form} isDetail={true} />
+              <p
                 style={{
-                  width: 300,
-                  maxWidth: "100%",
-                  objectFit: "contain",
-                  borderRadius: "10px",
-                  marginTop: "10px", // Añade un espacio después del botón
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  marginTop: 20,
+                  marginBottom: 0,
                 }}
-                alt=""
-              />
-            )}
-            <ChartPromotorDetail promotorId={id} />
-          </div>
-        }
-        isTable={true}
-        titleTable="Promovidos"
-        table={
-          <TableC
-            dataSource={promotorStore.promoteds}
-            columns={columns}
-            pagination={tableParams.pagination}
-            handleTableChange={handleTableChange}
-            loading={loading}
-            children={"Agregar Usuario"}
-          />
-        }
-      />
-    </div>
-  </LayoutC>
+              >
+                Ine
+              </p>
+              {/* Botón para mostrar/ocultar la imagen */}
+              <Button onClick={toggleImageVisibility}>
+                {showImage ? "Ocultar INE" : "Mostrar INE"}
+              </Button>
+              {/* Muestra la imagen solo si showImage es true */}
+              {showImage && (
+                <img
+                  src={`${URL}/storage/${promotorStore.ine_path}`}
+                  style={{
+                    width: 300,
+                    maxWidth: "100%",
+                    objectFit: "contain",
+                    borderRadius: "10px",
+                    marginTop: "10px", // Añade un espacio después del botón
+                  }}
+                  alt=""
+                />
+              )}
+            </div>
+          }
+          isTable={true}
+          titleTable="Promovidos"
+          table={
+            <TableC
+              dataSource={promotorStore.promoteds}
+              columns={columns}
+              pagination={tableParams.pagination}
+              handleTableChange={handleTableChange}
+              loading={loading}
+              children={"Agregar Usuario"}
+            />
+          }
+        />
+      </div>
+    </LayoutC>
   );
 };
 

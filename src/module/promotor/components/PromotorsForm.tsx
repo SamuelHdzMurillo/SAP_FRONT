@@ -250,7 +250,6 @@ const PromotorsForm = ({
                 <input
                   type="file"
                   name="ine_path"
-                  required
                   onChange={(e) => {
                     const file = e.target.files![0];
                     if (file.size > 50 * 1024 * 1024) {

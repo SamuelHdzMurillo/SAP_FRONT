@@ -47,7 +47,7 @@ export const getPromoted = async ({ id }: { id: string }) => {
   return data;
 };
 
-export const postPromoted = async (data: Promoted) => {
+export const postPromoted = async (data: FormData) => {
   const resp = await requestHttp.post(`/api/${MODULE}`, data, {
     headers: {
       "Content-Type": "multipart/form-data",

@@ -26,7 +26,7 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
   const setPromoted = usePromotedStore((state) => state.setPromoted);
   const promoted = usePromotedStore((state) => state.promoted);
   const setTypeForm = usePromotedStore((state) => state.setTypeForm);
-  const alert = useAlertStore((state) => state.alert);
+  // const alert = useAlertStore((state) => state.alert);
   const setAlert = useAlertStore((state) => state.setAlert);
   const clearAlert = useAlertStore((state) => state.clearAlert);
   const [loading, setLoading] = useState(false);
@@ -95,16 +95,22 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
   const onFinish = async (values: Promoted) => {
     setLoading(true);
     const { latitude, longitude } = position;
-    const newValues = {
+    const newValues: Promoted = {
       ...promoted,
       latitude,
       longitude,
       promotor_id: 1,
     };
+    const formData = new FormData();
+    for (const key in newValues) {
+      if (Object.prototype.hasOwnProperty.call(newValues, key)) {
+        formData.append(key, `${newValues[key as keyof Promoted]}`);
+      }
+    }
     switch (typeForm) {
       case "post":
         try {
-          await postPromoted(newValues);
+          await postPromoted(formData);
           setAlert({
             type: "success",
             message: `${MODULE} registrado correctamente`,
@@ -201,7 +207,6 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
           </Col>
           <Col xs={{ span: 24 }} lg={{ span: 12 }}>
             <InputText
-              required
               label="Correo Electrónico"
               name="email"
               rules={[
@@ -216,7 +221,36 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
             <InputText required label="Dirección" name="adress" />
           </Col>
           <Col xs={{ span: 24 }} lg={{ span: 12 }}>
-            <InputText required label="Llave Electoral" name="electoral_key" />
+            <InputText required label="Colonia" name="colony" />
+          </Col>
+          <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+            <InputText
+              required
+              label="Num. Ext."
+              name="house_number"
+              rules={[
+                {
+                  pattern: /^[0-9]+$/,
+                  message: "¡Ups! Solo se permiten números.",
+                },
+              ]}
+            />
+          </Col>
+          <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+            <InputText
+              required
+              label="Codigo Postal"
+              name="postal_code"
+              rules={[
+                {
+                  pattern: /^[0-9]+$/,
+                  message: "¡Ups! Solo se permiten números.",
+                },
+              ]}
+            />
+          </Col>
+          <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+            <InputText label="Llave Electoral" name="electoral_key" />
           </Col>
           <Col xs={{ span: 24 }} lg={{ span: 12 }}>
             <InputText required label="CURP" name="curp" />
@@ -287,7 +321,6 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
               />
             </Form.Item>
           </Col>
-          <Col span={24}></Col>
         </Row>
         <Form.Item style={{ display: "flex", justifyContent: "end" }}>
           <Button

@@ -52,7 +52,7 @@ const ChartPromotorDetail = ({ promotorId }) => {
     series: {
       type: 'sunburst',
       data: data,
-      radius: [0, '80%'],
+      radius: [0, '100%'],
       sort: undefined,
       emphasis: {
         focus: 'ancestor'

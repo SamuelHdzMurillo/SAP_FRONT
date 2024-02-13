@@ -1,9 +1,22 @@
 // import { createElement, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { BarChartOutlined, UserOutlined ,PieChartOutlined , UserAddOutlined, UsergroupAddOutlined} from "@ant-design/icons";
+import {
+  BarChartOutlined,
+  UserOutlined,
+  PieChartOutlined,
+  UserAddOutlined,
+  UsergroupAddOutlined,
+} from "@ant-design/icons";
 import { Dropdown, Layout, Menu, Space, Typography, theme } from "antd";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMap ,faUserTie ,faChartSimple ,faAddressBook , faTriangleExclamation ,faUsers} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faMap,
+  faUserTie,
+  faChartSimple,
+  faAddressBook,
+  faTriangleExclamation,
+  faUsers,
+} from "@fortawesome/free-solid-svg-icons";
 
 import logo from "../assets/imgs/HD_LOGOTIPOS_V_S.png";
 import { postLogout } from "@/module/auth/api";
@@ -29,33 +42,37 @@ const MainC = () => {
       label: "Estadisticas",
       key: "/Dashboard",
       onClick: () => navigate("/"),
-      icon: <FontAwesomeIcon icon={faChartSimple} />
-     
+      icon: <FontAwesomeIcon icon={faChartSimple} />,
     },
     {
       label: "Mapa",
       key: "/mapa",
       onClick: () => navigate("/mapa"),
       icon: <FontAwesomeIcon icon={faMap} />,
-     
     },
     {
       label: "Administradores",
       key: "/usuarios",
       onClick: () => navigate("/usuarios"),
-      icon: <FontAwesomeIcon icon={faUserTie} />
+      icon: <FontAwesomeIcon icon={faUserTie} />,
     },
     {
       label: "Promotores",
       key: "/promotores",
       onClick: () => navigate("/promotores"),
-      icon: <FontAwesomeIcon icon={faAddressBook} />
+      icon: <FontAwesomeIcon icon={faAddressBook} />,
     },
     {
       label: "Problemas",
       key: "/problemas",
       onClick: () => navigate("/problemas"),
-      icon: <FontAwesomeIcon icon={faTriangleExclamation} />
+      icon: <FontAwesomeIcon icon={faTriangleExclamation} />,
+    },
+    {
+      label: "Metas",
+      key: "/metas",
+      onClick: () => navigate("/metas"),
+      icon: <FontAwesomeIcon icon={faChartSimple} />,
     },
     {
       label: "Promovidos",
@@ -66,13 +83,13 @@ const MainC = () => {
           label: "Registrar",
           key: "/promovidos-registrar",
           onClick: () => navigate("/promovidos-registrar"),
-          icon: <UserAddOutlined />
+          icon: <UserAddOutlined />,
         },
         {
           label: "Administrar",
           key: "/promovidos",
           onClick: () => navigate("/promovidos"),
-          icon: <UsergroupAddOutlined />
+          icon: <UsergroupAddOutlined />,
         },
       ],
     },
@@ -82,7 +99,7 @@ const MainC = () => {
       label: "Problemas",
       key: "/problemas",
       onClick: () => navigate("/problemas"),
-      icon: <FontAwesomeIcon icon={faTriangleExclamation} />
+      icon: <FontAwesomeIcon icon={faTriangleExclamation} />,
     },
     {
       label: "Promovidos",
@@ -102,6 +119,12 @@ const MainC = () => {
           onClick: () => navigate("/promovidos"),
         },
       ],
+    },
+    {
+      label: "Metas",
+      key: "/metas",
+      onClick: () => navigate("/metas"),
+      icon: <FontAwesomeIcon icon={faChartSimple} />,
     },
   ];
   const handleLogout = async () => {
@@ -155,12 +178,14 @@ const MainC = () => {
               color: "#FFFFFF",
             }}
           >
-            <div style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "10px"
-            }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "10px",
+              }}
+            >
               <img
                 src={
                   userAuth.profile_img_path !== null ||
