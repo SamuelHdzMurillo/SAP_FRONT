@@ -7,6 +7,8 @@ import { useParams } from "react-router-dom";
 import { usePromotorStore } from "../store";
 import TableC from "@/components/TableC";
 import { usePromotedC } from "@/module/promoted/hooks/usePromotedC";
+import { Modal } from "antd";
+
 import { Button } from "antd"; // Importa Card, Select y Button de antd
 
 const URL = import.meta.env.VITE_API_URL;
@@ -16,11 +18,17 @@ const PromotorDetail = () => {
   const promotorStore = usePromotorStore((state) => state.promotor);
   const [loading, setLoading] = useState(false);
   const [showImage, setShowImage] = useState(false); // Estado para controlar la visibilidad de la imagen
+  const [showModal, setShowModal] = useState(false);
 
   // Función para manejar el clic en el botón, cambia la visibilidad de la imagen
   const toggleImageVisibility = () => {
     setShowImage(!showImage);
+    setShowModal(!showImage); // Se muestra el modal al hacer clic en el botón
   };
+  const closeModal = () => {
+    setShowModal(false);
+  };
+    
   const { id } = useParams();
   useEffect(() => {
     setLoading(true);
@@ -45,6 +53,23 @@ const PromotorDetail = () => {
           height: "100%",
         }}
       >
+        <Modal
+  visible={showModal}
+  onCancel={closeModal}
+  footer={null}
+  width={400} // Ajusta el ancho del modal según tus necesidades
+>
+  <img
+    src={`${URL}/storage/${promotorStore.ine_path}`}
+    style={{
+      width: "100%",
+      objectFit: "contain",
+      borderRadius: "10px",
+    }}
+    alt=""
+  />
+</Modal>
+
         <TemplateDetail
           loading={loading}
           title="Detalle del Promotor"
@@ -60,35 +85,11 @@ const PromotorDetail = () => {
                 maxWidth: "100%",
               }}
             >
-              <PromotorsForm form={form} isDetail={true} />
-              <p
-                style={{
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  marginTop: 20,
-                  marginBottom: 0,
-                }}
-              >
-                Ine
-              </p>
-              {/* Botón para mostrar/ocultar la imagen */}
               <Button onClick={toggleImageVisibility}>
-                {showImage ? "Ocultar INE" : "Mostrar INE"}
+                Mostar INE
               </Button>
-              {/* Muestra la imagen solo si showImage es true */}
-              {showImage && (
-                <img
-                  src={`${URL}/storage/${promotorStore.ine_path}`}
-                  style={{
-                    width: 300,
-                    maxWidth: "100%",
-                    objectFit: "contain",
-                    borderRadius: "10px",
-                    marginTop: "10px", // Añade un espacio después del botón
-                  }}
-                  alt=""
-                />
-              )}
+              <PromotorsForm form={form} isDetail={true} />
+      
             </div>
           }
           isTable={true}
