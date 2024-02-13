@@ -11,10 +11,13 @@ import {
 import { useState } from "react";
 import { useFilterTable } from "@/components/filterTable/useFilterTable";
 import { useAuthStore } from "@/module/auth/auth";
+import { useAlertStore } from "@/components/alerts/alertStore";
 interface TableParams {
   pagination?: TablePaginationConfig;
 }
 export const usePromotedC = () => {
+  const setAlert = useAlertStore((state) => state.setAlert);
+  const clearAlert = useAlertStore((state) => state.clearAlert);
   const setPromoteds = usePromotedStore((state) => state.setPromoteds);
   const setPromoted = usePromotedStore((state) => state.setPromoted);
   const promoted = usePromotedStore((state) => state.promoted);
@@ -157,17 +160,36 @@ export const usePromotedC = () => {
   };
 
   const handleImport = async () => {
-    if (!fileImport) {
-      return;
+    try {
+      setLoading(true);
+      if (!fileImport) {
+        return;
+      }
+      const formData = new FormData();
+      formData.append("file", fileImport);
+      await importPromoteds(
+        formData,
+        promotorSelected === 0 ? auth.id : promotorSelected
+      );
+      await handleGetUsers();
+      setLoading(false);
+      handleCloseModal();
+      setAlert({
+        type: "success",
+        message: "Promovidos importados correctamente",
+        isShow: true,
+      });
+    } catch (error) {
+      setLoading(false);
+      setAlert({
+        type: "error",
+        message: "Ocurrio un error al importar los promovidos",
+        isShow: true,
+      });
     }
-    const formData = new FormData();
-    formData.append("file", fileImport);
-    await importPromoteds(
-      formData,
-      promotorSelected === 0 ? auth.id : promotorSelected
-    );
-    await handleGetUsers();
-    handleCloseModal();
+    setTimeout(() => {
+      clearAlert();
+    }, 3000);
   };
   const handleGetUsers = async () => {
     setLoading(true);

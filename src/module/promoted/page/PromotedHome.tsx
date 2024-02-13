@@ -134,6 +134,7 @@ const PromotedHome = () => {
               style={{
                 backgroundColor: "#1C1C1C",
               }}
+              loading={loading}
               type="primary"
               onClick={handleImport}
             >
