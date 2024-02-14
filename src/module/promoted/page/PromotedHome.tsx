@@ -81,6 +81,14 @@ const PromotedHome = () => {
           {" "}
           Importar{" "}
         </Button>
+        <Button
+          type="default"
+          onClick={() => {
+            window.location.href = 'http://127.0.0.1:8000/api/export-excel-template';
+          }}
+        >
+          Descargar Plantilla
+        </Button>
         {user_type === "superadmin" && (
           <Button type="default" onClick={handleExportExcel}>
             {" "}
@@ -138,7 +146,14 @@ const PromotedHome = () => {
                 onChange={(value) => setPromotorSelected(value)}
               />
             )}
-
+<Button
+          type="default"
+          onClick={() => {
+            window.location.href = 'http://127.0.0.1:8000/api/export-excel-template';
+          }}
+        >
+          Descargar Plantilla
+        </Button>
             <Button
               style={{
                 backgroundColor: "#1C1C1C",
@@ -149,6 +164,8 @@ const PromotedHome = () => {
             >
               Importar
             </Button>
+            
+            
           </div>
         )}
       </ModalC>
