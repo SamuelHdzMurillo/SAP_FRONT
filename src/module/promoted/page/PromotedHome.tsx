@@ -6,7 +6,7 @@ import { usePromotedC } from "../hooks/usePromotedC";
 import { useEffect, useState } from "react";
 
 import { usePromotedStore } from "../store";
-import { Button, Select } from "antd";
+import { Alert, Button, Select } from "antd";
 import ModalC from "@/components/ModalC";
 import ProblemForm from "../components/ProblemForm";
 import { useAuthStore } from "@/module/auth/auth";
@@ -20,6 +20,7 @@ const PromotedHome = () => {
     tableParams,
     isModalOpen,
     form,
+    alertImport,
     setFileImport,
     handleGetUsers: handleGetPromoteds,
     handleTableChange,
@@ -111,6 +112,14 @@ const PromotedHome = () => {
               gap: 10,
             }}
           >
+            
+            {alertImport.isShow && (
+              <Alert 
+                message={alertImport.message}
+                type={alertImport.type}
+                showIcon
+              />
+            )}
             <input
               type="file"
               name="file"

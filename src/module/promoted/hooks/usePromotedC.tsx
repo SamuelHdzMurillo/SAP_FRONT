@@ -16,10 +16,19 @@ interface TableParams {
   pagination?: TablePaginationConfig;
 }
 export const usePromotedC = () => {
-  const setAlert = useAlertStore((state) => state.setAlert);
-  const clearAlert = useAlertStore((state) => state.clearAlert);
   const setPromoteds = usePromotedStore((state) => state.setPromoteds);
   const setPromoted = usePromotedStore((state) => state.setPromoted);
+  const [alertImport, setAlertImport] = useState<{
+    type: "success" | "error" | "warning";
+    message: string;
+    isShow: boolean;
+  }>({
+    type: "success",
+    message: "",
+    isShow: false,
+  });
+  const setAlert = useAlertStore((state) => state.setAlert);
+  const clearAlert = useAlertStore((state) => state.clearAlert);
   const promoted = usePromotedStore((state) => state.promoted);
   const auth = useAuthStore((state) => state.user);
   const setTypeForm = usePromotedStore((state) => state.setTypeForm);
@@ -180,15 +189,20 @@ export const usePromotedC = () => {
         isShow: true,
       });
     } catch (error) {
-      setLoading(false);
-      setAlert({
+      setAlertImport({
         type: "error",
-        message: "Ocurrio un error al importar los promovidos",
+        message: "Error al importar",
         isShow: true,
       });
+      setLoading(false);
     }
     setTimeout(() => {
       clearAlert();
+      setAlertImport({
+        type: "success",
+        message: "",
+        isShow: false,
+      });
     }, 3000);
   };
   const handleGetUsers = async () => {
@@ -214,6 +228,7 @@ export const usePromotedC = () => {
     isModalOpen,
     form,
     loading,
+    alertImport,
     tableParams,
     handleCloseModal,
     handleOpenModal,
