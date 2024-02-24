@@ -44,7 +44,8 @@ const LoginPage = () => {
       setToken(data.token);
       setUserData(data.user);
       setUserType(data.user_type);
-      if (data.user_type === "promotor") navigate("/promovidos");
+      if (data.user_type === "promotor")
+        navigate(`/promotores/${data.user.id}`);
       else navigate("/");
       //   // await onFinish(initialValues);
     } catch (error) {

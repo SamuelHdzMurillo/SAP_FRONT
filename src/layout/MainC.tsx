@@ -96,29 +96,22 @@ const MainC = () => {
   ];
   const items3 = [
     {
+      label: "Perfil",
+      key: "/promotores",
+      onClick: () => navigate("/promotores/" + userAuth.id),
+      icon: <FontAwesomeIcon icon={faUserTie} />,
+    },
+    {
       label: "Problemas",
       key: "/problemas",
       onClick: () => navigate("/problemas"),
       icon: <FontAwesomeIcon icon={faTriangleExclamation} />,
     },
     {
-      label: "Promovidos",
+      label: "Registrar Promovidos",
       key: "/promovidos-menu",
       icon: <UserOutlined />,
-      children: [
-        {
-          label: "Registrar",
-          key: "/promovidos-registrar",
-          icon: <UserAddOutlined />,
-          onClick: () => navigate("/promovidos-registrar"),
-        },
-        {
-          label: "Administrar",
-          key: "/promovidos",
-          icon: <UsergroupAddOutlined />,
-          onClick: () => navigate("/promovidos"),
-        },
-      ],
+      onClick: () => navigate("/promovidos-registrar"),
     },
     {
       label: "Metas",
