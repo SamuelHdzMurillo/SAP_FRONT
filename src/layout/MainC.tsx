@@ -1,13 +1,11 @@
 // import { createElement, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
-  BarChartOutlined,
   UserOutlined,
-  PieChartOutlined,
   UserAddOutlined,
   UsergroupAddOutlined,
 } from "@ant-design/icons";
-import { Dropdown, Layout, Menu, Space, Typography, theme } from "antd";
+import { Dropdown, Layout, Menu, Typography, theme } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMap,
@@ -116,8 +114,24 @@ const MainC = () => {
     {
       label: "Metas",
       key: "/metas",
-      onClick: () => navigate("/metas"),
       icon: <FontAwesomeIcon icon={faChartSimple} />,
+      children: [
+        {
+          label: "Municipio",
+          key: "/metas-municipio",
+          onClick: () => navigate("/metas"),
+        },
+        {
+          label: "Distrito",
+          key: "/metas-distrito",
+          onClick: () => navigate("/metas-distrito"),
+        },
+        {
+          label: "Sección",
+          key: "/metas-seccion",
+          onClick: () => navigate("/metas-seccion"),
+        },
+      ],
     },
   ];
   const handleLogout = async () => {

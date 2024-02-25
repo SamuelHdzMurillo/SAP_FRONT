@@ -2,36 +2,43 @@ import InputText from "@/components/InputText";
 import { Col, Row, Form, Select, Button, FormInstance } from "antd";
 import { useEffect, useState } from "react";
 import type { AnyObject } from "yup";
-import { getMunicipalCatalog } from "@/api/CatalogHttp";
 import { Goal, useGoalStore } from "../store";
 import { useAlertStore } from "@/components/alerts/alertStore";
-import { MunicipalCatalog } from "@/module/promoted/page/PromotedRegister";
 import { postGoal } from "../goal.api";
+import { MunicipalCatalog } from "@/module/promoted/page/PromotedRegister";
 interface PromotorsFormProps {
   form: FormInstance<Goal>;
   isTitle?: boolean;
+  typeMeta?: string;
   handleCloseModal?: () => void;
+  municipal: MunicipalCatalog[];
+  districts?: MunicipalCatalog[] | [];
+  sections?: MunicipalCatalog[] | [];
+  handleGetDistrictByMunicap?: (id: number) => void;
+  handleGetSectionsByDistrict?: (id: number) => void;
 }
 const MODULE = "Meta";
-const GoalForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
+const GoalForm = ({
+  form,
+  typeMeta = "",
+  municipal,
+  districts = [],
+  sections = [],
+  handleGetDistrictByMunicap,
+  handleGetSectionsByDistrict,
+  handleCloseModal,
+}: PromotorsFormProps) => {
   const goal = useGoalStore((state) => state.goal);
-  const goals = useGoalStore((state) => state.goals);
   const setGoal = useGoalStore((state) => state.setGoal);
   const addGoal = useGoalStore((state) => state.addGoal);
   const setTypeForm = useGoalStore((state) => state.setTypeForm);
-  // const alert = useAlertStore((state) => state.alert);
   const setAlert = useAlertStore((state) => state.setAlert);
   const clearAlert = useAlertStore((state) => state.clearAlert);
   const [loading, setLoading] = useState(false);
-  const [municipal, setMunicipal] = useState<MunicipalCatalog[]>([]);
+
   useEffect(() => {
-    const handleGetMunicipal = async () => {
-      const data = await getMunicipalCatalog();
-      setMunicipal(data);
-    };
     setTypeForm("post");
     form.resetFields();
-    handleGetMunicipal();
   }, []);
   // const updatePromoted = useGoalStore((state) => state.updatePromoted);
   const typeForm = useGoalStore((state) => state.typeForm);
@@ -47,8 +54,7 @@ const GoalForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
     switch (typeForm) {
       case "post":
         try {
-          const data = await postGoal(newValues);
-          console.log(data, "data");
+          const data = await postGoal(newValues, typeMeta);
           const formatedGoal = {
             id: data.goal.id,
             goalName: data.goal.goal_name,
@@ -58,7 +64,6 @@ const GoalForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
             promoted_count: data.goal.promoted_count,
           };
           addGoal(formatedGoal);
-          console.log(goals);
           setAlert({
             type: "success",
             message: `${MODULE} registrado correctamente`,
@@ -82,14 +87,14 @@ const GoalForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
       clearAlert();
     }, 3000);
   };
+
   const filterOption = (
     input: string,
     option?: { label: string; value: string }
   ) => (`${option?.label}` ?? "").toLowerCase().includes(input.toLowerCase());
+
   return (
     <div className="form-register">
-      <h1>Registro de Promovidos</h1>
-      {/* <h1>Registro de Promovidos</h1> */}
       <Form
         form={form}
         name="basic"
@@ -138,9 +143,62 @@ const GoalForm = ({ form, handleCloseModal }: PromotorsFormProps) => {
                 filterOption={filterOption}
                 placeholder="Selecciona tu municipio"
                 options={municipal}
+                onChange={(e) => {
+                  handleGetDistrictByMunicap(e);
+                }}
               />
             </Form.Item>
           </Col>
+          {(typeMeta === "district" || typeMeta === "section") && (
+            <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+              <Form.Item
+                name="district_id"
+                label="Distrito"
+                rules={[
+                  {
+                    required: typeMeta === "district" || typeMeta === "section",
+                    message: "¡Ups! Olvidaste completar este campo.",
+                  },
+                ]}
+              >
+                <Select
+                  showSearch
+                  optionFilterProp="children"
+                  filterOption={filterOption}
+                  disabled={districts.length === 0}
+                  placeholder="Selecciona un distrito"
+                  options={districts}
+                  onChange={(e) => {
+                    handleGetSectionsByDistrict &&
+                      handleGetSectionsByDistrict(e);
+                  }}
+                />
+              </Form.Item>
+            </Col>
+          )}
+          {typeMeta === "section" && (
+            <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+              <Form.Item
+                name="section_id"
+                label="Sección"
+                rules={[
+                  {
+                    required: typeMeta === "section",
+                    message: "¡Ups! Olvidaste completar este campo.",
+                  },
+                ]}
+              >
+                <Select
+                  showSearch
+                  disabled={districts.length === 0 || sections.length === 0}
+                  optionFilterProp="children"
+                  filterOption={filterOption}
+                  placeholder="Selecciona tu seccion"
+                  options={sections}
+                />
+              </Form.Item>
+            </Col>
+          )}
         </Row>
         <Form.Item style={{ display: "flex", justifyContent: "end" }}>
           <Button

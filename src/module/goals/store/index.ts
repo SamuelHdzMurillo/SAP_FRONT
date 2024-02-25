@@ -6,7 +6,11 @@ export interface Goal {
   goalValue: string;
   promoted_count?: number;
   municipal_id: number;
+  section_id?: number;
+  district_id?: number;
   muncipal_name?: string;
+  district_name?: string;
+  section_name?: string;
 }
 
 interface GoalState {
@@ -26,7 +30,11 @@ export const useGoalStore = create<GoalState>((set) => ({
     goalName: "",
     goalValue: "",
     muncipal_name: "",
+    district_name: "",
+    section_name: "",
     municipal_id: 0,
+    district_id: null,
+    section_id: null,
     promoted_count: 0,
   },
   typeForm: "post",

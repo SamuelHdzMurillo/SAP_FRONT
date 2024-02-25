@@ -1,20 +1,32 @@
 import { requestHttp } from "@/api/requestHttp";
 import { Goal } from "./store";
 
-export const getGoalCharts = async () => {
-  const resp = await requestHttp.get(`/api/goals`);
+export const getGoalCharts = async (typeMeta = "") => {
+  let params = "";
+  if (typeMeta === "district") {
+    params = `-district`;
+  }
+  const resp = await requestHttp.get(`/api/goals${params}`);
   const data = resp.data;
   return data;
 };
 
-export const postGoal = async (goal: Goal) => {
-  const resp = await requestHttp.post(`/api/goals`, goal);
+export const postGoal = async (goal: Goal, typeMeta = "") => {
+  let params = "";
+  if (typeMeta === "district") {
+    params = `-district`;
+  }
+  const resp = await requestHttp.post(`/api/goals${params}`, goal);
   const data = resp.data;
   return data;
 };
 
-export const deleteGoal = async (id: number) => {
-  const resp = await requestHttp.delete(`/api/goals/${id}`);
+export const deleteGoal = async (id: number, typeMeta = "") => {
+  let params = "";
+  if (typeMeta === "district") {
+    params = `-district`;
+  }
+  const resp = await requestHttp.delete(`/api/goals${params}/${id}`);
   const data = resp.data;
   return data;
 };

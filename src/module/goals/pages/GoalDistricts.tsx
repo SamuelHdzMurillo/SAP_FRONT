@@ -7,25 +7,22 @@ import ChartGoal from "../Components/ChartGoal";
 import GoalForm from "../Components/GoalForm";
 import { useGoalStore } from "../store";
 
-const GoalPage: React.FC = () => {
+const GoalDistricts: React.FC = () => {
   const {
     handleGetGoals,
     handleOpenModal,
     handleCloseModal,
     handleDeleteGoal,
     handleGetDistrictByMunicap,
-    handleGetSectionsByDistrict,
     municipal,
     districts,
-    sections,
-
     isModalOpen,
     form,
     typeMeta,
   } = useGoalC();
   const goalsStore = useGoalStore((state) => state.goals);
   useEffect(() => {
-    handleGetGoals("");
+    handleGetGoals("district");
     // Your code here
   }, []);
 
@@ -79,7 +76,10 @@ const GoalPage: React.FC = () => {
     },
   };
   return (
-    <LayoutC items={[{ title: "Metas" }]} title={"Graficas de Metas"}>
+    <LayoutC
+      items={[{ title: "Metas" }, { title: "Distritos" }]}
+      title={"Graficas de Metas"}
+    >
       <div
         style={{
           width: "100%",
@@ -91,16 +91,6 @@ const GoalPage: React.FC = () => {
       >
         <Button
           style={{
-            backgroundColor: "#8e2a2a",
-          }}
-          type="primary"
-          onClick={() => handleOpenModal("municipal")}
-        >
-          {" "}
-          Agregar Meta{" "}
-        </Button>
-        <Button
-          style={{
             backgroundColor: "#1C1C1C",
           }}
           type="primary"
@@ -108,16 +98,6 @@ const GoalPage: React.FC = () => {
         >
           {" "}
           Agregar Meta a Distrito{" "}
-        </Button>
-        <Button
-          style={{
-            backgroundColor: "#001529",
-          }}
-          type="primary"
-          onClick={() => handleOpenModal("section")}
-        >
-          {" "}
-          Agregar Meta a Seccion{" "}
         </Button>
       </div>
       <Row gutter={[10, 10]}>
@@ -161,9 +141,7 @@ const GoalPage: React.FC = () => {
         <GoalForm
           municipal={municipal}
           districts={districts}
-          sections={sections}
           handleGetDistrictByMunicap={handleGetDistrictByMunicap}
-          handleGetSectionsByDistrict={handleGetSectionsByDistrict}
           form={form}
           handleCloseModal={handleCloseModal}
           typeMeta={typeMeta}
@@ -173,4 +151,4 @@ const GoalPage: React.FC = () => {
   );
 };
 
-export default GoalPage;
+export default GoalDistricts;
