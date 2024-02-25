@@ -8,7 +8,7 @@ import {
   getPromotedByDatesPage,
   gettotalPromotedsByMunicipality,
 } from "../api";
-import { DatePicker, Card } from "antd";
+import { Card } from "antd";
 import "./style.css";
 import { BarChartOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import { Pie } from "react-chartjs-2";
@@ -54,8 +54,6 @@ interface PromotedItem {
 }
 
 const Dashboard: React.FC<DashboardProps> = () => {
-  const [startDate, setStartDate] = useState<string | null>(null);
-  const [endDate, setEndDate] = useState<string | null>(null);
   const [itemsChartByDates, setItemsChartByDates] = useState<PromotedItem[]>(
     []
   );
@@ -147,8 +145,6 @@ const Dashboard: React.FC<DashboardProps> = () => {
 
       const promotedsByDatesData = await getPromotedByDatesPage({
         filter: "all",
-        startDate: startDate,
-        endDate: endDate,
       });
 
       setPieData({
@@ -183,7 +179,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
       setItemsChartByDates(promotedsByDatesData.promoteds);
     };
     handleGetPromotedsByPromoters();
-  }, [startDate, endDate]);
+  }, []);
 
   const date = new Date();
   const month = date.toLocaleString("default", { month: "long" });
@@ -214,16 +210,6 @@ const Dashboard: React.FC<DashboardProps> = () => {
     <LayoutC items={[{ title: "Usuarios" }]} title={""}>
       <h1>Promovidos </h1>
       <div className="dashboard-container">
-        <div className="select-container">
-          <DatePicker.RangePicker
-            onChange={(dates) => {
-              setStartDate(
-                dates ? dates[0]?.startOf("day").toISOString() : null
-              );
-              setEndDate(dates ? dates[1]?.endOf("day").toISOString() : null);
-            }}
-          />
-        </div>
         <Widgets widgets={widgets} />
         <div className="chart-container">
           <Card title="Promovidos por Mes">

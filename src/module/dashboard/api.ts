@@ -30,8 +30,8 @@ export const getPromotedByDatesPage = async ({
   endDate,
 }: {
   filter: string;
-  startDate: string;
-  endDate: string;
+  startDate?: string;
+  endDate?: string;
 }) => {
   const resp = await requestHttp.get(
     `/api/dashboard/promoteds-count-by-dates?filter=${filter}`
