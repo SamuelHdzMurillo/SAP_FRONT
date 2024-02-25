@@ -69,8 +69,24 @@ const MainC = () => {
     {
       label: "Metas",
       key: "/metas",
-      onClick: () => navigate("/metas"),
       icon: <FontAwesomeIcon icon={faChartSimple} />,
+      children: [
+        {
+          label: "Municipio",
+          key: "/metas-municipio",
+          onClick: () => navigate("/metas"),
+        },
+        {
+          label: "Distrito",
+          key: "/metas-distrito",
+          onClick: () => navigate("/metas-distrito"),
+        },
+        {
+          label: "Sección",
+          key: "/metas-seccion",
+          onClick: () => navigate("/metas-seccion"),
+        },
+      ],
     },
     {
       label: "Promovidos",
