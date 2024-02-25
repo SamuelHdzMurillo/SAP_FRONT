@@ -4,6 +4,8 @@ export interface Goal {
   id: number;
   goalName: string;
   goalValue: string;
+  start_date?: string;
+  end_date?: string;
   promoted_count?: number;
   municipal_id: number;
   section_id?: number;
@@ -29,6 +31,8 @@ export const useGoalStore = create<GoalState>((set) => ({
     id: 0,
     goalName: "",
     goalValue: "",
+    start_date: null,
+    end_date: null,
     muncipal_name: "",
     district_name: "",
     section_name: "",

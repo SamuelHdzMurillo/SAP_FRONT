@@ -1,5 +1,5 @@
 import InputText from "@/components/InputText";
-import { Col, Row, Form, Select, Button, FormInstance } from "antd";
+import { Col, Row, Form, Select, Button, FormInstance, DatePicker } from "antd";
 import { useEffect, useState } from "react";
 import type { AnyObject } from "yup";
 import { Goal, useGoalStore } from "../store";
@@ -44,6 +44,12 @@ const GoalForm = ({
   const typeForm = useGoalStore((state) => state.typeForm);
   const onChange = (changedValues: AnyObject) => {
     const key = Object.keys(changedValues)[0];
+    if (key === "start_date" || key === "end_date") {
+      return setGoal({
+        ...goal,
+        [key]: changedValues[key]?.format("YYYY-MM-DD"),
+      });
+    }
     setGoal({ ...goal, [key]: changedValues[key] });
   };
   const onFinish = async (values: Goal) => {
@@ -125,6 +131,16 @@ const GoalForm = ({
                 },
               ]}
             />
+          </Col>
+          <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+            <Form.Item name={"start_date"} label="Fecha de inicio">
+              <DatePicker />
+            </Form.Item>
+          </Col>
+          <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+            <Form.Item name={"end_date"} label="Fecha limite">
+              <DatePicker />
+            </Form.Item>
           </Col>
           <Col xs={{ span: 24 }} lg={{ span: 12 }}>
             <Form.Item
