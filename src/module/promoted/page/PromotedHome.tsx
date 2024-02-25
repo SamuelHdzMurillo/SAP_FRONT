@@ -6,14 +6,12 @@ import { usePromotedC } from "../hooks/usePromotedC";
 import { useEffect, useState } from "react";
 
 import { usePromotedStore } from "../store";
-import { Alert, Button, Select } from "antd";
+import { Alert, Button, Dropdown, Select } from "antd";
 import ModalC from "@/components/ModalC";
 import ProblemForm from "../components/ProblemForm";
-import { useAuthStore } from "@/module/auth/auth";
 import { getPromotorsCatalog } from "@/api/CatalogHttp";
 import { useAlertStore } from "@/components/alerts/alertStore";
-
-const API_URL = import.meta.env.VITE_API_URL as string;
+import FormExportUbi from "../components/FormExportUbi";
 
 const PromotedHome = () => {
   const {
@@ -23,21 +21,30 @@ const PromotedHome = () => {
     isModalOpen,
     form,
     alertImport,
+    items,
+    typeExport,
+    municipal,
+    districts,
+    sections,
+    formExport,
     setFileImport,
     handleGetUsers: handleGetPromoteds,
     handleTableChange,
-    handleExportExcel,
     handleOpenModal,
     handleCloseModal,
     handleImport,
     setPromotorSelected,
+    handleGetDistrictByMunicap,
+    handleGetSectionsByDistrict,
+    handleExportExcel,
+    handleChangeDistrict,
+    handleChangeSection,
   } = usePromotedC();
 
   const promotedsStore = usePromotedStore((state) => state.promoteds);
 
   const clearAlert = useAlertStore((state) => state.clearAlert);
   const type = usePromotedStore((state) => state.typeForm);
-  const user_type = useAuthStore((state) => state.user_type);
   const [usersCatalog, setUsersCatalog] = useState([]);
   useEffect(() => {
     handleGetPromoteds();
@@ -69,6 +76,7 @@ const PromotedHome = () => {
           width: "100%",
           display: "flex",
           justifyContent: "flex-end",
+          alignItems: "center",
           marginBottom: 20,
           gap: 10,
         }}
@@ -78,25 +86,21 @@ const PromotedHome = () => {
             backgroundColor: "#1C1C1C",
           }}
           type="primary"
-          onClick={() => handleOpenModal("post")}
+          onClick={() => handleExportExcel()}
         >
           {" "}
           Importar{" "}
         </Button>
-        <Button
-          type="default"
-          onClick={() => {
-            window.location.href = `${API_URL}/api/export-excel-template`;
-          }}
-        >
-          Descargar Plantilla
-        </Button>
-        {user_type === "superadmin" && (
-          <Button type="default" onClick={handleExportExcel}>
-            {" "}
-            Exportar{" "}
+        <Dropdown menu={{ items }}>
+          <Button
+            type="primary"
+            style={{
+              margin: "20px 0px 20px 0px",
+            }}
+          >
+            Opciones
           </Button>
-        )}
+        </Dropdown>
       </div>
       <TableC
         dataSource={promotedsStore}
@@ -129,41 +133,51 @@ const PromotedHome = () => {
                 showIcon
               />
             )}
-            <input
-              type="file"
-              name="file"
-              accept=".xlsx, .xls, .csv"
-              onChange={(e) => {
-                setFileImport(e.target.files?.[0]);
-              }}
-            />
-            {user_type == "superadmin" && (
-              <Select
-                showSearch
-                placeholder="Selecciona un Promotor"
-                optionFilterProp="children"
+
+            {type == "post" ? (
+              <>
+                <input
+                  type="file"
+                  name="file"
+                  accept=".xlsx, .xls, .csv"
+                  onChange={(e) => {
+                    setFileImport(e.target.files?.[0]);
+                  }}
+                />
+                <Select
+                  showSearch
+                  placeholder="Selecciona un Promotor"
+                  optionFilterProp="children"
+                  filterOption={filterOption}
+                  options={usersCatalog}
+                  onChange={(value) => setPromotorSelected(value)}
+                />
+              </>
+            ) : (
+              <FormExportUbi
+                form={formExport}
+                municipal={municipal}
+                districts={districts}
+                sections={sections}
+                typeExport={typeExport}
                 filterOption={filterOption}
-                options={usersCatalog}
-                onChange={(value) => setPromotorSelected(value)}
+                handleChangeDistrict={handleChangeDistrict}
+                handleChangeSection={handleChangeSection}
+                handleGetDistrictByMunicap={handleGetDistrictByMunicap}
+                handleGetSectionsByDistrict={handleGetSectionsByDistrict}
               />
             )}
-            <Button
-              type="default"
-              onClick={() => {
-                window.location.href = `${API_URL}/api/export-excel-template`;
-              }}
-            >
-              Descargar Plantilla
-            </Button>
             <Button
               style={{
                 backgroundColor: "#1C1C1C",
               }}
               loading={loading}
               type="primary"
-              onClick={handleImport}
+              onClick={() => {
+                type === "post" ? handleImport() : handleExportExcel();
+              }}
             >
-              Importar
+              {type === "post" ? "Importar" : "Exportar"}
             </Button>
           </div>
         )}

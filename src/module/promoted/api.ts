@@ -66,11 +66,23 @@ export const putPromoted = async (data: Promoted) => {
   return resp.data;
 };
 
-export const exportPromoteds = async () => {
-  const resp = await requestHttp.get(`/api/export-excel`, {
+export const exportPromoteds = async ({
+  type,
+  id,
+}: {
+  type: string;
+  id?: string | number | null;
+}) => {
+  let route = "export-excel";
+  if (type === "district") {
+    route = `export/district/${id}`;
+  }
+  if (type === "section") {
+    route = `export/section/${id}`;
+  }
+  const resp = await requestHttp.get(`/api/${route}`, {
     responseType: "blob", // Indica que se espera un stream binario
   });
-
   const url = window.URL.createObjectURL(new Blob([resp.data]));
   const link = document.createElement("a");
   link.href = url;

@@ -1,4 +1,4 @@
-import { Form, type TableColumnsType } from "antd";
+import { Form, MenuProps, type TableColumnsType } from "antd";
 import { Promoted, usePromotedStore } from "../store";
 import DropDownPV from "../components/DropDownPV";
 import { TablePaginationConfig, TableProps } from "antd";
@@ -12,6 +12,13 @@ import { useState } from "react";
 import { useFilterTable } from "@/components/filterTable/useFilterTable";
 import { useAuthStore } from "@/module/auth/auth";
 import { useAlertStore } from "@/components/alerts/alertStore";
+import { MunicipalCatalog } from "../page/PromotedRegister";
+import {
+  getDistrictByMunicipal,
+  getMunicipalCatalog,
+  getSectionCatalogByDistrict,
+} from "@/api/CatalogHttp";
+const API_URL = import.meta.env.VITE_API_URL as string;
 interface TableParams {
   pagination?: TablePaginationConfig;
 }
@@ -31,12 +38,26 @@ export const usePromotedC = () => {
   const clearAlert = useAlertStore((state) => state.clearAlert);
   const promoted = usePromotedStore((state) => state.promoted);
   const auth = useAuthStore((state) => state.user);
+  const [typeExport, setTypeExport] = useState<string>("");
   const setTypeForm = usePromotedStore((state) => state.setTypeForm);
   const [form] = Form.useForm();
+  const [formExport] = Form.useForm();
   const [promotorSelected, setPromotorSelected] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [fileImport, setFileImport] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [municipal, setMunicipal] = useState<MunicipalCatalog[]>([]);
+  const [districts, setDistricts] = useState<MunicipalCatalog[]>([]);
+  const [sections, setSections] = useState<MunicipalCatalog[]>([]);
+  const [exportForm, setExportForm] = useState<{
+    municipal_id?: string;
+    district_id?: string;
+    section_id?: string;
+  }>({
+    municipal_id: null,
+    district_id: null,
+    section_id: null,
+  });
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
@@ -73,6 +94,40 @@ export const usePromotedC = () => {
   const { getColumnSearchProps } = useFilterTable({
     onFilter: handleGetFilterData,
   });
+  const items: MenuProps["items"] = [
+    {
+      key: "1",
+      label: "Exportar todos los promovidos",
+      onClick: () => {
+        setTypeExport("all");
+        handleExportExcel();
+      },
+    },
+    {
+      key: "2",
+      label: "Exportar promovidos por Distrito",
+      onClick: () => {
+        setTypeExport("district");
+        handleOpenModal("export");
+        // handleExportExcel();
+      },
+    },
+    {
+      key: "3",
+      label: "Exportar promovidos por Seccion",
+      onClick: () => {
+        setTypeExport("section");
+        handleOpenModal("export");
+        // handleExportExcel();
+      },
+    },
+    {
+      key: "6",
+      label: "Descargar Plantilla",
+      onClick: () =>
+        (window.location.href = `${API_URL}/api/export-excel-template`),
+    },
+  ];
   const columns: TableColumnsType<Promoted> = [
     {
       title: "Nombre",
@@ -109,7 +164,7 @@ export const usePromotedC = () => {
     },
   ];
   const handleOpenModal = (
-    type: "post" | "put" | "problem",
+    type: "post" | "put" | "problem" | "export",
     record = {} as Promoted
   ) => {
     // console.log(record, "usePromotedC")
@@ -187,7 +242,8 @@ export const usePromotedC = () => {
   const handleGetUsers = async () => {
     setLoading(true);
     const { data, meta } = await getAllPromoted({ page: "1" });
-
+    const dataMunicipal = await getMunicipalCatalog();
+    setMunicipal(dataMunicipal);
     setPromoteds(data);
     setTableParams({
       ...tableParams,
@@ -200,15 +256,73 @@ export const usePromotedC = () => {
   };
 
   const handleExportExcel = async () => {
-    await exportPromoteds();
+    setLoading(true);
+    let idExport = "";
+    if (typeExport === "all") {
+      idExport = "";
+    }
+    if (typeExport === "district") {
+      idExport = exportForm.district_id;
+    }
+    if (typeExport === "section") {
+      idExport = exportForm.section_id;
+    }
+    await exportPromoteds({
+      type: typeExport,
+      id: idExport,
+    });
+    formExport.resetFields();
+    setDistricts([]);
+    setSections([]);
+    setExportForm({
+      municipal_id: null,
+      district_id: null,
+      section_id: null,
+    });
+    handleCloseModal();
+    setLoading(false);
+    setAlert({
+      type: "success",
+      message: "Promovidos exportados correctamente",
+      isShow: true,
+    });
+    setTimeout(() => {
+      clearAlert();
+    }, 3000);
+  };
+  const handleGetDistrictByMunicap = async (id: number) => {
+    const { data } = await getDistrictByMunicipal({ municipal_id: id });
+    setDistricts(data);
+  };
+  const handleGetSectionsByDistrict = async (id: number) => {
+    const { data } = await getSectionCatalogByDistrict({ district_id: id });
+    setSections(data);
+  };
+  const handleChangeDistrict = (id: number) => {
+    setExportForm({
+      ...exportForm,
+      district_id: id.toString(),
+    });
+  };
+  const handleChangeSection = (id: number) => {
+    setExportForm({
+      ...exportForm,
+      section_id: id.toString(),
+    });
   };
   return {
+    municipal,
+    districts,
+    sections,
     columns,
     isModalOpen,
     form,
     loading,
     alertImport,
     tableParams,
+    items,
+    typeExport,
+    formExport,
     handleCloseModal,
     handleOpenModal,
     setLoading,
@@ -219,5 +333,9 @@ export const usePromotedC = () => {
     handleImport,
     handleGetPromtoed,
     setPromotorSelected,
+    handleGetDistrictByMunicap,
+    handleGetSectionsByDistrict,
+    handleChangeDistrict,
+    handleChangeSection,
   };
 };

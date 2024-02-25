@@ -22,13 +22,13 @@ export interface Promoted {
 interface PromotedState {
   promoted: Promoted;
   promoteds: Promoted[];
-  typeForm: "post" | "put" | "problem";
+  typeForm: "post" | "put" | "problem" | "export";
   setPromoteds: (promoteds: Promoted[]) => void;
   setPromoted: (promoted: Promoted) => void;
   deletePromoted: (id: number) => void;
   addPromoted: (promoted: Promoted) => void;
   updatePromoted: (promoted: Promoted) => void;
-  setTypeForm: (typeForm: "post" | "put" | "problem") => void;
+  setTypeForm: (typeForm: "post" | "put" | "problem" | "export") => void;
 }
 
 export const usePromotedStore = create<PromotedState>((set) => ({
