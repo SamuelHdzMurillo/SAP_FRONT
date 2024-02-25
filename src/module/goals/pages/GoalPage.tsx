@@ -99,26 +99,6 @@ const GoalPage: React.FC = () => {
           {" "}
           Agregar Meta{" "}
         </Button>
-        <Button
-          style={{
-            backgroundColor: "#1C1C1C",
-          }}
-          type="primary"
-          onClick={() => handleOpenModal("district")}
-        >
-          {" "}
-          Agregar Meta a Distrito{" "}
-        </Button>
-        <Button
-          style={{
-            backgroundColor: "#001529",
-          }}
-          type="primary"
-          onClick={() => handleOpenModal("section")}
-        >
-          {" "}
-          Agregar Meta a Seccion{" "}
-        </Button>
       </div>
       <Row gutter={[10, 10]}>
         {goalsStore.length > 0 &&

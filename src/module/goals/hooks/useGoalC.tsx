@@ -52,6 +52,7 @@ export const useGoalC = () => {
   };
 
   const handleGetGoals = async (type: string) => {
+    setGoals([]);
     setLoading(true);
     setTypeMeta(type);
     const { goals } = await getGoalCharts(type);
