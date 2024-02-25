@@ -13,8 +13,8 @@ import { Button } from "antd"; // Importa Card, Select y Button de antd
 
 const URL = import.meta.env.VITE_API_URL;
 const PromotorDetail = () => {
-  const { form, handleGetPromotor } = usePromotorC();
-  const { columns, handleTableChange, tableParams } = usePromotedC();
+  const { form, handleGetPromotor, columsPromoted } = usePromotorC();
+  const { handleTableChange, tableParams } = usePromotedC();
   const promotorStore = usePromotorStore((state) => state.promotor);
   const [loading, setLoading] = useState(false);
   const [showImage, setShowImage] = useState(false); // Estado para controlar la visibilidad de la imagen
@@ -94,7 +94,7 @@ const PromotorDetail = () => {
           table={
             <TableC
               dataSource={promotorStore.promoteds}
-              columns={columns}
+              columns={columsPromoted}
               pagination={tableParams.pagination}
               handleTableChange={handleTableChange}
               loading={loading}

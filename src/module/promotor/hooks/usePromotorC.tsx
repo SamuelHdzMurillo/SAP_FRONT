@@ -6,12 +6,15 @@ import { useState } from "react";
 import DropDownPromo from "../components/DropDownPromo";
 import { useFilterTable } from "@/components/filterTable/useFilterTable";
 import profilePhoto from "@/assets/imgs/foto_default.png";
+import { Promoted } from "@/module/promoted/store";
+import DropDownPV from "@/module/promoted/components/DropDownPV";
 const URL = import.meta.env.VITE_API_URL;
 interface TableParams {
   pagination?: TablePaginationConfig;
 }
 // import { PromotorType } from "../page/PromotorHome";
 export const usePromotorC = () => {
+  const promotor = usePromotorStore((state) => state.promotor);
   const setPromotors = usePromotorStore((state) => state.setPromotors);
   const setPromotor = usePromotorStore((state) => state.setPromotor);
   const setTypeForm = usePromotorStore((state) => state.setTypeForm);
@@ -45,6 +48,7 @@ export const usePromotorC = () => {
       [`${dataIndex}`]: value,
       page: "1",
     });
+    setPromotors(data);
     setTableParams({
       ...tableParams,
       pagination: {
@@ -52,13 +56,74 @@ export const usePromotorC = () => {
         total: meta.total,
       },
     });
-    setPromotors(data);
+
+    setLoading(false);
+    return data;
+  };
+  const handleGetFilterDataPromoteds = async (
+    value: string,
+    dataIndex: string | number
+  ) => {
+    setLoading(true);
+    const { data, meta } = await getAllPromotor({
+      [`${dataIndex}`]: value,
+      page: "1",
+    });
+    console.log(data, "data")
+    setPromotor({...promotor, promoteds: data});
+    setTableParams({
+      ...tableParams,
+      pagination: {
+        ...tableParams.pagination,
+        total: meta.total,
+      },
+    });
+
     setLoading(false);
     return data;
   };
   const { getColumnSearchProps } = useFilterTable({
     onFilter: handleGetFilterData,
   });
+  const { getColumnSearchProps: getColumnSearchPropsPromoteds } =
+    useFilterTable({
+      onFilter: handleGetFilterDataPromoteds,
+    });
+  const columsPromoted: TableColumnsType<Promoted> = [
+    {
+      title: "Nombre",
+      dataIndex: "name",
+      key: "name",
+
+      render: (_, record) => (
+        <a>
+          {record.name} {record.last_name}
+        </a>
+      ),
+      ...getColumnSearchPropsPromoteds("name"),
+    },
+    {
+      title: "Numero de telefono",
+      dataIndex: "phone_number",
+      key: "phone_number",
+      responsive: ["lg"],
+      ...getColumnSearchPropsPromoteds("phone_number"),
+    },
+    {
+      title: "Dirección",
+      dataIndex: "adress",
+      key: "adress",
+      responsive: ["lg"],
+      ...getColumnSearchPropsPromoteds("adress"),
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <DropDownPV record={record} handleOpenModal={handleOpenModal} />
+      ),
+    },
+  ];
   // const [typeForm, setTypeForm] = useState<"post" | "put" | "password">("post");
   const columns: TableColumnsType<Promotor> = [
     {
@@ -175,6 +240,7 @@ export const usePromotorC = () => {
   };
   return {
     columns,
+    columsPromoted,
     isModalOpen,
     form,
     loading,
