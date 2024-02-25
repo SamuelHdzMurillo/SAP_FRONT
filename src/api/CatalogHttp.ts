@@ -34,3 +34,9 @@ export const getUsersCatalog = async () => {
   const data = await resp.data;
   return data;
 };
+
+export const getPromotorsCatalog = async () => {
+  const resp = await requestHttp.get(`/api/catalog/promotors`);
+  const data = await resp.data;
+  return data;
+};

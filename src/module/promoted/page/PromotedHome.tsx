@@ -10,8 +10,10 @@ import { Alert, Button, Select } from "antd";
 import ModalC from "@/components/ModalC";
 import ProblemForm from "../components/ProblemForm";
 import { useAuthStore } from "@/module/auth/auth";
-import { getUsersCatalog } from "@/api/CatalogHttp";
+import { getPromotorsCatalog } from "@/api/CatalogHttp";
 import { useAlertStore } from "@/components/alerts/alertStore";
+
+const API_URL = import.meta.env.VITE_API_URL as string;
 
 const PromotedHome = () => {
   const {
@@ -40,7 +42,7 @@ const PromotedHome = () => {
   useEffect(() => {
     handleGetPromoteds();
     const handleGetUsersCatalog = async () => {
-      const { data } = await getUsersCatalog();
+      const { data } = await getPromotorsCatalog();
       setUsersCatalog(data);
     };
     setTimeout(() => {
@@ -84,7 +86,7 @@ const PromotedHome = () => {
         <Button
           type="default"
           onClick={() => {
-            window.location.href = 'http://127.0.0.1:8000/api/export-excel-template';
+            window.location.href = `${API_URL}/api/export-excel-template`;
           }}
         >
           Descargar Plantilla
@@ -120,9 +122,8 @@ const PromotedHome = () => {
               gap: 10,
             }}
           >
-            
             {alertImport.isShow && (
-              <Alert 
+              <Alert
                 message={alertImport.message}
                 type={alertImport.type}
                 showIcon
@@ -146,14 +147,14 @@ const PromotedHome = () => {
                 onChange={(value) => setPromotorSelected(value)}
               />
             )}
-<Button
-          type="default"
-          onClick={() => {
-            window.location.href = 'http://127.0.0.1:8000/api/export-excel-template';
-          }}
-        >
-          Descargar Plantilla
-        </Button>
+            <Button
+              type="default"
+              onClick={() => {
+                window.location.href = `${API_URL}/api/export-excel-template`;
+              }}
+            >
+              Descargar Plantilla
+            </Button>
             <Button
               style={{
                 backgroundColor: "#1C1C1C",
@@ -164,8 +165,6 @@ const PromotedHome = () => {
             >
               Importar
             </Button>
-            
-            
           </div>
         )}
       </ModalC>

@@ -28,7 +28,7 @@ const PromotorDetail = () => {
   const closeModal = () => {
     setShowModal(false);
   };
-    
+
   const { id } = useParams();
   useEffect(() => {
     setLoading(true);
@@ -54,21 +54,21 @@ const PromotorDetail = () => {
         }}
       >
         <Modal
-  visible={showModal}
-  onCancel={closeModal}
-  footer={null}
-  width={400} // Ajusta el ancho del modal según tus necesidades
->
-  <img
-    src={`${URL}/storage/${promotorStore.ine_path}`}
-    style={{
-      width: "100%",
-      objectFit: "contain",
-      borderRadius: "10px",
-    }}
-    alt=""
-  />
-</Modal>
+          open={showModal}
+          onCancel={closeModal}
+          footer={null}
+          width={400} // Ajusta el ancho del modal según tus necesidades
+        >
+          <img
+            src={`${URL}/storage/${promotorStore.ine_path}`}
+            style={{
+              width: "100%",
+              objectFit: "contain",
+              borderRadius: "10px",
+            }}
+            alt=""
+          />
+        </Modal>
 
         <TemplateDetail
           loading={loading}
@@ -85,11 +85,8 @@ const PromotorDetail = () => {
                 maxWidth: "100%",
               }}
             >
-              <Button onClick={toggleImageVisibility}>
-                Mostar INE
-              </Button>
+              <Button onClick={toggleImageVisibility}>Mostar INE</Button>
               <PromotorsForm form={form} isDetail={true} />
-      
             </div>
           }
           isTable={true}

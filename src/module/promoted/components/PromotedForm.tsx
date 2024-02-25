@@ -255,7 +255,7 @@ const PromotedForm = ({ form, isTitle = true }: PromotorsFormProps) => {
             <InputText label="Llave Electoral" name="electoral_key" />
           </Col>
           <Col xs={{ span: 24 }} lg={{ span: 12 }}>
-            <InputText required label="CURP" name="curp" />
+            <InputText label="CURP" name="curp" />
           </Col>
           <Col xs={{ span: 24 }} lg={{ span: 12 }}>
             <Form.Item

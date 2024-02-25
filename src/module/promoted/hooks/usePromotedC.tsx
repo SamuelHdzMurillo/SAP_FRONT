@@ -87,13 +87,6 @@ export const usePromotedC = () => {
       ...getColumnSearchProps("name"),
     },
     {
-      title: "Correo Electronico",
-      dataIndex: "email",
-      key: "email",
-      responsive: ["md"],
-      ...getColumnSearchProps("email"),
-    },
-    {
       title: "Numero de telefono",
       dataIndex: "phone_number",
       key: "phone_number",
@@ -106,20 +99,6 @@ export const usePromotedC = () => {
       key: "adress",
       responsive: ["lg"],
       ...getColumnSearchProps("adress"),
-    },
-    {
-      title: "Llave Electoral",
-      dataIndex: "electoral_key",
-      key: "electoral_key",
-      responsive: ["lg"],
-      ...getColumnSearchProps("electoral_key"),
-    },
-    {
-      title: "CURP",
-      dataIndex: "curp",
-      key: "curp",
-      responsive: ["lg"],
-      ...getColumnSearchProps("curp"),
     },
     {
       title: "Action",
