@@ -8,6 +8,7 @@ import { useFilterTable } from "@/components/filterTable/useFilterTable";
 import profilePhoto from "@/assets/imgs/foto_default.png";
 import { Promoted } from "@/module/promoted/store";
 import DropDownPV from "@/module/promoted/components/DropDownPV";
+import { getAllPromoted } from "@/module/promoted/api";
 const URL = import.meta.env.VITE_API_URL;
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -38,6 +39,13 @@ export const usePromotorC = () => {
     setTypeForm("put");
     setPromotor(data);
     setLoading(false);
+    setTableParams({
+      ...tableParams,
+      pagination: {
+        ...tableParams.pagination,
+        total: data.promoteds.length,
+      },
+    });
   };
   const handleGetFilterData = async (
     value: string,
@@ -65,11 +73,13 @@ export const usePromotorC = () => {
     dataIndex: string | number
   ) => {
     setLoading(true);
-    const { data, meta } = await getAllPromotor({
+    const { data, meta } = await getAllPromoted({
       [`${dataIndex}`]: value,
+      promotor_id: promotor.id,
       page: "1",
     });
-    setPromotor({...promotor, promoteds: data});
+    console.log(meta)
+    setPromotor({ ...promotor, promoteds: data });
     setTableParams({
       ...tableParams,
       pagination: {

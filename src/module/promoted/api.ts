@@ -9,6 +9,7 @@ export const getAllPromoted = async ({
   adress,
   electoral_key,
   curp,
+  promotor_id,
 }: {
   page: string;
   curp?: string;
@@ -17,6 +18,7 @@ export const getAllPromoted = async ({
   phone_number?: string;
   electoral_key?: string;
   name?: string;
+  promotor_id?: number;
 }) => {
   let params = "";
   if (phone_number) {
@@ -36,6 +38,9 @@ export const getAllPromoted = async ({
   }
   if (adress) {
     params = params.concat(`&adress=${adress}`);
+  }
+  if (promotor_id) {
+    params = params.concat(`&promotor_id=${promotor_id}`);
   }
   const resp = await requestHttp.get(`/api/${MODULE}?page=${page}${params}`);
   const data = await resp.data;
