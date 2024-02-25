@@ -5,16 +5,13 @@ import { usePromotorC } from "../hooks/usePromotorC";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { usePromotorStore } from "../store";
-import TableC from "@/components/TableC";
-import { usePromotedC } from "@/module/promoted/hooks/usePromotedC";
 import { Modal } from "antd";
 
 import { Button } from "antd"; // Importa Card, Select y Button de antd
 
 const URL = import.meta.env.VITE_API_URL;
 const PromotorDetail = () => {
-  const { form, handleGetPromotor, columsPromoted } = usePromotorC();
-  const { handleTableChange, tableParams } = usePromotedC();
+  const { form, handleGetPromotor } = usePromotorC();
   const promotorStore = usePromotorStore((state) => state.promotor);
   const [loading, setLoading] = useState(false);
   const [showImage, setShowImage] = useState(false); // Estado para controlar la visibilidad de la imagen
@@ -88,18 +85,6 @@ const PromotorDetail = () => {
               <Button onClick={toggleImageVisibility}>Mostar INE</Button>
               <PromotorsForm form={form} isDetail={true} />
             </div>
-          }
-          isTable={true}
-          titleTable="Promovidos"
-          table={
-            <TableC
-              dataSource={promotorStore.promoteds}
-              columns={columsPromoted}
-              pagination={tableParams.pagination}
-              handleTableChange={handleTableChange}
-              loading={loading}
-              children={"Agregar Usuario"}
-            />
           }
         />
       </div>
