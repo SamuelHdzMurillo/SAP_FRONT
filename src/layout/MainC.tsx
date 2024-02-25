@@ -1,7 +1,6 @@
 // import { createElement, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
-  UserOutlined,
   UserAddOutlined,
   UsergroupAddOutlined,
 } from "@ant-design/icons";
@@ -122,10 +121,23 @@ const MainC = () => {
       icon: <FontAwesomeIcon icon={faTriangleExclamation} />,
     },
     {
-      label: "Registrar Promovidos",
+      label: "Promovidos",
       key: "/promovidos-menu",
-      icon: <UserOutlined />,
-      onClick: () => navigate("/promovidos-registrar"),
+      icon: <FontAwesomeIcon icon={faUsers} />,
+      children: [
+        {
+          label: "Registrar",
+          key: "/promovidos-registrar",
+          onClick: () => navigate("/promovidos-registrar"),
+          icon: <UserAddOutlined />,
+        },
+        {
+          label: "Administrar",
+          key: "/promovidos",
+          onClick: () => navigate("/promovidos"),
+          icon: <UsergroupAddOutlined />,
+        },
+      ],
     },
     {
       label: "Metas",
