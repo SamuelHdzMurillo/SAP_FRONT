@@ -17,7 +17,7 @@ import Date from "@/module/charts/pages/Date";
 import Count from "@/module/charts/pages/Countchart";
 import PrivateRoute from "@/components/PrivateRoute";
 import GoalPage from "@/module/goals/pages/GoalPage";
-import GoalDistricts from "@/module/goals/pages/GoalDistricts";
+import GoalDistricts from "@/module/goals/pages/GoalDistrictsPage";
 
 export const router = createBrowserRouter([
   {

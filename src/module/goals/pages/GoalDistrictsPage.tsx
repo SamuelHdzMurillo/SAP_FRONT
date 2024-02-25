@@ -7,7 +7,7 @@ import ChartGoal from "../Components/ChartGoal";
 import GoalForm from "../Components/GoalForm";
 import { useGoalStore } from "../store";
 
-const GoalDistricts: React.FC = () => {
+const GoalDistrictsPage: React.FC = () => {
   const {
     handleGetGoals,
     handleOpenModal,
@@ -151,4 +151,4 @@ const GoalDistricts: React.FC = () => {
   );
 };
 
-export default GoalDistricts;
+export default GoalDistrictsPage;
