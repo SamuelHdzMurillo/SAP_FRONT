@@ -98,7 +98,6 @@ export const useGoalC = () => {
         "Si le das a Ok, se eliminará por completo y no habrá vuelta atrás",
       async onOk() {
         try {
-          console.log(id, typeMeta, "useGoalC");
           await deleteGoal(id, typeMeta);
           deleteGoalS(id);
           setAlert({

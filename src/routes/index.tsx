@@ -18,6 +18,7 @@ import Count from "@/module/charts/pages/Countchart";
 import PrivateRoute from "@/components/PrivateRoute";
 import GoalPage from "@/module/goals/pages/GoalPage";
 import GoalDistricts from "@/module/goals/pages/GoalDistrictsPage";
+import GoalSectionsPage from "@/module/goals/pages/GoalSectionsPage";
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
       {
         path: "metas-distrito",
         element: <GoalDistricts />,
+      },
+      {
+        path: "metas-seccion",
+        element: <GoalSectionsPage />,
       },
       {
         path: "/graficas-por-fecha",
