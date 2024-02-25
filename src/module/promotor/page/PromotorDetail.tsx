@@ -17,7 +17,6 @@ const PromotorDetail = () => {
   const { form, handleGetPromotor, columsPromoted, tableParams } =
     usePromotorC();
   const user_type = useAuthStore((state) => state.user_type);
-  console.log(user_type);
   const { handleTableChange } = usePromotedC();
   const promotorStore = usePromotorStore((state) => state.promotor);
   const [loading, setLoading] = useState(false);

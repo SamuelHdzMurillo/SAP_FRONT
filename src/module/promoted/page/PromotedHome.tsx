@@ -12,6 +12,7 @@ import ProblemForm from "../components/ProblemForm";
 import { getPromotorsCatalog } from "@/api/CatalogHttp";
 import { useAlertStore } from "@/components/alerts/alertStore";
 import FormExportUbi from "../components/FormExportUbi";
+import { useAuthStore } from "@/module/auth/auth";
 
 const PromotedHome = () => {
   const {
@@ -44,6 +45,7 @@ const PromotedHome = () => {
   const promotedsStore = usePromotedStore((state) => state.promoteds);
 
   const clearAlert = useAlertStore((state) => state.clearAlert);
+  const userType = useAuthStore((state) => state.user_type);
   const type = usePromotedStore((state) => state.typeForm);
   const [usersCatalog, setUsersCatalog] = useState([]);
   useEffect(() => {
@@ -61,7 +63,6 @@ const PromotedHome = () => {
     input: string,
     option?: { label: string; value: string }
   ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
-
   return (
     <LayoutC
       items={[
@@ -71,37 +72,40 @@ const PromotedHome = () => {
       ]}
       title={"Promovidos"}
     >
-      <div
-        style={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-          marginBottom: 20,
-          gap: 10,
-        }}
-      >
-        <Button
+      {userType === "superadmin" && (
+        <div
           style={{
-            backgroundColor: "#1C1C1C",
+            width: "100%",
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            marginBottom: 20,
+            gap: 10,
           }}
-          type="primary"
-          onClick={() => handleExportExcel()}
         >
-          {" "}
-          Importar{" "}
-        </Button>
-        <Dropdown menu={{ items }}>
           <Button
-            type="primary"
             style={{
-              margin: "20px 0px 20px 0px",
+              backgroundColor: "#1C1C1C",
             }}
+            type="primary"
+            onClick={() => handleExportExcel()}
           >
-            Opciones
+            {" "}
+            Importar{" "}
           </Button>
-        </Dropdown>
-      </div>
+          <Dropdown menu={{ items }}>
+            <Button
+              type="primary"
+              style={{
+                margin: "20px 0px 20px 0px",
+              }}
+            >
+              Opciones
+            </Button>
+          </Dropdown>
+        </div>
+      )}
+
       <TableC
         dataSource={promotedsStore}
         columns={columns}

@@ -17,6 +17,7 @@ export interface Promoted {
   section_id: number;
   problems?: Problem[];
   promotor_id: number;
+  section?: { number: number };
 }
 
 interface PromotedState {
