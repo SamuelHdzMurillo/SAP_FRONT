@@ -11,9 +11,7 @@ export default function MapComponent({
   const ref = useRef<HTMLDivElement>();
   // New Code Markers: 1
   const [markerCluster, setMarkerClusters] = useState<MarkerClusterer>();
-  const [marker, setMarker] = useState<
-    { lat: number; lng: number } | undefined
-  >();
+
   // New Code Markers 1
   useEffect(() => {
     if (ref.current && !map) {
@@ -26,13 +24,6 @@ export default function MapComponent({
     }
     // New Code markets: 2
     if (map && !markerCluster) {
-      map.addListener("click", (e: google.maps.MapMouseEvent) => {
-        if (e.latLng) {
-          const { lat, lng } = e.latLng;
-          console.log(lat(), lng());
-          setMarker({ lat: lat(), lng: lng() });
-        }
-      });
       setMarkerClusters(new MarkerClusterer({ map, markers: [] }));
     }
     // New Code markers: 2

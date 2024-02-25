@@ -1,29 +1,33 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
 import LayoutC from "@/components/LayoutC";
-import { useEffect, useState } from "react";
-
-import Municipals from '@/module/charts/pages/Municipals';
-import Charts from '@/module/charts/pages/Countchart';
+import Municipals from "@/module/charts/pages/Municipals";
+import Charts from "@/module/charts/pages/Countchart";
 import {
-  getDashboardByPromotor,
   getDashboardCountByPromotor,
   getPromotedByDatesPage,
-  gettotalPromotedsByMunicipality
+  gettotalPromotedsByMunicipality,
 } from "../api";
-import {DatePicker, Card } from 'antd';
-const { RangePicker } = DatePicker;
-import { Column } from "@ant-design/charts";
+import { DatePicker, Card } from "antd";
 import "./style.css";
 import { BarChartOutlined, UsergroupAddOutlined } from "@ant-design/icons";
-import { Pie } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Pie } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import Widgets from "../components/Widgets";
-
-import ReactApexChart from 'react-apexcharts';
+import ReactApexChart from "react-apexcharts";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const colors = ['#FF4560', '#00E396', '#008FFB', '#FEB019', '#775DD0', '#FF4560', '#00E396', '#008FFB'];
+// const colors = [
+//   "#FF4560",
+//   "#00E396",
+//   "#008FFB",
+//   "#FEB019",
+//   "#775DD0",
+//   "#FF4560",
+//   "#00E396",
+//   "#008FFB",
+// ];
 
 const date = new Date();
 const day = date.getDay();
@@ -40,76 +44,93 @@ const endOfLastWeekString = endOfLastWeek.toLocaleDateString("default");
 
 const week = `${startOfLastWeekString} - ${endOfLastWeekString}`;
 
+interface DashboardProps {
+  // Add any props you need here
+}
 
-  
+interface PromotedItem {
+  day: string;
+  value: number;
+}
 
-const Dashboard = () => {
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  
-  const [itemsChartByDates, setItemsChartByDates] = useState<any[]>([]);
+const Dashboard: React.FC<DashboardProps> = () => {
+  const [startDate, setStartDate] = useState<string | null>(null);
+  const [endDate, setEndDate] = useState<string | null>(null);
+  const [itemsChartByDates, setItemsChartByDates] = useState<PromotedItem[]>(
+    []
+  );
   const [promoter_count_mont, setPromoterCountMonth] = useState<number>(0);
   const [promoter_count_sem, setPromoterCountsem] = useState<number>(0);
   const [promoter_count_day, setPromoterCountday] = useState<number>(0);
   const [promoter_countTotal, setPromoterCountTotal] = useState<number>(0);
-  const [pieData, setPieData] = useState({
+  const [pieData, setPieData] = useState<{
+    labels: string[];
+    datasets: {
+      label: string;
+      data: number[];
+      backgroundColor: string[];
+      borderColor: string[];
+      borderWidth: number;
+    }[];
+  }>({
     labels: [],
-    datasets: [{
-      label: 'Cant. de Promovidos',
-      data: [],
-      backgroundColor: [],
-      borderColor: [],
-      borderWidth: 1
-    }]
+    datasets: [
+      {
+        label: "Cant. de Promovidos",
+        data: [],
+        backgroundColor: [],
+        borderColor: [],
+        borderWidth: 1,
+      },
+    ],
   });
 
-  <div className="select-container">
-  <RangePicker
-    onChange={(dates) => {
-      setStartDate(dates ? dates[0].startOf('day').toISOString() : null);
-      setEndDate(dates ? dates[1].endOf('day').toISOString() : null);
-    }}
-  />
-</div>
+  const transformedSeries = [
+    {
+      name: "Value",
+      data: itemsChartByDates.map((item) => item.value),
+    },
+  ];
 
+  // const apexOptions = {
+  //   chart: {
+  //     height: 350,
+  //     type: "bar",
+  //   },
+  //   plotOptions: {
+  //     bar: {
+  //       columnWidth: "45%",
+  //       distributed: true,
+  //     },
+  //   },
+  //   dataLabels: {
+  //     enabled: false,
+  //   },
+  //   legend: {
+  //     show: false,
+  //   },
+  //   xaxis: {
+  //     categories: itemsChartByDates.map((item) => item.day),
+  //     labels: {
+  //       style: {
+  //         fontSize: "12px",
+  //       },
+  //     },
+  //   },
+  //   colors: colors,
+  // };
 
-  const transformedSeries = [{
-    name: "Value", // Puedes cambiar este nombre según tus necesidades
-    data: itemsChartByDates.map(item => item.value),
-  }];
-
-  const apexOptions = {
-    chart: {
-      height: 350,
-      type: 'bar',
-    },
-    plotOptions: {
-      bar: {
-        columnWidth: '45%',
-        distributed: true,
-      }
-    },
-    dataLabels: {
-      enabled: false
-    },
-    legend: {
-      show: false
-    },
-    xaxis: {
-      categories: itemsChartByDates.map(item => item.day),
-      labels: {
-        style: {
-          fontSize: '12px'
-        }
-      }
-    },
-    colors: colors, // Asegúrate de que `colors` esté definido
-  };
   useEffect(() => {
     const handleGetPromotedsByPromoters = async () => {
-      const totalByMunicipalityData = await gettotalPromotedsByMunicipality({});
-      const municipalNames = totalByMunicipalityData.municipals.map(item => item.municipal_name);
-      const totalPromoveds = totalByMunicipalityData.municipals.map(item => item.total_promoveds);
+      const totalByMunicipalityData = await gettotalPromotedsByMunicipality({
+        filter: "",
+      });
+      const municipalNames = totalByMunicipalityData.municipals.map(
+        (item: { municipal_name: any }) => item.municipal_name
+      );
+      const totalPromoveds = totalByMunicipalityData.municipals.map(
+        (item: { total_promoveds: any }) => item.total_promoveds
+      );
 
       const promoter_count_mont_data = await getDashboardCountByPromotor({
         filter: "month",
@@ -123,34 +144,32 @@ const Dashboard = () => {
       const promoter_count_sem_data = await getDashboardCountByPromotor({
         filter: "week",
       });
-      
+
       const promotedsByDatesData = await getPromotedByDatesPage({
         filter: "all",
         startDate: startDate,
         endDate: endDate,
       });
 
-     
-
       setPieData({
         labels: municipalNames,
         datasets: [
           {
-            label: 'Cant. de Promovidos',
+            label: "Cant. de Promovidos",
             data: totalPromoveds,
             backgroundColor: [
-              'rgb(14,185,128)',
-              'rgb(247,144,10)',
-              'rgb(99,102,241)',
-              'rgb(38,160,252)',
-              'rgb(255,97,120)',
+              "rgb(14,185,128)",
+              "rgb(247,144,10)",
+              "rgb(99,102,241)",
+              "rgb(38,160,252)",
+              "rgb(255,97,120)",
             ],
             borderColor: [
-              'rgb(14,185,128)',
-              'rgb(247,144,10)',
-              'rgb(99,102,241)',
-              'rgb(38,160,252)',
-              'rgb(255,97,120)',
+              "rgb(14,185,128)",
+              "rgb(247,144,10)",
+              "rgb(99,102,241)",
+              "rgb(38,160,252)",
+              "rgb(255,97,120)",
             ],
             borderWidth: 1,
           },
@@ -164,26 +183,7 @@ const Dashboard = () => {
       setItemsChartByDates(promotedsByDatesData.promoteds);
     };
     handleGetPromotedsByPromoters();
-  }, []);
-
-  const configByDates = {
-    data: itemsChartByDates,
-    xField: "day",
-    yField: "value",
-    label: {
-      position: "bottom",
-      style: {
-        fill: "#321331",
-        opacity: 0.6,
-      },
-    },
-    xAxis: {
-      label: {
-        autoHide: true,
-        autoRotate: false,
-      },
-    },
-  };
+  }, [startDate, endDate]);
 
   const date = new Date();
   const month = date.toLocaleString("default", { month: "long" });
@@ -209,29 +209,64 @@ const Dashboard = () => {
       title: `Promovidos Hoy`,
     },
   ];
-  
 
   return (
     <LayoutC items={[{ title: "Usuarios" }]} title={""}>
       <h1>Promovidos </h1>
       <div className="dashboard-container">
         <div className="select-container">
-          {/* Selector de filtro */}
+          <DatePicker.RangePicker
+            onChange={(dates) => {
+              setStartDate(
+                dates ? dates[0]?.startOf("day").toISOString() : null
+              );
+              setEndDate(dates ? dates[1]?.endOf("day").toISOString() : null);
+            }}
+          />
         </div>
         <Widgets widgets={widgets} />
         <div className="chart-container">
-         
-        <Card title="Promovidos por Mes">
-        <ReactApexChart options={apexOptions} series={transformedSeries} type="bar" height={500} />
-      </Card>
-          <Card title="Total Promovidos por Municipio" >
+          <Card title="Promovidos por Mes">
+            <ReactApexChart
+              options={{
+                chart: {
+                  height: 500,
+                  type: "bar", // Replace "string" with a valid chart type like "bar", "line", etc.
+                },
+                plotOptions: {
+                  bar: {
+                    columnWidth: "50%",
+                    distributed: true,
+                  },
+                },
+                dataLabels: {
+                  enabled: false,
+                },
+                legend: {
+                  show: false,
+                },
+                xaxis: {
+                  categories: transformedSeries.map((item) => item.name),
+                  labels: {
+                    style: {
+                      fontSize: "12px",
+                    },
+                  },
+                },
+                colors: ["#0eb980"],
+              }}
+              series={transformedSeries}
+              type="bar"
+              height={500}
+            />
+          </Card>
+          <Card title="Total Promovidos por Municipio">
             <div className="pie-container">
               <Pie data={pieData} />
             </div>
           </Card>
-
-          <Municipals/>
-          <Charts/>
+          <Municipals />
+          <Charts />
         </div>
       </div>
     </LayoutC>

@@ -15,7 +15,6 @@ import PromotedDetail from "@/module/promoted/page/PromotedDetail";
 import Municipal from "@/module/charts/pages/Municipals";
 import Date from "@/module/charts/pages/Date";
 import Count from "@/module/charts/pages/Countchart";
-import PrivateRoute from "@/components/PrivateRoute";
 import GoalPage from "@/module/goals/pages/GoalPage";
 import GoalDistricts from "@/module/goals/pages/GoalDistrictsPage";
 import GoalSectionsPage from "@/module/goals/pages/GoalSectionsPage";
@@ -27,7 +26,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <PrivateRoute component={Dashboard} role="superadmin" />,
+        element: <Dashboard />,
       },
       {
         path: "/metas",

@@ -46,7 +46,16 @@ export const useProblemC = () => {
       ),
     },
   ];
-  const handleOpenModal = (type: "post" | "put" | "problem", record = {}) => {
+  const handleOpenModal = (
+    type: "post" | "put" | "problem",
+    record: Problem = {
+      id: 0,
+      title: "",
+      description: "",
+      problem_img_path: "",
+      promoted_id: 0,
+    }
+  ) => {
     // console.log(record, "usePromotedC")
     form.resetFields();
     setProblem(record);

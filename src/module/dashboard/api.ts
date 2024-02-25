@@ -26,8 +26,12 @@ export const getDashboardCountByPromotor = async ({
 
 export const getPromotedByDatesPage = async ({
   filter = "all",
+  startDate,
+  endDate,
 }: {
   filter: string;
+  startDate: string;
+  endDate: string;
 }) => {
   const resp = await requestHttp.get(
     `/api/dashboard/promoteds-count-by-dates?filter=${filter}`
@@ -51,11 +55,10 @@ export const gettotalPromotedsByMunicipality = async ({
 };
 
 export const gettotalPromotedsByMunicipalitybydate = async () => {
-  const resp = await requestHttp.get(`/api/municipals/districts/promoveds/count-by-date`);
+  const resp = await requestHttp.get(
+    `/api/municipals/districts/promoveds/count-by-date`
+  );
   const data = resp.data;
   console.log(data);
   return data;
 };
-
-
-
