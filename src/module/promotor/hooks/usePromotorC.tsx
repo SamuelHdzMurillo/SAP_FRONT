@@ -69,7 +69,6 @@ export const usePromotorC = () => {
       [`${dataIndex}`]: value,
       page: "1",
     });
-    console.log(data, "data")
     setPromotor({...promotor, promoteds: data});
     setTableParams({
       ...tableParams,
