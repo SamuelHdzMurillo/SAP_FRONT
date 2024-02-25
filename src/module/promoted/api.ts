@@ -4,6 +4,7 @@ const MODULE = "promoted";
 export const getAllPromoted = async ({
   page,
   name,
+  last_name,
   email,
   phone_number,
   adress,
@@ -18,6 +19,7 @@ export const getAllPromoted = async ({
   phone_number?: string;
   electoral_key?: string;
   name?: string;
+  last_name?: string;
   promotor_id?: number;
 }) => {
   let params = "";
@@ -29,6 +31,9 @@ export const getAllPromoted = async ({
   }
   if (name) {
     params = params.concat(`&name=${name}`);
+  }
+  if (last_name) {
+    params = params.concat(`&last_name=${last_name}`);
   }
   if (curp) {
     params = params.concat(`&curp=${curp}`);

@@ -130,7 +130,7 @@ export const usePromotedC = () => {
   ];
   const columns: TableColumnsType<Promoted> = [
     {
-      title: "Nombre Completo",
+      title: "Nombre",
       dataIndex: "name",
       key: "name",
       render: (_, record) => (
@@ -138,6 +138,14 @@ export const usePromotedC = () => {
           {record.name} {record.last_name}
         </p>
       ),
+      ...getColumnSearchProps("name"),
+    },
+    {
+      title: "Apellidos",
+      dataIndex: "last_name",
+      key: "last_name",
+      render: (_, record) => <p>{record.last_name}</p>,
+      ...getColumnSearchProps("last_name"),
     },
     {
       title: "Numero de telefono",
