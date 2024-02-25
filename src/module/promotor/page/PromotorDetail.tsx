@@ -10,10 +10,14 @@ import { usePromotedC } from "@/module/promoted/hooks/usePromotedC";
 import { Modal } from "antd";
 
 import { Button } from "antd"; // Importa Card, Select y Button de antd
+import { useAuthStore } from "@/module/auth/auth";
 
 const URL = import.meta.env.VITE_API_URL;
 const PromotorDetail = () => {
-  const { form, handleGetPromotor, columsPromoted, tableParams } = usePromotorC();
+  const { form, handleGetPromotor, columsPromoted, tableParams } =
+    usePromotorC();
+  const user_type = useAuthStore((state) => state.user_type);
+  console.log(user_type);
   const { handleTableChange } = usePromotedC();
   const promotorStore = usePromotorStore((state) => state.promotor);
   const [loading, setLoading] = useState(false);
@@ -89,7 +93,7 @@ const PromotorDetail = () => {
               <PromotorsForm form={form} isDetail={true} />
             </div>
           }
-          isTable={true}
+          isTable={user_type === "superadmin"}
           titleTable="Promovidos"
           table={
             <TableC
