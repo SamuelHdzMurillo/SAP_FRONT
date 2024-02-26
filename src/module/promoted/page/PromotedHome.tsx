@@ -26,9 +26,11 @@ const PromotedHome = () => {
     typeExport,
     municipal,
     districts,
+    title,
     sections,
     formExport,
     setFileImport,
+    handleSetTitle,
     handleGetUsers: handleGetPromoteds,
     handleTableChange,
     handleOpenModal,
@@ -88,7 +90,10 @@ const PromotedHome = () => {
               backgroundColor: "#1C1C1C",
             }}
             type="primary"
-            onClick={() => handleExportExcel()}
+            onClick={() => {
+              handleSetTitle("Importar Promovidos");
+              handleOpenModal("post");
+            }}
           >
             {" "}
             Importar{" "}
@@ -115,7 +120,7 @@ const PromotedHome = () => {
         children={"Agregar Usuario"}
       />
       <ModalC
-        title="Exportar Promovidos"
+        title={title}
         isModalOpen={isModalOpen}
         handleOk={() => handleOpenModal("post")}
         handleCancel={handleCloseModal}

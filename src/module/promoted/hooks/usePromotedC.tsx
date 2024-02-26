@@ -41,6 +41,7 @@ export const usePromotedC = () => {
   const [typeExport, setTypeExport] = useState<string>("");
   const setTypeForm = usePromotedStore((state) => state.setTypeForm);
   const [form] = Form.useForm();
+  const [title, setTitle] = useState<string>("");
   const [formExport] = Form.useForm();
   const [promotorSelected, setPromotorSelected] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -101,6 +102,7 @@ export const usePromotedC = () => {
       onClick: () => {
         setTypeExport("all");
         handleExportExcel();
+        setTitle("Exportar todos los promovidos")
       },
     },
     {
@@ -109,6 +111,7 @@ export const usePromotedC = () => {
       onClick: () => {
         setTypeExport("district");
         handleOpenModal("export");
+        setTitle("Exportar promovidos por Distrito")
         // handleExportExcel();
       },
     },
@@ -118,6 +121,7 @@ export const usePromotedC = () => {
       onClick: () => {
         setTypeExport("section");
         handleOpenModal("export");
+        setTitle("Exportar promovidos por Seccion")
         // handleExportExcel();
       },
     },
@@ -217,6 +221,7 @@ export const usePromotedC = () => {
   const handleImport = async () => {
     try {
       setLoading(true);
+      setIsModalOpen(true);
       if (!fileImport) {
         return;
       }
@@ -322,6 +327,9 @@ export const usePromotedC = () => {
       section_id: id.toString(),
     });
   };
+  const handleSetTitle = (title: string) => {
+    setTitle(title);
+  }
   return {
     municipal,
     districts,
@@ -335,6 +343,8 @@ export const usePromotedC = () => {
     items,
     typeExport,
     formExport,
+    title,  
+    handleSetTitle,
     handleCloseModal,
     handleOpenModal,
     setLoading,
