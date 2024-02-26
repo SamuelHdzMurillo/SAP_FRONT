@@ -1,5 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createBrowserRouter } from "react-router-dom";
+import {
+  Navigate,
+  createBrowserRouter,
+} from "react-router-dom";
 import MainC from "../layout/MainC";
 import UserHome from "@/module/user/page/UserHome";
 import PromotedRegister from "@/module/promoted/page/PromotedRegister";
@@ -18,11 +21,23 @@ import Count from "@/module/charts/pages/Countchart";
 import GoalPage from "@/module/goals/pages/GoalPage";
 import GoalDistricts from "@/module/goals/pages/GoalDistrictsPage";
 import GoalSectionsPage from "@/module/goals/pages/GoalSectionsPage";
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const token = localStorage.getItem("token");
 
+  if (token) {
+    return <>{children}</>;
+  }
+
+  return <Navigate to="/login" />;
+};
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainC />,
+    element: (
+      <ProtectedRoute>
+        <MainC />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "/",
