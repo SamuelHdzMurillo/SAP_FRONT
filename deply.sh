@@ -9,6 +9,6 @@ npm run build
 
 echo "subiendo archivos al servidor" 
 
-scp -r build/* sam@146.190.47.61:/var/www/146.190.47.61/
+scp -r dist/* sam@146.190.47.61:/var/www/146.190.47.61/
 
 echo "proceso terminado"
