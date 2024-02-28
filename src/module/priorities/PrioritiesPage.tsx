@@ -1,31 +1,25 @@
 import LayoutC from "@/components/LayoutC";
 import React, { useEffect } from "react";
-import { useGoalC } from "../hooks/useGoalC";
-import { Button, Col, Row } from "antd";
+import { Button, Col, FormInstance, Row } from "antd";
 import ModalC from "@/components/ModalC";
-import ChartGoal from "../Components/ChartGoal";
-import GoalForm from "../Components/GoalForm";
-import { useGoalStore } from "../store";
+import { usePriorityHook } from "./hook/usePriorityHook";
+import PriorityForm from "./components/PriorityForm";
+import { Priority } from "./store";
 
-const GoalPage: React.FC = () => {
+const PrioritiesPage: React.FC = () => {
   const {
-    handleGetGoals,
-    handleOpenModal,
-    handleCloseModal,
-    handleDeleteGoal,
-    handleGetDistrictByMunicap,
-    handleGetSectionsByDistrict,
     municipal,
     districts,
     sections,
-
+    handleGetDistrictByMunicap,
+    handleGetSectionsByDistrict,
     isModalOpen,
-    form,
-    typeMeta,
-  } = useGoalC();
-  const goalsStore = useGoalStore((state) => state.goals);
+    handleOpenModal,
+    handleCloseModal,
+  } = usePriorityHook();
+
   useEffect(() => {
-    handleGetGoals("");
+    // handleGetGoals("");
     // Your code here
   }, []);
 
@@ -94,13 +88,13 @@ const GoalPage: React.FC = () => {
             backgroundColor: "#8e2a2a",
           }}
           type="primary"
-          onClick={() => handleOpenModal("municipal")}
+          onClick={() => handleOpenModal()}
         >
           {" "}
-          Agregar Meta{" "}
+          Agregar una grafica prioritaria{" "}
         </Button>
       </div>
-      <Row gutter={[10, 10]}>
+      {/* <Row gutter={[10, 10]}>
         {goalsStore.length > 0 &&
           goalsStore.map((goal, index) => (
             <Col key={index + 2} span={24} sm={12}>
@@ -131,14 +125,21 @@ const GoalPage: React.FC = () => {
               />
             </Col>
           ))}
-      </Row>
+      </Row> */}
       <ModalC
-        title="Agregar Meta"
+        title="Agregar Grafica Prioritaria"
         isModalOpen={isModalOpen}
-        // handleOk={() => handleOpenModal()}
+        handleOk={() => handleOpenModal()}
         handleCancel={handleCloseModal}
       >
-        <GoalForm
+        <PriorityForm
+          municipal={municipal}
+          districts={districts}
+          sections={sections}
+          handleGetDistrictByMunicap={handleGetDistrictByMunicap}
+          handleGetSectionsByDistrict={handleGetSectionsByDistrict}
+        />
+        {/* <GoalForm
           municipal={municipal}
           districts={districts}
           sections={sections}
@@ -147,10 +148,10 @@ const GoalPage: React.FC = () => {
           form={form}
           handleCloseModal={handleCloseModal}
           typeMeta={typeMeta}
-        />
+        /> */}
       </ModalC>
     </LayoutC>
   );
 };
 
-export default GoalPage;
+export default PrioritiesPage;

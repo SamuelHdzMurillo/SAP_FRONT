@@ -21,6 +21,7 @@ import Count from "@/module/charts/pages/Countchart";
 import GoalPage from "@/module/goals/pages/GoalPage";
 import GoalDistricts from "@/module/goals/pages/GoalDistrictsPage";
 import GoalSectionsPage from "@/module/goals/pages/GoalSectionsPage";
+import PrioritiesPage from "@/module/priorities/PrioritiesPage";
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const token = localStorage.getItem("token");
 
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
       {
         path: "/metas",
         element: <GoalPage />,
+      },
+      {
+        path: "/secciones-prioritarias",
+        element: <PrioritiesPage />,
       },
       {
         path: "metas-distrito",
