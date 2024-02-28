@@ -1,9 +1,5 @@
 import { useState } from "react";
-import {
-  AdvancedMarker,
-  InfoWindow,
-  useAdvancedMarkerRef,
-} from "@vis.gl/react-google-maps";
+import { Marker, InfoWindow } from "@react-google-maps/api";
 import { Card, Descriptions } from "antd";
 import Title from "antd/es/typography/Title";
 
@@ -23,21 +19,14 @@ export const MarkerInfo = ({
   email: string;
 }) => {
   const [infowindowOpen, setInfowindowOpen] = useState(false);
-  const [markerRef, marker] = useAdvancedMarkerRef();
 
   return (
-    <>
-      <AdvancedMarker
-        ref={markerRef}
-        onClick={() => setInfowindowOpen(!infowindowOpen)}
-        position={{ lat, lng }}
-      />
+    <Marker
+      position={{ lat, lng }}
+      onClick={() => setInfowindowOpen(!infowindowOpen)}
+    >
       {infowindowOpen && (
-        <InfoWindow
-          anchor={marker}
-          maxWidth={300}
-          onCloseClick={() => setInfowindowOpen(false)}
-        >
+        <InfoWindow onCloseClick={() => setInfowindowOpen(false)}>
           <Card bordered={false} style={{ maxWidth: "100%", padding: "0px" }}>
             <Title style={{ padding: "0px", margin: "0px" }} level={4}>
               Información del Promovido
@@ -71,6 +60,6 @@ export const MarkerInfo = ({
           </Card>
         </InfoWindow>
       )}
-    </>
+    </Marker>
   );
 };

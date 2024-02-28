@@ -1,7 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getPromoteds } from "@/api/MapHttp";
-import { APIProvider, Map } from "@vis.gl/react-google-maps";
+import {
+  GoogleMap,
+  useLoadScript,
+  useJsApiLoader,
+} from "@react-google-maps/api";
 import { MarkerInfo } from "../components/MarkerInfo";
+
 export interface PromotedMarker {
   id: number;
   lat: string;
@@ -11,10 +16,13 @@ export interface PromotedMarker {
   section: string;
   email: string;
 }
+
 const KEY_GOOGLE = import.meta.env.VITE_API_KEY_GOOGLE;
-const KEY_GOOGLE_ID = import.meta.env.VITE_API_KEY_GOOGLE_ID;
+
 const DashboardMap = () => {
   const [promoteds, setPromoteds] = useState<PromotedMarker[]>([]);
+  const mapRef = useRef(null);
+
   useEffect(() => {
     const handleGetPromoteds = async () => {
       const { data } = await getPromoteds();
@@ -22,32 +30,47 @@ const DashboardMap = () => {
     };
     handleGetPromoteds();
   }, []);
+
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: KEY_GOOGLE,
+  });
+
+  useEffect(() => {
+    if (isLoaded && !loadError && mapRef.current) {
+      console.log("mapRef", mapRef.current);
+    }
+  }, [isLoaded, loadError]);
+
+  if (loadError) return <div>Error loading maps</div>;
+  if (!isLoaded) return <div>Loading maps</div>;
+
   return (
     <div style={{ height: "96vh", width: "100%", margin: "0 auto" }}>
-      {/* <Wrapper apiKey={KEY_GOOGLE} render={SpinC}>
-        <MapComponent promoteds={promoteds} />
-      </Wrapper> */}
-      <APIProvider apiKey={KEY_GOOGLE}>
-        <Map
-          zoom={8}
-          center={{ lat: 25.205641832427236, lng: -111.46940701659838 }}
-          gestureHandling={"greedy"}
-          disableDefaultUI={true}
-          mapId={KEY_GOOGLE_ID}
-        >
-          {promoteds.map((promoted) => (
-            <MarkerInfo
-              key={promoted.id}
-              lat={parseFloat(promoted.lat)}
-              lng={parseFloat(promoted.lng)}
-              email={promoted.email}
-              name={promoted.name}
-              section={promoted.section}
-              phone_number={promoted.phone_number}
-            />
-          ))}
-        </Map>
-      </APIProvider>
+      <GoogleMap
+        mapContainerStyle={{ width: "100%", height: "100%" }}
+        zoom={8}
+        center={{ lat: 25.205641832427236, lng: -111.46940701659838 }}
+        onLoad={(map) => {
+          mapRef.current = map;
+          new google.maps.KmlLayer({
+            url: "https://cotizaciones.tendenciaelartedeviajar.com/tendencia-cotizador-api/public/kml/prueba_20.kmz",
+            map: mapRef.current,
+            preserveViewport: true,
+          });
+        }}
+      >
+        {promoteds.map((promoted) => (
+          <MarkerInfo
+            key={promoted.id}
+            lat={parseFloat(promoted.lat)}
+            lng={parseFloat(promoted.lng)}
+            email={promoted.email}
+            name={promoted.name}
+            section={promoted.section}
+            phone_number={promoted.phone_number}
+          />
+        ))}
+      </GoogleMap>
     </div>
   );
 };
