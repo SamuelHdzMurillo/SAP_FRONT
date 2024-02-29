@@ -5,20 +5,26 @@ import { useAlertStore } from "@/components/alerts/alertStore";
 
 import { MunicipalCatalog } from "@/module/promoted/page/PromotedRegister";
 import { Priority } from "../store";
+import InputText from "@/components/InputText";
+import { getPriorityCharts, postPriority } from "../api";
 interface PromotorsFormProps {
   form: FormInstance<Priority>;
   isTitle?: boolean;
   typeMeta?: string;
+  sectionsSelects: AnyObject[];
   handleCloseModal?: () => void;
   municipal: MunicipalCatalog[];
   districts?: MunicipalCatalog[] | [];
   sections?: MunicipalCatalog[] | [];
   handleGetDistrictByMunicap?: (id: number) => void;
   handleGetSectionsByDistrict?: (id: number) => void;
+  handleSetSectionsSelects: (sections: MunicipalCatalog[]) => void;
 }
 const MODULE = "Meta";
 const PriorityFrom = ({
   form,
+  sectionsSelects = [],
+  handleSetSectionsSelects,
   municipal,
   districts = [],
   sections = [],
@@ -26,44 +32,49 @@ const PriorityFrom = ({
   handleGetSectionsByDistrict,
   handleCloseModal,
 }: PromotorsFormProps) => {
+  // const [form] = Form.useForm();
   const setAlert = useAlertStore((state) => state.setAlert);
   const clearAlert = useAlertStore((state) => state.clearAlert);
   const [loading, setLoading] = useState(false);
-  const [sectionsSelects, setSectionsSelects] = useState<MunicipalCatalog[]>(
-    []
-  );
+
   useEffect(() => {
     form.resetFields();
   }, []);
-  const onChange = (changedValues: AnyObject) => {
-    const key = Object.keys(changedValues)[0];
-    console.log(changedValues, "changedValues");
-  };
   const onFinish = async (values: Priority) => {
     setLoading(true);
     const newValues = {
-      ...values,
+      Name: values.name,
+      data: values.sections_id,
     };
+    console.log(newValues, "newValues");
     try {
-      //   const data = await postGoal(newValues, typeMeta);
-      //   const formatedGoal = {
-      //     id: data.goal.id,
-      //     goalName: data.goal.goal_name,
-      //     goalValue: data.goal.goal_value,
-      //     muncipal_name: data.goal.municipal_name,
-      //     municipal_id: 0,
-      //     promoted_count: data.goal.promoted_count,
-      //   };
-      //   addGoal(formatedGoal);
-      setAlert({
-        type: "success",
-        message: `${MODULE} registrado correctamente`,
-        isShow: true,
-      });
+      Promise.all([postPriority(newValues), getPriorityCharts()])
+        .then(() => {
+          setAlert({
+            type: "success",
+            message: `${MODULE} registrado correctamente`,
+            isShow: true,
+          });
+        })
+        .catch(() => {
+          setAlert({
+            type: "error",
+            message: "Ocurrio un error en el servidor",
+            isShow: true,
+          });
+        })
+        .finally(() => {
+          setLoading(false);
+          form.resetFields();
+          handleCloseModal && handleCloseModal();
+          setTimeout(() => {
+            clearAlert();
+          }, 3000);
+        });
     } catch (error) {
       setAlert({
         type: "error",
-        message: "Ocurrio un error al registrar el promovido",
+        message: "Ocurrio un error en el servidor",
         isShow: true,
       });
     }
@@ -93,9 +104,11 @@ const PriorityFrom = ({
         layout="vertical"
         onFinish={onFinish}
         autoComplete="off"
-        onValuesChange={(e) => onChange(e)}
       >
         <Row gutter={[10, 10]}>
+          <Col span={24}>
+            <InputText required label="Objetivo" name="name" />
+          </Col>
           <Col xs={{ span: 24 }} lg={{ span: 12 }}>
             <Form.Item
               name="municipal_id"
@@ -143,7 +156,7 @@ const PriorityFrom = ({
               />
             </Form.Item>
           </Col>
-          <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+          <Col span={24}>
             <Form.Item
               name="section_id"
               label="Sección"
@@ -162,12 +175,14 @@ const PriorityFrom = ({
                 placeholder="Selecciona tu seccion"
                 options={sections}
                 onChange={(e, option) => {
-                  const label = option?.label ?? "";
+                  const label = (option as { label?: string })?.label ?? "";
                   const newSectionsSelects = [
                     ...sectionsSelects,
                     { label, value: e },
                   ];
-                  setSectionsSelects(newSectionsSelects);
+                  handleSetSectionsSelects(
+                    newSectionsSelects as MunicipalCatalog[]
+                  );
                   form.setFieldsValue({
                     sections_id: newSectionsSelects.map((e) => e.value),
                   });
@@ -191,6 +206,17 @@ const PriorityFrom = ({
                 defaultValue={sectionsSelects}
                 style={{ width: "100%" }}
                 options={sectionsSelects}
+                onDeselect={(e) => {
+                  const newSectionsSelects = sectionsSelects.filter(
+                    (item) => item.value !== e.value
+                  );
+                  handleSetSectionsSelects(
+                    newSectionsSelects as MunicipalCatalog[]
+                  );
+                  form.setFieldsValue({
+                    sections_id: newSectionsSelects.map((e) => e.value),
+                  });
+                }}
               />
             </Form.Item>
           </Col>

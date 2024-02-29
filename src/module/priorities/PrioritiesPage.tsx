@@ -1,10 +1,9 @@
 import LayoutC from "@/components/LayoutC";
 import React, { useEffect } from "react";
-import { Button, Col, FormInstance, Row } from "antd";
+import { Button } from "antd";
 import ModalC from "@/components/ModalC";
 import { usePriorityHook } from "./hook/usePriorityHook";
 import PriorityForm from "./components/PriorityForm";
-import { Priority } from "./store";
 
 const PrioritiesPage: React.FC = () => {
   const {
@@ -13,65 +12,43 @@ const PrioritiesPage: React.FC = () => {
     sections,
     isModalOpen,
     form,
+    sectionsSelects,
     handleGetDistrictByMunicap,
     handleGetSectionsByDistrict,
     handleOpenModal,
     handleCloseModal,
+    handleSetSectionsSelects,
+    handleGetPriorities,
   } = usePriorityHook();
 
   useEffect(() => {
+    handleGetPriorities();
     // handleGetGoals("");
     // Your code here
   }, []);
 
   const options2 = {
-    series: [
-      {
-        name: "Actual",
-        data: [44],
-      },
-      {
-        name: "Meta",
-        data: [76],
-      },
-    ],
     chart: {
       type: "bar",
-      height: 350,
     },
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        columnWidth: "55%",
-        endingShape: "rounded",
+    series: [
+      {
+        data: [
+          {
+            x: "category A",
+            y: 10,
+          },
+          {
+            x: "category B",
+            y: 18,
+          },
+          {
+            x: "category C",
+            y: 13,
+          },
+        ],
       },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      show: true,
-      width: 2,
-      colors: ["transparent"],
-    },
-    xaxis: {
-      categories: ["Objetivo 1"],
-    },
-    yaxis: {
-      title: {
-        text: "Promovidos",
-      },
-    },
-    fill: {
-      opacity: 1,
-    },
-    tooltip: {
-      y: {
-        formatter: function (val: any) {
-          return val + " Promovidos";
-        },
-      },
-    },
+    ],
   };
   return (
     <LayoutC items={[{ title: "Metas" }]} title={"Graficas de Metas"}>
@@ -134,7 +111,9 @@ const PrioritiesPage: React.FC = () => {
         handleCancel={handleCloseModal}
       >
         <PriorityForm
+          sectionsSelects={sectionsSelects}
           form={form}
+          handleSetSectionsSelects={handleSetSectionsSelects}
           municipal={municipal}
           districts={districts}
           sections={sections}

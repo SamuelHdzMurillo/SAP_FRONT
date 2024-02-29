@@ -4,7 +4,7 @@ import ReactApexChart from "react-apexcharts";
 import { Goal } from "../store";
 import { AnyObject } from "yup";
 
-interface ChartGoalProps {
+interface PriorityChartProps {
   options: ApexOptions;
   type: string;
   title: string;
@@ -13,14 +13,14 @@ interface ChartGoalProps {
   handleDeleteGoal: (id: number) => void;
 }
 
-const ChartGoal = ({
+const PriorityChart = ({
   options,
 
   series,
   title,
   goal,
   handleDeleteGoal,
-}: ChartGoalProps) => {
+}: PriorityChartProps) => {
   const { id } = goal;
   return (
     <Card
@@ -50,4 +50,4 @@ const ChartGoal = ({
   );
 };
 
-export default ChartGoal;
+export default PriorityChart;
