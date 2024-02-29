@@ -4,6 +4,7 @@ export interface Priority {
   id: number;
   name: string;
   value: string;
+  sections_id: number[];
   promoted_count?: number;
   municipal_id: number;
   section_id?: number;

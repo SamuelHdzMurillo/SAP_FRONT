@@ -11,9 +11,10 @@ const PrioritiesPage: React.FC = () => {
     municipal,
     districts,
     sections,
+    isModalOpen,
+    form,
     handleGetDistrictByMunicap,
     handleGetSectionsByDistrict,
-    isModalOpen,
     handleOpenModal,
     handleCloseModal,
   } = usePriorityHook();
@@ -133,22 +134,13 @@ const PrioritiesPage: React.FC = () => {
         handleCancel={handleCloseModal}
       >
         <PriorityForm
+          form={form}
           municipal={municipal}
           districts={districts}
           sections={sections}
           handleGetDistrictByMunicap={handleGetDistrictByMunicap}
           handleGetSectionsByDistrict={handleGetSectionsByDistrict}
         />
-        {/* <GoalForm
-          municipal={municipal}
-          districts={districts}
-          sections={sections}
-          handleGetDistrictByMunicap={handleGetDistrictByMunicap}
-          handleGetSectionsByDistrict={handleGetSectionsByDistrict}
-          form={form}
-          handleCloseModal={handleCloseModal}
-          typeMeta={typeMeta}
-        /> */}
       </ModalC>
     </LayoutC>
   );

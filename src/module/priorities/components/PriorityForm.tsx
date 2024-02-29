@@ -1,4 +1,4 @@
-import { Col, Row, Form, Select, Button } from "antd";
+import { Col, Row, Form, Select, Button, FormInstance } from "antd";
 import { useEffect, useState } from "react";
 import type { AnyObject } from "yup";
 import { useAlertStore } from "@/components/alerts/alertStore";
@@ -6,6 +6,7 @@ import { useAlertStore } from "@/components/alerts/alertStore";
 import { MunicipalCatalog } from "@/module/promoted/page/PromotedRegister";
 import { Priority } from "../store";
 interface PromotorsFormProps {
+  form: FormInstance<Priority>;
   isTitle?: boolean;
   typeMeta?: string;
   handleCloseModal?: () => void;
@@ -17,7 +18,7 @@ interface PromotorsFormProps {
 }
 const MODULE = "Meta";
 const PriorityFrom = ({
-  typeMeta = "",
+  form,
   municipal,
   districts = [],
   sections = [],
@@ -25,7 +26,6 @@ const PriorityFrom = ({
   handleGetSectionsByDistrict,
   handleCloseModal,
 }: PromotorsFormProps) => {
-  const [form] = Form.useForm();
   const setAlert = useAlertStore((state) => state.setAlert);
   const clearAlert = useAlertStore((state) => state.clearAlert);
   const [loading, setLoading] = useState(false);
@@ -163,10 +163,13 @@ const PriorityFrom = ({
                 options={sections}
                 onChange={(e, option) => {
                   const label = option?.label ?? "";
-                  console.log(label, "label");
-                  setSectionsSelects([...sectionsSelects, { label, value: e }]);
+                  const newSectionsSelects = [
+                    ...sectionsSelects,
+                    { label, value: e },
+                  ];
+                  setSectionsSelects(newSectionsSelects);
                   form.setFieldsValue({
-                    sections_id: sectionsSelects.map((e) => e.value),
+                    sections_id: newSectionsSelects.map((e) => e.value),
                   });
                 }}
               />
