@@ -69,8 +69,7 @@ const PriorityFrom = ({
           ),
         };
       });
-      setPriorities(newData);
-      console.log(dataGet, "getResponse"); // This will log the response from getPriorityCharts()
+      setPriorities(newData);// This will log the response from getPriorityCharts()
       setAlert({
         type: "success",
         message: `${MODULE} registrado correctamente`,
