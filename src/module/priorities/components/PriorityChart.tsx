@@ -33,14 +33,7 @@ const PriorityChart = ({
       <div style={{ position: "relative", margin: "0 auto" }}>
         <ReactApexChart
           options={{
-            chart: {
-              type: "bar",
-              height: 350,
-              stacked: true,
-              toolbar: {
-                show: false,
-              },
-            },
+            ...options,
           }}
           series={series as ApexAxisChartSeries | ApexNonAxisChartSeries}
           type="bar"

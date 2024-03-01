@@ -29,7 +29,30 @@ const PrioritiesPage: React.FC = () => {
     chart: {
       type: "bar",
     },
+    fill: {
+      opacity: 1,
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: "55%",
+        endingShape: "rounded",
+      },
+    },
+    tooltip: {
+      y: {
+        formatter: function (val: any) {
+          return val + " Promovidos";
+        },
+      },
+    },
+    stroke: {
+      show: true,
+      width: 2,
+      colors: ["transparent"],
+    },
     series: [
+      
       {
         data: [
           {

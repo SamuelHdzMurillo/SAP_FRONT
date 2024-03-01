@@ -88,6 +88,11 @@ const MainC = () => {
       ],
     },
     {
+      label: "Secciones Prioritarias",
+      key: "/prioridades",
+      onClick: () => navigate("/secciones-prioritarias"),
+    },
+    {
       label: "Promovidos",
       key: "/promovidos-menu",
       icon: <FontAwesomeIcon icon={faUsers} />,
