@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import LayoutC from "@/components/LayoutC";
 import Municipals from "@/module/charts/pages/Municipals";
 import Charts from "@/module/charts/pages/Countchart";
+import PieChartMun from "@/module/charts/pages/PiechartMun";
 import {
   getDashboardCountByPromotor,
   getPromotedByDatesPage,
@@ -246,11 +247,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
               height={500}
             />
           </Card>
-          <Card title="Total Promovidos por Municipio">
-            <div className="pie-container">
-              <Pie data={pieData} />
-            </div>
-          </Card>
+          <PieChartMun/>
           <Municipals />
           <Charts />
         </div>

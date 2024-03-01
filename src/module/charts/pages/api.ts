@@ -45,3 +45,34 @@ export const getPromotedsCountByMunicipality = async (
     // Aquí puedes manejar el error como prefieras
   }
 };
+
+// api.ts
+// api.ts
+// api.ts
+// api.ts
+// api.ts
+// api.ts
+// api.ts
+export const gettotalPromotedsByMunicipality = async () => {
+  try {
+    const resp = await requestHttp.get('/api/municipals/total-promoteds', { params: { filter: 'all' } });
+
+    const data = resp.data;
+
+    console.log("Datos de la API:", data);
+
+    return data;
+  } catch (error) {
+    console.error('Error al obtener los datos:', error);
+    throw error;  // Puedes lanzar el error nuevamente si es necesario
+  }
+};
+
+
+
+
+
+
+
+
+
