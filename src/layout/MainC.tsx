@@ -13,6 +13,7 @@ import {
   faAddressBook,
   faTriangleExclamation,
   faUsers,
+  faExclamation,
 } from "@fortawesome/free-solid-svg-icons";
 
 import logo from "../assets/imgs/HD_LOGOTIPOS_V_S.png";
@@ -88,9 +89,10 @@ const MainC = () => {
       ],
     },
     {
-      label: "Secciones Prioritarias",
+      label: "Secciones Prior.",
       key: "/prioridades",
       onClick: () => navigate("/secciones-prioritarias"),
+      icon: <FontAwesomeIcon icon={faExclamation} />,
     },
     {
       label: "Promovidos",

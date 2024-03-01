@@ -83,9 +83,9 @@ function transformData(counts: any[], selectedMunicipality: string): TreeDataIte
     ) {
       const porcentaje = ((item.promoved_count / totalPromovidos) * 100).toFixed(2);
       treeData.push({
-        name: `District ${item.district_number}`,
+        name: `Distrito ${item.district_number}`, // Cambiado de "District" a "Distrito"
         value: item.promoved_count,
-        fullLabel: `${item.municipal_name} - District ${item.district_number} - ${item.date}`,
+        fullLabel: `${item.municipal_name} - Distrito ${item.district_number} - ${item.date}`, // Cambiado de "District" a "Distrito"
         porcentaje: `${porcentaje}%`,
       });
     }
