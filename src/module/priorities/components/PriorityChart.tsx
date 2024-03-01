@@ -1,27 +1,27 @@
 import { Button, Card } from "antd";
 import { ApexOptions } from "apexcharts";
 import ReactApexChart from "react-apexcharts";
-import { Goal } from "../store";
 import { AnyObject } from "yup";
+import { Priority } from "../store";
 
 interface PriorityChartProps {
   options: ApexOptions;
   type: string;
   title: string;
-  series: AnyObject[];
-  goal: Goal;
+  series: AnyObject;
+  data: Priority;
   handleDeleteGoal: (id: number) => void;
 }
 
 const PriorityChart = ({
   options,
-
   series,
   title,
-  goal,
+  data,
   handleDeleteGoal,
 }: PriorityChartProps) => {
-  const { id } = goal;
+  const { id } = data;
+  console.log(series, "series");
   return (
     <Card
       style={{
@@ -32,8 +32,17 @@ const PriorityChart = ({
     >
       <div style={{ position: "relative", margin: "0 auto" }}>
         <ReactApexChart
-          options={options}
-          series={series}
+          options={{
+            chart: {
+              type: "bar",
+              height: 350,
+              stacked: true,
+              toolbar: {
+                show: false,
+              },
+            },
+          }}
+          series={series as ApexAxisChartSeries | ApexNonAxisChartSeries}
           type="bar"
           height={500}
         />

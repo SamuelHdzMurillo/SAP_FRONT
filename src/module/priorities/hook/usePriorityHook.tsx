@@ -7,9 +7,11 @@ import { MunicipalCatalog } from "@/module/promoted/page/PromotedRegister";
 import { Form } from "antd";
 import { useState } from "react";
 import { getPriorityCharts } from "../api";
+import { PriorityChartApi, usePriorityStore } from "../store";
 
 export const usePriorityHook = () => {
   const [form] = Form.useForm();
+  const setPriorities = usePriorityStore((state) => state.setPriorities);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [municipal, setMunicipal] = useState<MunicipalCatalog[]>([]);
   const [districts, setDistricts] = useState<MunicipalCatalog[]>([]);
@@ -18,9 +20,23 @@ export const usePriorityHook = () => {
     []
   );
   const handleGetPriorities = async () => {
-    // Your code here
     const { data } = await getPriorityCharts();
-    console.log(data, "data");
+    const newData = data.map((item: any) => {
+      return {
+        id: item.id,
+        name: item["Name"],
+        promotedsByPriority: item.promoteds_by_priority_section.map(
+          (prom: PriorityChartApi) => {
+            return {
+              x: prom.section_name,
+              y: prom.promoteds_count,
+            };
+          }
+        ),
+      };
+    });
+    setPriorities(newData);
+    console.log(newData, "newData");
   };
   const handleGetDistrictByMunicap = async (id: number) => {
     const { data } = await getDistrictByMunicipal({ municipal_id: id });
@@ -36,7 +52,7 @@ export const usePriorityHook = () => {
   const handleOpenModal = async () => {
     const data = await getMunicipalCatalog();
     setMunicipal(data);
-
+    setSectionsSelects([]);
     setIsModalOpen(true);
   };
   const handleCloseModal = () => {
@@ -48,13 +64,13 @@ export const usePriorityHook = () => {
     setSectionsSelects(sections);
   };
   return {
-    handleGetPriorities,
     form,
     sectionsSelects,
     municipal,
     districts,
     sections,
     isModalOpen,
+    handleGetPriorities,
     handleGetDistrictByMunicap,
     handleGetSectionsByDistrict,
     handleOpenModal,

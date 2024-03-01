@@ -1,16 +1,28 @@
 import { create } from "zustand";
 
+export interface PriorityChartApi {
+  section_id: number;
+  section_name: string;
+  promoteds_count: number;
+}
+
+interface PriorityChartI {
+  x: string;
+  y: number;
+} 
 export interface Priority {
   id: number;
   name: string;
-  value: string;
+  promotedsByPriority: PriorityChartI[];
+}
+export interface PriorityForm {
+  id: number;
+  name: string;
   sections_id: number[];
   promoted_count?: number;
   municipal_id: number;
   section_id?: number;
   district_id?: number;
-  muncipal_name?: string;
-  district_name?: string;
   section_name?: string;
 }
 

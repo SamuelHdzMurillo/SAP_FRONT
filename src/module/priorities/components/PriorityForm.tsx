@@ -4,11 +4,11 @@ import type { AnyObject } from "yup";
 import { useAlertStore } from "@/components/alerts/alertStore";
 
 import { MunicipalCatalog } from "@/module/promoted/page/PromotedRegister";
-import { Priority } from "../store";
+import { PriorityChartApi, PriorityForm, usePriorityStore } from "../store";
 import InputText from "@/components/InputText";
 import { getPriorityCharts, postPriority } from "../api";
 interface PromotorsFormProps {
-  form: FormInstance<Priority>;
+  form: FormInstance<PriorityForm>;
   isTitle?: boolean;
   typeMeta?: string;
   sectionsSelects: AnyObject[];
@@ -35,12 +35,13 @@ const PriorityFrom = ({
   // const [form] = Form.useForm();
   const setAlert = useAlertStore((state) => state.setAlert);
   const clearAlert = useAlertStore((state) => state.clearAlert);
+  const setPriorities = usePriorityStore((state) => state.setPriorities);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     form.resetFields();
   }, []);
-  const onFinish = async (values: Priority) => {
+  const onFinish = async (values: PriorityForm) => {
     setLoading(true);
     const newValues = {
       Name: values.name,
@@ -48,42 +49,47 @@ const PriorityFrom = ({
     };
     console.log(newValues, "newValues");
     try {
-      Promise.all([postPriority(newValues), getPriorityCharts()])
-        .then(() => {
-          setAlert({
-            type: "success",
-            message: `${MODULE} registrado correctamente`,
-            isShow: true,
-          });
-        })
-        .catch(() => {
-          setAlert({
-            type: "error",
-            message: "Ocurrio un error en el servidor",
-            isShow: true,
-          });
-        })
-        .finally(() => {
-          setLoading(false);
-          form.resetFields();
-          handleCloseModal && handleCloseModal();
-          setTimeout(() => {
-            clearAlert();
-          }, 3000);
-        });
+      const [_, getResponse] = await Promise.all([
+        postPriority(newValues),
+        getPriorityCharts(),
+      ]);
+
+      const { data: dataGet } = getResponse;
+      const newData = dataGet.map((item: any) => {
+        return {
+          id: item.id,
+          name: item["Name"],
+          promotedsByPriority: item.promoteds_by_priority_section.map(
+            (prom: PriorityChartApi) => {
+              return {
+                x: prom.section_name,
+                y: prom.promoteds_count,
+              };
+            }
+          ),
+        };
+      });
+      setPriorities(newData);
+      console.log(dataGet, "getResponse"); // This will log the response from getPriorityCharts()
+      setAlert({
+        type: "success",
+        message: `${MODULE} registrado correctamente`,
+        isShow: true,
+      });
     } catch (error) {
       setAlert({
         type: "error",
         message: "Ocurrio un error en el servidor",
         isShow: true,
       });
+    } finally {
+      setLoading(false);
+      form.resetFields();
+      handleCloseModal && handleCloseModal();
+      setTimeout(() => {
+        clearAlert();
+      }, 3000);
     }
-    setLoading(false);
-    form.resetFields();
-    handleCloseModal && handleCloseModal();
-    setTimeout(() => {
-      clearAlert();
-    }, 3000);
   };
 
   const filterOption = (

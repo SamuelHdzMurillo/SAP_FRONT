@@ -1,9 +1,11 @@
 import LayoutC from "@/components/LayoutC";
 import React, { useEffect } from "react";
-import { Button } from "antd";
+import { Button, Col, Row } from "antd";
 import ModalC from "@/components/ModalC";
 import { usePriorityHook } from "./hook/usePriorityHook";
 import PriorityForm from "./components/PriorityForm";
+import PriorityChart from "./components/PriorityChart";
+import { usePriorityStore } from "./store";
 
 const PrioritiesPage: React.FC = () => {
   const {
@@ -21,11 +23,7 @@ const PrioritiesPage: React.FC = () => {
     handleGetPriorities,
   } = usePriorityHook();
 
-  useEffect(() => {
-    handleGetPriorities();
-    // handleGetGoals("");
-    // Your code here
-  }, []);
+  const priorities = usePriorityStore((state) => state.priorities);
 
   const options2 = {
     chart: {
@@ -50,6 +48,11 @@ const PrioritiesPage: React.FC = () => {
       },
     ],
   };
+  useEffect(() => {
+    handleGetPriorities();
+    // handleGetGoals("");
+    // Your code here
+  }, []);
   return (
     <LayoutC items={[{ title: "Metas" }]} title={"Graficas de Metas"}>
       <div
@@ -72,38 +75,28 @@ const PrioritiesPage: React.FC = () => {
           Agregar una grafica prioritaria{" "}
         </Button>
       </div>
-      {/* <Row gutter={[10, 10]}>
-        {goalsStore.length > 0 &&
-          goalsStore.map((goal, index) => (
+      <Row gutter={[10, 10]}>
+        {priorities.length > 0 &&
+          priorities.map((goal, index) => (
             <Col key={index + 2} span={24} sm={12}>
-              <ChartGoal
-                handleDeleteGoal={handleDeleteGoal}
-                title={goal.muncipal_name}
+              <PriorityChart
+                handleDeleteGoal={() => console.log("delete")}
+                title={goal.name}
                 options={{
                   ...options2,
-                  xaxis: {
-                    categories: [goal.goalName],
-                  },
                   chart: { ...options2.chart, type: "bar" },
                 }}
-                goal={goal}
+                data={goal}
                 type="bar"
                 series={[
                   {
-                    name: "Actual",
-                    color: "#8f2a2b",
-                    data: [goal.promoted_count],
-                  },
-                  {
-                    name: "Meta",
-                    color: "#1C1C1C",
-                    data: [parseInt(goal.goalValue)],
+                    data: goal.promotedsByPriority,
                   },
                 ]}
               />
             </Col>
           ))}
-      </Row> */}
+      </Row>
       <ModalC
         title="Agregar Grafica Prioritaria"
         isModalOpen={isModalOpen}
@@ -117,6 +110,7 @@ const PrioritiesPage: React.FC = () => {
           municipal={municipal}
           districts={districts}
           sections={sections}
+          handleCloseModal={handleCloseModal}
           handleGetDistrictByMunicap={handleGetDistrictByMunicap}
           handleGetSectionsByDistrict={handleGetSectionsByDistrict}
         />
