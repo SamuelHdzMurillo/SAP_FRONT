@@ -26,9 +26,11 @@ export const usePriorityHook = () => {
         id: item.id,
         name: item["Name"],
         promotedsByPriority: item.promoteds_by_priority_section.map(
-          (prom: PriorityChartApi) => {
+          (prom: PriorityChartApi, i: number) => {
             return {
               x: prom.section_name,
+              fillColor: i % 2 === 0 ? "#8f2a2b" : "#1C1C1C", // Change the color based on whether the index is even or odd
+              strokeColor: i % 2 === 0 ? "#8f2a2b" : "#1C1C1C", // Change the color based on whether the index is even or odd
               y: prom.promoteds_count,
             };
           }
@@ -36,7 +38,6 @@ export const usePriorityHook = () => {
       };
     });
     setPriorities(newData);
-    console.log(newData, "newData");
   };
   const handleGetDistrictByMunicap = async (id: number) => {
     const { data } = await getDistrictByMunicipal({ municipal_id: id });

@@ -54,7 +54,7 @@ const PrioritiesPage: React.FC = () => {
     // Your code here
   }, []);
   return (
-    <LayoutC items={[{ title: "Metas" }]} title={"Graficas de Metas"}>
+    <LayoutC items={[{ title: "Secciones Prioritarias" }]} title={"Graficas"}>
       <div
         style={{
           width: "100%",

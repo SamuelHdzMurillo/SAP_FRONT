@@ -33,7 +33,11 @@ const ChartGoal = ({
       <div style={{ position: "relative", margin: "0 auto" }}>
         <ReactApexChart
           options={options}
-          series={series}
+          series={[
+            {
+              data: series[0].data,
+            },
+          ]}
           type="bar"
           height={500}
         />

@@ -2,7 +2,6 @@ import { useEffect, useState, useRef } from "react";
 import { getPromoteds } from "@/api/MapHttp";
 import {
   GoogleMap,
-  useLoadScript,
   useJsApiLoader,
 } from "@react-google-maps/api";
 import { MarkerInfo } from "../components/MarkerInfo";
