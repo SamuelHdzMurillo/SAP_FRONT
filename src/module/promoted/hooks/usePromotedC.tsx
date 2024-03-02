@@ -59,6 +59,7 @@ export const usePromotedC = () => {
     district_id: null,
     section_id: null,
   });
+  const [params, setParams] = useState<any>({}); // eslint-disable-line
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
@@ -81,6 +82,10 @@ export const usePromotedC = () => {
       [`${dataIndex}`]: value,
       page: "1",
     });
+    setParams({
+      ...params,
+      [`${dataIndex}`]: value,
+    });
     setTableParams({
       ...tableParams,
       pagination: {
@@ -102,7 +107,7 @@ export const usePromotedC = () => {
       onClick: () => {
         setTypeExport("all");
         handleExportExcel();
-        setTitle("Exportar todos los promovidos")
+        setTitle("Exportar todos los promovidos");
       },
     },
     {
@@ -111,7 +116,7 @@ export const usePromotedC = () => {
       onClick: () => {
         setTypeExport("district");
         handleOpenModal("export");
-        setTitle("Exportar promovidos por Distrito")
+        setTitle("Exportar promovidos por Distrito");
         // handleExportExcel();
       },
     },
@@ -121,7 +126,7 @@ export const usePromotedC = () => {
       onClick: () => {
         setTypeExport("section");
         handleOpenModal("export");
-        setTitle("Exportar promovidos por Seccion")
+        setTitle("Exportar promovidos por Seccion");
         // handleExportExcel();
       },
     },
@@ -169,6 +174,7 @@ export const usePromotedC = () => {
       title: "Sección",
       dataIndex: "section",
       key: "section",
+      ...getColumnSearchProps("section"),
       render: (_, record) => <p>{record.section?.number}</p>,
     },
     {
@@ -207,6 +213,7 @@ export const usePromotedC = () => {
     });
     const { data } = await getAllPromoted({
       page: pagination.current?.toString(),
+      ...params,
     });
 
     setPromoteds(data);
@@ -329,7 +336,7 @@ export const usePromotedC = () => {
   };
   const handleSetTitle = (title: string) => {
     setTitle(title);
-  }
+  };
   return {
     municipal,
     districts,
@@ -343,7 +350,7 @@ export const usePromotedC = () => {
     items,
     typeExport,
     formExport,
-    title,  
+    title,
     handleSetTitle,
     handleCloseModal,
     handleOpenModal,

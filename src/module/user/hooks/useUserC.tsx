@@ -26,6 +26,7 @@ export const useUserC = () => {
       total: 50,
     },
   });
+  const [params, setParams] = useState<any>({}); // eslint-disable-line
 
   const handleGetUser = async (id: number) => {
     setTitleModal("Editar Usuario");
@@ -41,6 +42,10 @@ export const useUserC = () => {
     const { data, meta } = await getAllUser({
       [`${dataIndex}`]: value,
       page: "1",
+    });
+    setParams({
+      ...params,
+      [`${dataIndex}`]: value,
     });
     setLoading(true);
     setTableParams({
@@ -67,7 +72,7 @@ export const useUserC = () => {
       render: (text) => (
         <img
           src={
-            text !== null || text.length > 0
+            text !== null 
               ? `${URL}/storage/${text}`
               : profilePhoto
           }
@@ -128,7 +133,10 @@ export const useUserC = () => {
     setTableParams({
       pagination,
     });
-    const { data } = await getAllUser({ page: pagination.current?.toString() });
+    const { data } = await getAllUser({
+      page: pagination.current?.toString(),
+      ...params,
+    });
 
     setUsers(data);
 
@@ -139,7 +147,6 @@ export const useUserC = () => {
     setLoading(false);
   };
   const handleGetUsers = async () => {
-    
     setLoading(true);
     const { data, meta } = await getAllUser({ page: "1" });
 

@@ -1,9 +1,6 @@
 // import { createElement, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import {
-  UserAddOutlined,
-  UsergroupAddOutlined,
-} from "@ant-design/icons";
+import { UserAddOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import { Dropdown, Layout, Menu, Typography, theme } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -182,6 +179,7 @@ const MainC = () => {
     });
     navigate("/login");
   };
+  console.log(userAuth.profile_img_path.length > 0);
   return (
     // <ProtectedRoute redirectTo={"/login"}>
     <Layout>
@@ -228,9 +226,9 @@ const MainC = () => {
                 gap: "10px",
               }}
             >
+              {}
               <img
                 src={
-                  userAuth.profile_img_path !== null ||
                   userAuth.profile_img_path.length > 0
                     ? `${URL}/storage/${userAuth.profile_img_path}`
                     : profilePhoto

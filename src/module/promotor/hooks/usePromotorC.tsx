@@ -30,6 +30,7 @@ export const usePromotorC = () => {
       total: 0,
     },
   });
+  const [params, setParams] = useState<any>({}); // eslint-disable-line
 
   const handleGetPromotor = async (id: number) => {
     setLoading(true);
@@ -56,6 +57,10 @@ export const usePromotorC = () => {
       [`${dataIndex}`]: value,
       page: "1",
     });
+    setParams({
+      ...params,
+      [`${dataIndex}`]: value,
+    });
     setPromotors(data);
     setTableParams({
       ...tableParams,
@@ -78,7 +83,7 @@ export const usePromotorC = () => {
       promotor_id: promotor.id,
       page: "1",
     });
-    console.log(meta)
+    console.log(meta);
     setPromotor({ ...promotor, promoteds: data });
     setTableParams({
       ...tableParams,
@@ -142,11 +147,7 @@ export const usePromotorC = () => {
       responsive: ["md"],
       render: (text) => (
         <img
-          src={
-            text !== null || text.length > 0
-              ? `${URL}/storage/${text}`
-              : profilePhoto
-          }
+          src={text !== null ? `${URL}/storage/${text}` : profilePhoto}
           alt="profile"
           style={{ width: "50px", height: "50px", borderRadius: "50%" }}
         />
@@ -223,6 +224,7 @@ export const usePromotorC = () => {
     });
     const { data } = await getAllPromotor({
       page: pagination.current?.toString(),
+      ...params,
     });
 
     setPromotors(data);

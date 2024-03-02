@@ -11,6 +11,7 @@ export const getAllPromoted = async ({
   electoral_key,
   curp,
   promotor_id,
+  section,
 }: {
   page: string;
   curp?: string;
@@ -20,6 +21,7 @@ export const getAllPromoted = async ({
   electoral_key?: string;
   name?: string;
   last_name?: string;
+  section?: string;
   promotor_id?: number;
 }) => {
   let params = "";
@@ -31,6 +33,9 @@ export const getAllPromoted = async ({
   }
   if (name) {
     params = params.concat(`&name=${name}`);
+  }
+  if (section) {
+    params = params.concat(`&section=${section}`);
   }
   if (last_name) {
     params = params.concat(`&last_name=${last_name}`);
