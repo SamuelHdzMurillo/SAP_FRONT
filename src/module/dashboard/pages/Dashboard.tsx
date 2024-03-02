@@ -218,7 +218,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
               options={{
                 chart: {
                   height: 500,
-                  type: "bar", // Replace "string" with a valid chart type like "bar", "line", etc.
+                  type: "bar", // Reemplaza "string" con un tipo de gráfico válido como "bar", "line", etc.
                 },
                 plotOptions: {
                   bar: {
@@ -233,20 +233,27 @@ const Dashboard: React.FC<DashboardProps> = () => {
                   show: false,
                 },
                 xaxis: {
-                  categories: transformedSeries.map((item) => item.name),
+                  categories: itemsChartByDates.map((item) => {
+                    const date = new Date(item.day);
+                    return date.toLocaleString("default", { month: "long" }).toUpperCase();
+                  }),
                   labels: {
                     style: {
                       fontSize: "12px",
                     },
                   },
                 },
-                colors: ["#0eb980"],
+                colors: ["#0eb980", "#FF4560", "#00E396", "#FEB019", "#775DD0"],
               }}
+              
+              
+              
               series={transformedSeries}
               type="bar"
               height={500}
             />
           </Card>
+
           <PieChartMun/>
           <Municipals />
           <Charts />
