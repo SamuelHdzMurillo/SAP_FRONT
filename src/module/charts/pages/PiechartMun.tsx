@@ -54,22 +54,22 @@ const PieChartComponent: React.FC = () => {
     const option = {
       tooltip: {
         trigger: 'item',
-        formatter: '{a} <br/>{b}: {c} ({d}%)',
+        formatter: '{b}: {c}',  // Mostrará el nombre del municipio y la cantidad de promovidos
       },
       legend: {
         orient: 'vertical',
         left: 10,
-        data: pieData.map((item) => `${item.municipal_name} - ${item.percentage}%`), // Incluye el porcentaje en la leyenda
+        data: pieData.map((item) => `${item.municipal_name} - ${item.percentage}% (${item.total_promoveds} promovidos)`),
       },
       series: [
         {
           name: 'Promovidos',
           type: 'pie',
-          radius: '55%',
+          radius: '45%',
           center: ['50%', '60%'],
           data: pieData.map((item) => ({
             value: item.total_promoveds,
-            name: `${item.municipal_name} - ${item.percentage}%`,
+            name: `${item.municipal_name} - ${item.percentage}% (${item.total_promoveds} promovidos)`,
           })),
           emphasis: {
             itemStyle: {
@@ -82,7 +82,19 @@ const PieChartComponent: React.FC = () => {
       ],
     };
 
-    option && myChart.setOption(option);
+    // Agregar etiquetas personalizadas en la parte superior
+    const textOption = {
+      type: 'text',
+      left: 'center',
+      top: 10,
+      style: {
+         // Puedes personalizar esto con los valores que desees
+        fontWeight: 'bold',
+        fontSize: 16,
+      },
+    };
+
+    option && myChart.setOption({ ...option, graphic: [textOption] });
 
     return () => {
       myChart.dispose();
