@@ -179,7 +179,6 @@ const MainC = () => {
     });
     navigate("/login");
   };
-  console.log(userAuth.profile_img_path.length > 0);
   return (
     // <ProtectedRoute redirectTo={"/login"}>
     <Layout>
@@ -238,6 +237,7 @@ const MainC = () => {
                   width: "30px",
                   height: "30px",
                   borderRadius: "50%",
+                  objectFit: "cover",
                 }}
               />
               {`${userAuth.name}`}

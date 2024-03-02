@@ -71,13 +71,14 @@ export const useUserC = () => {
       responsive: ["md"],
       render: (text) => (
         <img
-          src={
-            text !== null 
-              ? `${URL}/storage/${text}`
-              : profilePhoto
-          }
+          src={text !== null ? `${URL}/storage/${text}` : profilePhoto}
           alt="profile"
-          style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+          style={{
+            width: "50px",
+            height: "50px",
+            borderRadius: "50%",
+            objectFit: "cover",
+          }}
         />
       ),
     },
