@@ -30,16 +30,16 @@ const GoalPage: React.FC = () => {
   }, []);
 
   const options2 = {
-    series: [
-      {
-        name: "Actual",
-        data: [44],
-      },
-      {
-        name: "Meta",
-        data: [76],
-      },
-    ],
+    // series: [
+    //   {
+    //     name: "Actual",
+    //     data: [44],
+    //   },
+    //   {
+    //     name: "Meta",
+    //     data: [76],
+    //   },
+    // ],
     chart: {
       type: "bar",
       height: 350,

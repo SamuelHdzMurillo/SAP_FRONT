@@ -8,7 +8,7 @@ interface ChartGoalProps {
   options: ApexOptions;
   type: string;
   title: string;
-  series: AnyObject[];
+  series: AnyObject;
   goal: Goal;
   handleDeleteGoal: (id: number) => void;
 }
@@ -33,11 +33,7 @@ const ChartGoal = ({
       <div style={{ position: "relative", margin: "0 auto" }}>
         <ReactApexChart
           options={options}
-          series={[
-            {
-              data: series[0].data,
-            },
-          ]}
+          series={series as ApexAxisChartSeries | ApexNonAxisChartSeries}
           type="bar"
           height={500}
         />
