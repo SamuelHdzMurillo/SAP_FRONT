@@ -44,7 +44,7 @@ const Municipals: React.FC<MunicipalsProps> = () => {
 
   return (
     <div className="dashboard-container">
-      <Card title="Promovidos por Distrito ">
+      <Card title="Promovidos por distrito ">
         <select
           value={selectedMunicipality}
           onChange={(e) => setSelectedMunicipality(e.target.value)}

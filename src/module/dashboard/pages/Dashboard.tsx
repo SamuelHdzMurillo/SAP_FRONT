@@ -71,33 +71,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
     },
   ];
 
-  // const apexOptions = {
-  //   chart: {
-  //     height: 350,
-  //     type: "bar",
-  //   },
-  //   plotOptions: {
-  //     bar: {
-  //       columnWidth: "45%",
-  //       distributed: true,
-  //     },
-  //   },
-  //   dataLabels: {
-  //     enabled: false,
-  //   },
-  //   legend: {
-  //     show: false,
-  //   },
-  //   xaxis: {
-  //     categories: itemsChartByDates.map((item) => item.day),
-  //     labels: {
-  //       style: {
-  //         fontSize: "12px",
-  //       },
-  //     },
-  //   },
-  //   colors: colors,
-  // };
+  
 
   useEffect(() => {
     const handleGetPromotedsByPromoters = async () => {
@@ -120,7 +94,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
       const promotedsByDatesData = await getPromotedByDatesPage({
         filter: "all",
       });
-
+      
       
 
       setPromoterCountMonth(promoter_count_mont_data.promoteds_count);
@@ -163,46 +137,57 @@ const Dashboard: React.FC<DashboardProps> = () => {
       <div className="dashboard-container">
         <Widgets widgets={widgets} />
         <div className="chart-container">
-          <Card title="Promovidos por Mes">
-            <ReactApexChart
-              options={{
-                chart: {
-                  height: 500,
-                  type: "bar", // Reemplaza "string" con un tipo de gráfico válido como "bar", "line", etc.
-                },
-                plotOptions: {
-                  bar: {
-                    columnWidth: "50%",
-                    distributed: true,
-                  },
-                },
-                dataLabels: {
-                  enabled: false,
-                },
-                legend: {
-                  show: false,
-                },
-                xaxis: {
-                  categories: itemsChartByDates.map((item) => {
-                    const date = new Date(item.day);
-                    return date.toLocaleString("default", { month: "long" }).toUpperCase();
-                  }),
-                  labels: {
-                    style: {
-                      fontSize: "12px",
-                    },
-                  },
-                },
-                colors: ["#0eb980", "#FF4560", "#00E396", "#FEB019", "#775DD0"],
-              }}
-              
-              
-              
-              series={transformedSeries}
-              type="bar"
-              height={500}
-            />
-          </Card>
+        <Card title="Promovidos por mes">
+  <ReactApexChart
+    options={{
+      chart: {
+        height: 500,
+        type: "bar",
+      },
+      plotOptions: {
+        bar: {
+          columnWidth: "80%",
+          distributed: true,
+        },
+      },
+      dataLabels: {
+        enabled: true,
+        style: {
+          colors: ["#000"], // Color del texto de las etiquetas (negro en este caso)
+          fontSize: "12px",
+          fontWeight: "bold", // Puedes ajustar el peso de la fuente según tus preferencias
+        },
+      },
+      legend: {
+        show: false,
+      },
+      xaxis: {
+        categories: itemsChartByDates.map((item) => {
+          const date = new Date(item.day);
+          return date.toLocaleString("default", { month: "long" }).toUpperCase();
+        }),
+        labels: {
+          style: {
+            fontSize: "12px",
+          },
+        },
+      },
+      yaxis: {
+        labels: {
+          formatter: function (value) {
+            return value;
+          },
+        },
+      },
+      colors: ["#0eb980", "#FF4560", "#00E396", "#FEB019", "#775DD0"],
+    }}
+    series={transformedSeries}
+    type="bar"
+    height={500}
+  />
+</Card>
+
+
 
           <PieChartMun/>
           <Municipals />

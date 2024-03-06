@@ -103,7 +103,7 @@ const PieChartComponent: React.FC = () => {
   }, [pieData]);
 
   return (
-    <Card title="Total Promovidos por Municipio">
+    <Card title="Total promovidos por municipio">
       <div id="main" style={{ height: '500px' }} />
     </Card>
   );

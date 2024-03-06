@@ -111,7 +111,7 @@ const SunburstChart: React.FC = () => {
 
   return (
     <div>
-      <Card title="Promovidos por Distrito ">
+      <Card title="Promovidos por distrito y secciones">
         <Select
           defaultValue="ALL"
           style={{ width: 200 }}
@@ -122,6 +122,7 @@ const SunburstChart: React.FC = () => {
           <Option value="COMONDU">COMONDU</Option>
           <Option value="MULEGE">MULEGE</Option>
           <Option value="LOS CABOS">LOS CABOS</Option>
+          <Option value="LORETO">LORETO</Option>
           {/* Agregar más municipios según sea necesario */}
         </Select>
         <ReactECharts
