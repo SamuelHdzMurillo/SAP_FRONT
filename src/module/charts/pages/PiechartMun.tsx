@@ -19,15 +19,16 @@ const PieChartComponent: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const totalByMunicipalityData = await gettotalPromotedsByMunicipality(" ");
+        const totalByMunicipalityData = await gettotalPromotedsByMunicipality({ filter: 'all' });
+
         console.log("Respuesta de la API:", totalByMunicipalityData);
 
         if (totalByMunicipalityData && totalByMunicipalityData.municipals) {
           // Calcula el total para determinar los porcentajes
-          const total = totalByMunicipalityData.municipals.reduce((acc, current) => acc + current.total_promoveds, 0);
+          const total = totalByMunicipalityData.municipals.reduce((acc: any, current: { total_promoveds: any; }) => acc + current.total_promoveds, 0);
 
           // Calcula los porcentajes y actualiza el estado
-          const result = totalByMunicipalityData.municipals.map((item) => ({
+          const result = totalByMunicipalityData.municipals.map((item: { municipal_name: any; total_promoveds: number; }) => ({
             municipal_name: item.municipal_name,
             total_promoveds: item.total_promoveds,
             percentage: total === 0 ? '0.00' : ((item.total_promoveds / total) * 100).toFixed(2),

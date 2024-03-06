@@ -7,12 +7,12 @@ import PieChartMun from "@/module/charts/pages/PiechartMun";
 import {
   getDashboardCountByPromotor,
   getPromotedByDatesPage,
-  gettotalPromotedsByMunicipality,
+  
 } from "../api";
 import { Card } from "antd";
 import "./style.css";
 import { BarChartOutlined, UsergroupAddOutlined } from "@ant-design/icons";
-import { Pie } from "react-chartjs-2";
+
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import Widgets from "../components/Widgets";
 import ReactApexChart from "react-apexcharts";
@@ -62,27 +62,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
   const [promoter_count_sem, setPromoterCountsem] = useState<number>(0);
   const [promoter_count_day, setPromoterCountday] = useState<number>(0);
   const [promoter_countTotal, setPromoterCountTotal] = useState<number>(0);
-  const [pieData, setPieData] = useState<{
-    labels: string[];
-    datasets: {
-      label: string;
-      data: number[];
-      backgroundColor: string[];
-      borderColor: string[];
-      borderWidth: number;
-    }[];
-  }>({
-    labels: [],
-    datasets: [
-      {
-        label: "Cant. de Promovidos",
-        data: [],
-        backgroundColor: [],
-        borderColor: [],
-        borderWidth: 1,
-      },
-    ],
-  });
+  
 
   const transformedSeries = [
     {
@@ -121,15 +101,8 @@ const Dashboard: React.FC<DashboardProps> = () => {
 
   useEffect(() => {
     const handleGetPromotedsByPromoters = async () => {
-      const totalByMunicipalityData = await gettotalPromotedsByMunicipality({
-        filter: "",
-      });
-      const municipalNames = totalByMunicipalityData.municipals.map(
-        (item: { municipal_name: any }) => item.municipal_name
-      );
-      const totalPromoveds = totalByMunicipalityData.municipals.map(
-        (item: { total_promoveds: any }) => item.total_promoveds
-      );
+      
+      
 
       const promoter_count_mont_data = await getDashboardCountByPromotor({
         filter: "month",
@@ -148,30 +121,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
         filter: "all",
       });
 
-      setPieData({
-        labels: municipalNames,
-        datasets: [
-          {
-            label: "Cant. de Promovidos",
-            data: totalPromoveds,
-            backgroundColor: [
-              "rgb(14,185,128)",
-              "rgb(247,144,10)",
-              "rgb(99,102,241)",
-              "rgb(38,160,252)",
-              "rgb(255,97,120)",
-            ],
-            borderColor: [
-              "rgb(14,185,128)",
-              "rgb(247,144,10)",
-              "rgb(99,102,241)",
-              "rgb(38,160,252)",
-              "rgb(255,97,120)",
-            ],
-            borderWidth: 1,
-          },
-        ],
-      });
+      
 
       setPromoterCountMonth(promoter_count_mont_data.promoteds_count);
       setPromoterCountsem(promoter_count_sem_data.promoteds_count);
