@@ -78,7 +78,7 @@ const GoalDistrictsPage: React.FC = () => {
   return (
     <LayoutC
       items={[{ title: "Metas" }, { title: "Distritos" }]}
-      title={"Graficas de Metas"}
+      title={"Graficas de metas"}
     >
       <div
         style={{
@@ -133,7 +133,7 @@ const GoalDistrictsPage: React.FC = () => {
           ))}
       </Row>
       <ModalC
-        title="Agregar Meta"
+        title="Agregar meta"
         isModalOpen={isModalOpen}
         // handleOk={() => handleOpenModal()}
         handleCancel={handleCloseModal}

@@ -46,7 +46,7 @@ const PromotorHome = () => {
         handleTableChange={handleTableChange}
         loading={loading}
         handleAdd={handleOpenModal}
-        children={"Agregar Promotor"}
+        children={"Agregar promotor"}
       />
       <ModalC
         title={titleModal}

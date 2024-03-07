@@ -62,3 +62,5 @@ export const gettotalPromotedsByMunicipalitybydate = async () => {
   console.log(data);
   return data;
 };
+
+

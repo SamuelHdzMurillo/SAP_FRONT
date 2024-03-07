@@ -31,10 +31,10 @@ const ProblemHome = () => {
     <LayoutC
       items={[
         {
-          title: "Problemas",
+          title: "Problemáticas",
         },
       ]}
-      title={"Problemas"}
+      title={"Problemáticas"}
     >
       <TableC
         dataSource={problemsStore}
@@ -45,7 +45,7 @@ const ProblemHome = () => {
         children={"Agregar Usuario"}
       />
       <ModalC
-        title="Mostrar Problema"
+        title="Mostrar problemática"
         isModalOpen={isModalOpen}
         handleOk={() => handleOpenModal("post")}
         handleCancel={handleCloseModal}

@@ -36,7 +36,7 @@ const UserDetail = () => {
       >
         <TemplateDetail
           loading={loading}
-          title="Detalle del Usuario"
+          title="Detalle del usuario"
           data={userStore}
           isProfilePhoto={true}
           form={<UsersForm form={form} isDetail={true} />}

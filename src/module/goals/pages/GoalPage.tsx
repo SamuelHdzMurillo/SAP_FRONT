@@ -79,7 +79,7 @@ const GoalPage: React.FC = () => {
     },
   };
   return (
-    <LayoutC items={[{ title: "Metas" }]} title={"Graficas de Metas"}>
+    <LayoutC items={[{ title: "Metas" }]} title={"Graficas de metas"}>
       <div
         style={{
           width: "100%",
@@ -97,7 +97,7 @@ const GoalPage: React.FC = () => {
           onClick={() => handleOpenModal("municipal")}
         >
           {" "}
-          Agregar Meta{" "}
+          Agregar meta{" "}
         </Button>
       </div>
       <Row gutter={[10, 10]}>
@@ -133,7 +133,7 @@ const GoalPage: React.FC = () => {
           ))}
       </Row>
       <ModalC
-        title="Agregar Meta"
+        title="Agregar meta"
         isModalOpen={isModalOpen}
         // handleOk={() => handleOpenModal()}
         handleCancel={handleCloseModal}

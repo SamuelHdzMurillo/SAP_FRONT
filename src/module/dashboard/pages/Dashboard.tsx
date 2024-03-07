@@ -71,7 +71,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
     },
   ];
 
-  
+ 
 
   useEffect(() => {
     const handleGetPromotedsByPromoters = async () => {
@@ -137,59 +137,59 @@ const Dashboard: React.FC<DashboardProps> = () => {
       <div className="dashboard-container">
         <Widgets widgets={widgets} />
         <div className="chart-container">
-        <Card title="Promovidos por mes">
-  <ReactApexChart
-    options={{
-      chart: {
-        height: 500,
-        type: "bar",
-      },
-      plotOptions: {
-        bar: {
-          columnWidth: "80%",
-          distributed: true,
-        },
-      },
-      dataLabels: {
-        enabled: true,
-        style: {
-          colors: ["#000"], // Color del texto de las etiquetas (negro en este caso)
-          fontSize: "12px",
-          fontWeight: "bold", // Puedes ajustar el peso de la fuente según tus preferencias
-        },
-      },
-      legend: {
-        show: false,
-      },
-      xaxis: {
-        categories: itemsChartByDates.map((item) => {
-          const date = new Date(item.day);
-          return date.toLocaleString("default", { month: "long" }).toUpperCase();
-        }),
-        labels: {
-          style: {
-            fontSize: "12px",
-          },
-        },
-      },
-      yaxis: {
-        labels: {
-          formatter: function (value) {
-            return value;
-          },
-        },
-      },
-      colors: ["#0eb980", "#FF4560", "#00E396", "#FEB019", "#775DD0"],
-    }}
-    series={transformedSeries}
-    type="bar"
-    height={500}
-  />
-</Card>
+          <Card title="Promovidos por mes">
+            <ReactApexChart
+              options={{
+                chart: {
+                  height: 500,
+                  type: "bar",
+                },
+                plotOptions: {
+                  bar: {
+                    columnWidth: "80%",
+                    distributed: true,
+                  },
+                },
+                dataLabels: {
+                  enabled: true,
+                  style: {
+                    colors: ["#000"],
+                    fontSize: "12px",
+                    fontWeight: "bold",
+                  },
+                },
+                legend: {
+                  show: false,
+                },
+                xaxis: {
+                  categories: itemsChartByDates.map((item) => {
+                    const date = new Date(item.day);
+                    const monthLabel = date.toLocaleString("default", { month: "long" }).toUpperCase();
+                    const percentage = ((item.value / transformedSeries[0].data.reduce((acc, val) => acc + val, 0)) * 100).toFixed(2);
+                    return `${monthLabel} - \n${percentage}%`; // Use line break for month label and percentage
+                  }),
+                  labels: {
+                    style: {
+                      fontSize: "12px",
+                    },
+                  },
+                },
+                yaxis: {
+                  labels: {
+                    formatter: function (value) {
+                      return value;
+                    },
+                  },
+                },
+                colors: ["#0eb980", "#FF4560", "#00E396", "#FEB019", "#775DD0"],
+              }}
+              series={transformedSeries}
+              type="bar"
+              height={500}
+            />
+          </Card>
 
-
-
-          <PieChartMun/>
+          <PieChartMun />
           <Municipals />
           <Charts />
         </div>

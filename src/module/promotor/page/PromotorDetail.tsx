@@ -75,7 +75,7 @@ const PromotorDetail = () => {
 
         <TemplateDetail
           loading={loading}
-          title="Detalle del Promotor"
+          title="Detalle del promotor"
           module="promotores"
           attributeProfile="profile_path"
           data={promotorStore}
@@ -101,7 +101,7 @@ const PromotorDetail = () => {
               pagination={tableParams.pagination}
               handleTableChange={handleTableChange}
               loading={loading}
-              children={"Agregar Usuario"}
+              children={"Agregar usuario"}
             />
           }
         />

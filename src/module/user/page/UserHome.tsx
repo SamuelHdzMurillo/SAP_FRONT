@@ -46,7 +46,7 @@ const UserHome = () => {
         handleTableChange={handleTableChange}
         loading={loading}
         handleAdd={handleOpenModal}
-        children={"Agregar Usuario"}
+        children={"Agregar usuario"}
       />
       <ModalC
         title={titleModal}
