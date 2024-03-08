@@ -50,9 +50,6 @@ const GoalSectionsPage: React.FC = () => {
         endingShape: "rounded",
       },
     },
-    dataLabels: {
-      enabled: false,
-    },
     stroke: {
       show: true,
       width: 2,
