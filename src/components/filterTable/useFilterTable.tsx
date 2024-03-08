@@ -48,7 +48,7 @@ export const useFilterTable = ({
             size="small"
             style={{ width: 90 }}
           >
-            Search
+            Buscar
           </Button>
           <Button
             onClick={() => clearFilters && handleReset(clearFilters)}
