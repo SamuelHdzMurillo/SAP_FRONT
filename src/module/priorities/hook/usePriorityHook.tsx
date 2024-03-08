@@ -4,15 +4,22 @@ import {
   getSectionCatalogByDistrict,
 } from "@/api/CatalogHttp";
 import { MunicipalCatalog } from "@/module/promoted/page/PromotedRegister";
-import { Form } from "antd";
+import { Form, Modal } from "antd";
+const { confirm } = Modal;
+
 import { useState } from "react";
-import { getPriorityCharts } from "../api";
+import { deletePriority, getPriorityCharts } from "../api";
 import { PriorityChartApi, usePriorityStore } from "../store";
+import { ExclamationCircleFilled } from "@ant-design/icons";
+import { useAlertStore } from "@/components/alerts/alertStore";
 
 export const usePriorityHook = () => {
   const [form] = Form.useForm();
   const setPriorities = usePriorityStore((state) => state.setPriorities);
+  const deletePriorities = usePriorityStore((state) => state.deletePriorities);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const setAlert = useAlertStore((state) => state.setAlert);
+  const clearAlert = useAlertStore((state) => state.clearAlert);
   const [municipal, setMunicipal] = useState<MunicipalCatalog[]>([]);
   const [districts, setDistricts] = useState<MunicipalCatalog[]>([]);
   const [sections, setSections] = useState<MunicipalCatalog[]>([]);
@@ -39,6 +46,7 @@ export const usePriorityHook = () => {
     });
     setPriorities(newData);
   };
+
   const handleGetDistrictByMunicap = async (id: number) => {
     const { data } = await getDistrictByMunicipal({ municipal_id: id });
     setDistricts(data);
@@ -64,6 +72,36 @@ export const usePriorityHook = () => {
   const handleSetSectionsSelects = (sections: MunicipalCatalog[]) => {
     setSectionsSelects(sections);
   };
+
+  const handleDeletePriority = async (id: number) => {
+    confirm({
+      title: "¿Quieres eliminar esta priorida?",
+      icon: <ExclamationCircleFilled />,
+      content:
+        "Si le das a Ok, se eliminará por completo y no habrá vuelta atrás",
+      async onOk() {
+        try {
+          await deletePriority(id);
+          deletePriorities(id);
+          setAlert({
+            type: "success",
+            message: "Priorida eliminado correctamente",
+            isShow: true,
+          });
+        } catch (error) {
+          setAlert({
+            type: "error",
+            message: "Ocurrio un error al eliminar la priorida",
+            isShow: true,
+          });
+        }
+        setTimeout(() => {
+          clearAlert();
+        }, 3000);
+      },
+      onCancel() {},
+    });
+  };
   return {
     form,
     sectionsSelects,
@@ -77,5 +115,6 @@ export const usePriorityHook = () => {
     handleOpenModal,
     handleCloseModal,
     handleSetSectionsSelects,
+    handleDeletePriority
   };
 };

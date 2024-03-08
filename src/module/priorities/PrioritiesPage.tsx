@@ -21,6 +21,7 @@ const PrioritiesPage: React.FC = () => {
     handleCloseModal,
     handleSetSectionsSelects,
     handleGetPriorities,
+    handleDeletePriority
   } = usePriorityHook();
 
   const priorities = usePriorityStore((state) => state.priorities);
@@ -71,6 +72,7 @@ const PrioritiesPage: React.FC = () => {
       },
     ],
   };
+  
   useEffect(() => {
     handleGetPriorities();
     // handleGetGoals("");
@@ -103,7 +105,7 @@ const PrioritiesPage: React.FC = () => {
           priorities.map((goal, index) => (
             <Col key={index + 2} span={24} sm={12}>
               <PriorityChart
-                handleDeleteGoal={() => console.log("delete")}
+                handleDeleteGoal={handleDeletePriority}
                 title={goal.name}
                 options={{
                   ...options2,
