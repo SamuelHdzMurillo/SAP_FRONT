@@ -121,7 +121,9 @@ const GoalSectionsPage: React.FC = () => {
                 type="bar"
                 series={[
                   {
-                    name: "Actual",
+                    name: `Actual ${
+                      goal.promoted_count === 0 ? "(No tiene promovidos)" : ""
+                    } `,
                     color: "#8f2a2b",
                     data: [goal.promoted_count],
                   },
