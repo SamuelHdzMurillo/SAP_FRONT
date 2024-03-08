@@ -2,6 +2,9 @@ import { Form } from "antd";
 import "../promoted.css";
 import LayoutC from "@/components/LayoutC";
 import PromotedForm from "../components/PromotedForm";
+import { useEffect, useState } from "react";
+import { useAlertStore } from "@/components/alerts/alertStore";
+import { getPromotorsCatalog } from "@/api/CatalogHttp";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export interface MunicipalCatalog {
@@ -10,8 +13,19 @@ export interface MunicipalCatalog {
 }
 
 const PromotedRegister = () => {
-  const [form] = Form.useForm();
+  const [usersCatalog, setUsersCatalog] = useState([]);
+  const clearAlert = useAlertStore((state) => state.clearAlert);
 
+  useEffect(() => {
+    const handleGetUsersCatalog = async () => {
+      const { data } = await getPromotorsCatalog();
+      setUsersCatalog(data);
+    };
+    setTimeout(() => {
+      clearAlert();
+    }, 3000);
+    handleGetUsersCatalog();
+  }, []);
   return (
     <LayoutC
       items={[
@@ -25,7 +39,7 @@ const PromotedRegister = () => {
       title={"Promovidos"}
     >
       <div>
-        <PromotedForm form={form} />
+        <PromotedForm usersCatalog={usersCatalog} />
       </div>
     </LayoutC>
   );
