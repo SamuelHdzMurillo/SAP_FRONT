@@ -30,16 +30,6 @@ const GoalPage: React.FC = () => {
   }, []);
 
   const options2 = {
-    // series: [
-    //   {
-    //     name: "Actual",
-    //     data: [44],
-    //   },
-    //   {
-    //     name: "Meta",
-    //     data: [76],
-    //   },
-    // ],
     chart: {
       type: "bar",
       height: 350,
@@ -51,17 +41,14 @@ const GoalPage: React.FC = () => {
         endingShape: "rounded",
       },
     },
-    dataLabels: {
-      enabled: false,
-    },
     stroke: {
       show: true,
       width: 2,
       colors: ["transparent"],
     },
-    xaxis: {
-      categories: ["Objetivo 1"],
-    },
+    // xaxis: {
+    //   categories: ["Objetivo 1"],
+    // },
     yaxis: {
       title: {
         text: "Promovidos",

@@ -21,7 +21,6 @@ const PriorityChart = ({
   handleDeleteGoal,
 }: PriorityChartProps) => {
   const { id } = data;
-  console.log(series, "series");
   return (
     <Card
       style={{
