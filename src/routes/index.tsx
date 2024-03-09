@@ -24,6 +24,7 @@ import AdminDetail from "@/module/admin/page/AdminDetail";
 import RoleBasedRoute from "@/module/auth/RoleBasedRoute";
 import DistrictDetail from "@/module/districts/page/DistrictDetail";
 import SectionDetail from "@/module/sections/page/SectionDetail";
+import MunicipalDetail from "@/module/municipals/page/MunicipalDetail";
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const token = localStorage.getItem("token");
 
@@ -181,6 +182,10 @@ export const router = createBrowserRouter([
       //   path: "/distritos",
       //   element: <DistrictHome />,
       // },
+      {
+        path: "/municipios",
+        element: <MunicipalDetail />,
+      },
       {
         path: "/distritos",
         element: <DistrictDetail />,

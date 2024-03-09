@@ -44,6 +44,7 @@ const MainC = () => {
         },
         {
           label: "Municipio",
+          onClick: () => navigate("/municipios"),
           key: "/municipio",
         },
         {
