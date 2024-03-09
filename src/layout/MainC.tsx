@@ -36,7 +36,28 @@ const MainC = () => {
     {
       label: "Estadisticas",
       key: "/Dashboard",
-      onClick: () => navigate("/"),
+      children: [
+        {
+          label: "General",
+          onClick: () => navigate("/"),
+          key: "/",
+        },
+        {
+          label: "Municipio",
+          key: "/municipio",
+        },
+        {
+          label: "Distrito",
+          onClick: () => navigate("/distritos"),
+          key: "/distrito",
+        },
+        {
+          label: "Sección",
+          onClick: () => navigate("/secciones"),
+          key: "/seccion",
+        },
+      ],
+
       icon: <FontAwesomeIcon icon={faChartSimple} />,
     },
     {
