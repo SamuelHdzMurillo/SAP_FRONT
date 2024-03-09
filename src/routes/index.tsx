@@ -177,12 +177,12 @@ export const router = createBrowserRouter([
         path: "/Problemas",
         element: <ProblemHome />,
       },
+      // {
+      //   path: "/distritos",
+      //   element: <DistrictHome />,
+      // },
       {
         path: "/distritos",
-        element: <DistrictHome />,
-      },
-      {
-        path: "/distritos/:id",
         element: <DistrictDetail />,
       }
     ],

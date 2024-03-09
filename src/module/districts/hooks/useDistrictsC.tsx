@@ -17,6 +17,7 @@ interface TableParams {
 export const useDistrictsC = () => {
   const setDistricts = useDistrictStore((state) => state.setDistricts);
   const setDistrict = useDistrictStore((state) => state.setDistrict);
+  const [districtSelect, setDistrictSelect] = useState<string>("");
   const [countPromoted, setCountPromoted] = useState<number>(0);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
@@ -125,12 +126,19 @@ export const useDistrictsC = () => {
     setLoading(false);
     // setDistricts()
   };
+  const handleSelectDistrict = async (id: string) => {
+    setDistrictSelect("");
+    await handleCountPromoteds(id);
+    await handleGetDistrict(parseInt(id));
+    setDistrictSelect(id);
+  };
   const handleCountPromoteds = async (id: string) => {
     // console.log("id", id);
     const data = await getCountPromotedsDistricts(id);
     setCountPromoted(data.promoted_count);
   };
   return {
+    districtSelect,
     columns,
     form,
     loading,
@@ -141,5 +149,6 @@ export const useDistrictsC = () => {
     handleGetDistricts,
     handleTableChange,
     handleCountPromoteds,
+    handleSelectDistrict,
   };
 };
