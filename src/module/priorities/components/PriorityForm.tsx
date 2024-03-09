@@ -47,7 +47,6 @@ const PriorityFrom = ({
       Name: values.name,
       data: values.sections_id,
     };
-    console.log(newValues, "newValues");
     try {
       const [_, getResponse] = await Promise.all([
         postPriority(newValues),
@@ -86,6 +85,8 @@ const PriorityFrom = ({
     } finally {
       setLoading(false);
       form.resetFields();
+      handleSetSectionsSelects([]);
+      form.setFieldsValue({ sections_id: [] });
       handleCloseModal && handleCloseModal();
       setTimeout(() => {
         clearAlert();
@@ -210,7 +211,7 @@ const PriorityFrom = ({
             >
               <Select
                 mode="multiple"
-                defaultValue={sectionsSelects}
+                // defaultValue={sectionsSelects}
                 style={{ width: "100%" }}
                 options={sectionsSelects}
                 onDeselect={(e) => {
