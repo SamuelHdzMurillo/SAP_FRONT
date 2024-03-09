@@ -46,9 +46,15 @@ const MainC = () => {
       icon: <FontAwesomeIcon icon={faMap} />,
     },
     {
-      label: "Administradores",
+      label: "Super Administradores",
       key: "/usuarios",
       onClick: () => navigate("/usuarios"),
+      icon: <FontAwesomeIcon icon={faUserTie} />,
+    },
+    {
+      label: "Administradores",
+      key: "/administradores",
+      onClick: () => navigate("/administradores"),
       icon: <FontAwesomeIcon icon={faUserTie} />,
     },
     {

@@ -1,8 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import {
-  Navigate,
-  createBrowserRouter,
-} from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
 import MainC from "../layout/MainC";
 import UserHome from "@/module/user/page/UserHome";
 import PromotedRegister from "@/module/promoted/page/PromotedRegister";
@@ -22,6 +19,8 @@ import GoalPage from "@/module/goals/pages/GoalPage";
 import GoalDistricts from "@/module/goals/pages/GoalDistrictsPage";
 import GoalSectionsPage from "@/module/goals/pages/GoalSectionsPage";
 import PrioritiesPage from "@/module/priorities/PrioritiesPage";
+import AdminHome from "@/module/admin/page/AdminHome";
+import AdminDetail from "@/module/admin/page/AdminDetail";
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const token = localStorage.getItem("token");
 
@@ -83,6 +82,14 @@ export const router = createBrowserRouter([
       {
         path: "/usuarios/:id",
         element: <UserDetail />,
+      },
+      {
+        path: "/administradores",
+        element: <AdminHome />,
+      },
+      {
+        path: "/administradores/:id",
+        element: <AdminDetail />,
       },
       {
         path: "/promovidos",
