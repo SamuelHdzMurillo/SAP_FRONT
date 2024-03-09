@@ -104,7 +104,7 @@ export const useUserC = () => {
       ...getColumnSearchProps("phone_number"),
     },
     {
-      title: "Action",
+      title: "Acciones",
       key: "action",
       render: (_, record) => (
         <DropDownUH record={record} handleOpenModal={handleOpenModal} />

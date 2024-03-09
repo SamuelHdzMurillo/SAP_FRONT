@@ -131,7 +131,7 @@ export const usePromotorC = () => {
       ...getColumnSearchPropsPromoteds("adress"),
     },
     {
-      title: "Action",
+      title: "Acciones",
       key: "action",
       render: (_, record) => (
         <DropDownPV record={record} handleOpenModal={handleOpenModal} />
@@ -191,7 +191,7 @@ export const usePromotorC = () => {
       render: (text) => <Tag color="rgb(42, 143, 143)">{text}</Tag>,
     },
     {
-      title: "Action",
+      title: "Acciones",
       key: "action",
       render: (_, record) => (
         <DropDownPromo record={record} handleOpenModal={handleOpenModal} />

@@ -79,7 +79,7 @@ export const useDistrictsC = () => {
       responsive: ["lg"],
     },
     {
-      title: "Action",
+      title: "Acciones",
       key: "action",
       render: (_, record) => <DropDownDistricts record={record} />,
     },

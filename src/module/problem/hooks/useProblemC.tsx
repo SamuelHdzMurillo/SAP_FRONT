@@ -71,7 +71,7 @@ export const useProblemC = () => {
       render: (text) => <Tag color="rgb(42, 43, 43)">{text}</Tag>,
     },
     {
-      title: "Action",
+      title: "Acciones",
       key: "action",
       render: (_, record) => (
         <DropDownPMS record={record} handleOpenModal={handleOpenModal} />

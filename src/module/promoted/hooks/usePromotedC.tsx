@@ -203,7 +203,7 @@ export const usePromotedC = () => {
       render: (_, record) => <p>{record.section?.number}</p>,
     },
     {
-      title: "Action",
+      title: "Acciones",
       key: "action",
       render: (_, record) => (
         <DropDownPV record={record} handleOpenModal={handleOpenModal} />
