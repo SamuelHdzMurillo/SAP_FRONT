@@ -2,33 +2,34 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import LayoutC from "@/components/LayoutC";
 import TableC from "@/components/TableC";
-import { useDistrictsC } from "../hooks/useDistrictsC";
+import { useSectionsC } from "../hooks/useSectionsC";
 import { useEffect } from "react";
 
-import { useDistrictStore } from "../store";
+import { useSectionStore } from "../store";
 import { Card, Col, Form, Row, Select, Spin } from "antd";
 
 import { UsergroupAddOutlined } from "@ant-design/icons";
 import { usePromotedC } from "@/module/promoted/hooks/usePromotedC";
 import { usePromotedStore } from "@/module/promoted/store";
 
-const DistrictDetail = () => {
-  const { districtSelect, countPromoted, handleSelectDistrict } =
-    useDistrictsC();
+const SectionDetail = () => {
+  const { sectionSelect, countPromoted, handleSelectSection } = useSectionsC();
   const {
     columns,
     loading,
     tableParams,
     municipal,
+    sections,
     districts,
     handleGetPromotedsByDistricts,
     handleGetDistrictByMunicap,
+    handleGetSectionsByDistrict,
     handleTableChange,
   } = usePromotedC();
-  const districtStore = useDistrictStore((state) => state.district);
+  const sectionStore = useSectionStore((state) => state.section);
   const promotedsStore = usePromotedStore((state) => state.promoteds);
   useEffect(() => {
-    handleGetPromotedsByDistricts("1");
+    handleGetPromotedsByDistricts(null, 1);
   }, []);
   const filterOption = (
     input: string,
@@ -50,7 +51,7 @@ const DistrictDetail = () => {
         <Col span={24}>
           <Card>
             <Row gutter={[10, 10]}>
-              <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+              <Col xs={{ span: 24 }} lg={{ span: 8 }}>
                 <Form.Item
                   name="municipal_id"
                   label="Municipio"
@@ -73,7 +74,7 @@ const DistrictDetail = () => {
                   />
                 </Form.Item>
               </Col>
-              <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+              <Col xs={{ span: 24 }} lg={{ span: 8 }}>
                 <Form.Item
                   name="district_id"
                   label="Distrito"
@@ -92,8 +93,33 @@ const DistrictDetail = () => {
                     placeholder="Selecciona un distrito"
                     options={districts}
                     onChange={async (e) => {
-                      handleSelectDistrict(e);
-                      await handleGetPromotedsByDistricts(e);
+                      handleGetSectionsByDistrict &&
+                        handleGetSectionsByDistrict(e);
+                    }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={{ span: 24 }} lg={{ span: 8 }}>
+                <Form.Item
+                  name="section_id"
+                  label="Sección"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Ups! Olvidaste completar este campo.",
+                    },
+                  ]}
+                >
+                  <Select
+                    showSearch
+                    disabled={districts.length === 0 || sections.length === 0}
+                    optionFilterProp="children"
+                    filterOption={filterOption}
+                    placeholder="Selecciona tu seccion"
+                    options={sections}
+                    onChange={async (e) => {
+                      await handleGetPromotedsByDistricts(null, e);
+                      await handleSelectSection(e);
                     }}
                   />
                 </Form.Item>
@@ -101,7 +127,7 @@ const DistrictDetail = () => {
             </Row>
           </Card>
         </Col>
-        {districtSelect !== "" ? (
+        {sectionSelect !== "" ? (
           <>
             <Col span={24}>
               <Card>
@@ -121,10 +147,11 @@ const DistrictDetail = () => {
                       }}
                     >
                       <div className="widget-content">
-                        Detalle de distrito {districtStore.number}
+                        Detalle de la sección {sectionStore.number}
                       </div>
                       <h2 className="widget-title">
-                        {districtStore.municipal.name}
+                        {sectionStore.district.municipal.name} / Dist.{" "}
+                        {sectionStore.district.number}
                       </h2>
                     </div>
                   </Col>
@@ -179,4 +206,4 @@ const DistrictDetail = () => {
   );
 };
 
-export default DistrictDetail;
+export default SectionDetail;

@@ -78,13 +78,32 @@ export const usePromotedC = () => {
     dataIndex: string | number
   ) => {
     setLoading(true);
+    let district_id = params.district_id;
+    let section_id = params.section_id;
+    if (value === "" && dataIndex === "") {
+      if (params.district_id) {
+        setParams({
+          phone_number: "",
+          district_id: params.district_id,
+        });
+      } else if (params.section_id) {
+        setParams({
+          section_id: params.section_id,
+        });
+      } else {
+        setParams({});
+      }
+    } else {
+      setParams({
+        ...params,
+        [`${dataIndex}`]: value,
+      });
+    }
     const { data, meta } = await getAllPromoted({
       [`${dataIndex}`]: value,
+      district_id,
+      section_id,
       page: "1",
-    });
-    setParams({
-      ...params,
-      [`${dataIndex}`]: value,
     });
     setTableParams({
       ...tableParams,
@@ -278,13 +297,21 @@ export const usePromotedC = () => {
     });
     setLoading(false);
   };
-  const handleGetPromoteds = async (district_id: string) => {
+  const handleGetPromotedsByDistricts = async (
+    district_id?: string,
+    section_id?: number
+  ) => {
     setLoading(true);
     setParams({
       ...params,
       district_id,
+      section_id,
     });
-    const { data, meta } = await getAllPromoted({ page: "1", district_id });
+    const { data, meta } = await getAllPromoted({
+      page: "1",
+      district_id,
+      section_id,
+    });
     const dataMunicipal = await getMunicipalCatalog();
     setMunicipal(dataMunicipal);
     setPromoteds(data);
@@ -370,7 +397,7 @@ export const usePromotedC = () => {
     typeExport,
     formExport,
     title,
-    handleGetPromoteds,
+    handleGetPromotedsByDistricts,
     handleSetTitle,
     handleCloseModal,
     handleOpenModal,
