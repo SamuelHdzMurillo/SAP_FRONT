@@ -51,9 +51,10 @@ const UsersForm = ({
             isShow: true,
           });
         } catch (error) {
+          const errorMessage = obtenerMensajeDeError(error, "Ocurrió un error al registrar el usuario");
           setAlert({
             type: "error",
-            message: `Ocurrio un error al registrar el ${MODULE}`,
+            message: errorMessage,
             isShow: true,
           });
         }
@@ -68,9 +69,10 @@ const UsersForm = ({
             isShow: true,
           });
         } catch (error) {
+          const errorMessage = obtenerMensajeDeError(error, "Ocurrió un error al actualizar el usuario");
           setAlert({
             type: "error",
-            message: `Ocurrio un error al actualizar el ${MODULE}`,
+            message: errorMessage,
             isShow: true,
           });
         }
@@ -88,6 +90,29 @@ const UsersForm = ({
       clearAlert();
     }, 3000);
   };
+
+  const traducciones = {
+    "The email has already been taken.": "El correo electrónico ya ha sido tomado.",
+    "The phone number has already been taken.": "El numero telefonico ya ha sido tomado.",
+    // Agrega más traducciones según sea necesario
+  };
+
+  const obtenerMensajeDeError = (error: any, mensajePredeterminado: string) => {
+  if (error.response && error.response.data && error.response.data.errors) {
+    const errores: any = error.response.data.errors;
+    const primerError: any = Object.values(errores)[0];
+
+    if (Array.isArray(primerError)) {
+      return traducciones[primerError[0]] || mensajePredeterminado;
+    } else {
+      return traducciones[primerError] || mensajePredeterminado;
+    }
+  }
+
+  return mensajePredeterminado;
+};
+  
+  
 
   const onChange = (changedValues: AnyObject) => {
     const key = Object.keys(changedValues)[0];

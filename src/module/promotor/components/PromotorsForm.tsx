@@ -66,16 +66,17 @@ const PromotorsForm = ({
             isShow: true,
           });
         } catch (error) {
+          const errorMessage = obtenerMensajeDeError(error, "Ocurrió un error al registrar el usuario");
           setAlert({
             type: "error",
-            message: `Ocurrio un error al registrar el ${MODULE}`,
+            message: errorMessage,
             isShow: true,
           });
         }
         break;
       case "put":
         try {
-          const data = await putPromotor(promotor);
+          const { data } = await putPromotor(promotor);
           updatePromotor(data);
           setAlert({
             type: "success",
@@ -83,9 +84,10 @@ const PromotorsForm = ({
             isShow: true,
           });
         } catch (error) {
+          const errorMessage = obtenerMensajeDeError(error, "Ocurrió un error al actualizar el usuario");
           setAlert({
             type: "error",
-            message: `Ocurrio un error al actualizar el ${MODULE}`,
+            message: errorMessage,
             isShow: true,
           });
         }
@@ -104,6 +106,30 @@ const PromotorsForm = ({
     }, 3000);
     // handleCloseModal();
   };
+
+  const traducciones = {
+    "The email has already been taken.": "El correo electrónico ya ha sido tomado.",
+    "The phone number has already been taken.": "El numero telefonico ya ha sido tomado.",
+    
+  };
+
+  const obtenerMensajeDeError = (error: any, mensajePredeterminado: string) => {
+    console.log(error.response); // Log the error response for debugging
+  
+    if (error.response && error.response.data && error.response.data.errors) {
+      const errores: any = error.response.data.errors;
+      const primerError: any = Object.values(errores)[0];
+  
+      if (Array.isArray(primerError)) {
+        return traducciones[primerError[0]] || mensajePredeterminado;
+      } else {
+        return traducciones[primerError] || mensajePredeterminado;
+      }
+    }
+  
+    return mensajePredeterminado;
+  };
+  
 
   const onChange = (changedValues: AnyObject) => {
     const key = Object.keys(changedValues)[0];
