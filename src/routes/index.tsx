@@ -21,6 +21,7 @@ import GoalSectionsPage from "@/module/goals/pages/GoalSectionsPage";
 import PrioritiesPage from "@/module/priorities/PrioritiesPage";
 import AdminHome from "@/module/admin/page/AdminHome";
 import AdminDetail from "@/module/admin/page/AdminDetail";
+import RoleBasedRoute from "@/module/auth/RoleBasedRoute";
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const token = localStorage.getItem("token");
 
@@ -41,7 +42,14 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Dashboard />,
+        element: (
+          <RoleBasedRoute
+            allowedUserTypes={["superadmin", "admin"]}
+            to="/promovidos"
+          >
+            <Dashboard />
+          </RoleBasedRoute>
+        ),
       },
       {
         path: "/metas",
@@ -49,7 +57,14 @@ export const router = createBrowserRouter([
       },
       {
         path: "/secciones-prioritarias",
-        element: <PrioritiesPage />,
+        element: (
+          <RoleBasedRoute
+            allowedUserTypes={["superadmin", "admin"]}
+            to="/promovidos"
+          >
+            <PrioritiesPage />
+          </RoleBasedRoute>
+        ),
       },
       {
         path: "metas-distrito",
@@ -73,23 +88,43 @@ export const router = createBrowserRouter([
       },
       {
         path: "/mapa",
-        element: <DashboardMap />,
+        element: (
+          <RoleBasedRoute allowedUserTypes={["superadmin", "admin"]} to="/promovidos">
+            <DashboardMap />
+          </RoleBasedRoute>
+        ),
       },
       {
         path: "/usuarios",
-        element: <UserHome />,
+        element: (
+          <RoleBasedRoute allowedUserTypes={["superadmin"]} to="/promovidos">
+            <UserHome />
+          </RoleBasedRoute>
+        ),
       },
       {
         path: "/usuarios/:id",
-        element: <UserDetail />,
+        element: (
+          <RoleBasedRoute allowedUserTypes={["superadmin"]} to="/promovidos">
+            <UserDetail />
+          </RoleBasedRoute>
+        ),
       },
       {
         path: "/administradores",
-        element: <AdminHome />,
+        element: (
+          <RoleBasedRoute allowedUserTypes={["superadmin"]} to="/promovidos">
+            <AdminHome />
+          </RoleBasedRoute>
+        ),
       },
       {
         path: "/administradores/:id",
-        element: <AdminDetail />,
+        element: (
+          <RoleBasedRoute allowedUserTypes={["superadmin"]} to="/promovidos">
+            <AdminDetail />
+          </RoleBasedRoute>
+        ),
       },
       {
         path: "/promovidos",
@@ -109,10 +144,28 @@ export const router = createBrowserRouter([
       },
       {
         path: "/promotores",
-        element: <PromotorHome />,
+        element: (
+          <RoleBasedRoute
+            allowedUserTypes={["superadmin", "admin"]}
+            to="/promovidos"
+          >
+            <PromotorHome />
+          </RoleBasedRoute>
+        ),
       },
       {
         path: "/promotores/:id",
+        element: (
+          <RoleBasedRoute
+            allowedUserTypes={["superadmin", "admin"]}
+            to="/promovidos"
+          >
+            <PromotorDetail />
+          </RoleBasedRoute>
+        ),
+      },
+      {
+        path: "/perfil/:id",
         element: <PromotorDetail />,
       },
       {

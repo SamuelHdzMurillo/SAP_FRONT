@@ -117,11 +117,84 @@ const MainC = () => {
       ],
     },
   ];
+  const itemsAdmin = [
+    {
+      label: "Estadisticas",
+      key: "/Dashboard",
+      onClick: () => navigate("/"),
+      icon: <FontAwesomeIcon icon={faChartSimple} />,
+    },
+    {
+      label: "Mapa",
+      key: "/mapa",
+      onClick: () => navigate("/mapa"),
+      icon: <FontAwesomeIcon icon={faMap} />,
+    },
+    {
+      label: "Promotores",
+      key: "/promotores",
+      onClick: () => navigate("/promotores"),
+      icon: <FontAwesomeIcon icon={faAddressBook} />,
+    },
+    {
+      label: "Problemas",
+      key: "/problemas",
+      onClick: () => navigate("/problemas"),
+      icon: <FontAwesomeIcon icon={faTriangleExclamation} />,
+    },
+    {
+      label: "Metas",
+      key: "/metas",
+      icon: <FontAwesomeIcon icon={faChartSimple} />,
+      children: [
+        {
+          label: "Municipio",
+          key: "/metas-municipio",
+          onClick: () => navigate("/metas"),
+        },
+        {
+          label: "Distrito",
+          key: "/metas-distrito",
+          onClick: () => navigate("/metas-distrito"),
+        },
+        {
+          label: "Sección",
+          key: "/metas-seccion",
+          onClick: () => navigate("/metas-seccion"),
+        },
+      ],
+    },
+    {
+      label: "Secciones Prior.",
+      key: "/prioridades",
+      onClick: () => navigate("/secciones-prioritarias"),
+      icon: <FontAwesomeIcon icon={faExclamation} />,
+    },
+    {
+      label: "Promovidos",
+      key: "/promovidos-menu",
+      icon: <FontAwesomeIcon icon={faUsers} />,
+      children: [
+        {
+          label: "Registrar",
+          key: "/promovidos-registrar",
+          onClick: () => navigate("/promovidos-registrar"),
+          icon: <UserAddOutlined />,
+        },
+        {
+          label: "Administrar",
+          key: "/promovidos",
+          onClick: () => navigate("/promovidos"),
+          icon: <UsergroupAddOutlined />,
+        },
+      ],
+    },
+  ];
   const items3 = [
     {
       label: "Perfil",
-      key: "/promotores",
-      onClick: () => navigate("/promotores/" + userAuth.id),
+      key: "/perfil",
+      onClick: () => navigate("/perfil/" + userAuth.id),
       icon: <FontAwesomeIcon icon={faUserTie} />,
     },
     {
@@ -268,7 +341,13 @@ const MainC = () => {
               height: "100%",
               borderRight: 0,
             }}
-            items={user_type === "promotor" ? items3 : items2}
+            items={
+              user_type === "promotor"
+                ? items3
+                : user_type === "admin"
+                ? itemsAdmin
+                : items2
+            }
           />
         </Sider>
 
