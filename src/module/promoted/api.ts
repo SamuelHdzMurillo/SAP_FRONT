@@ -11,6 +11,7 @@ export const getAllPromoted = async ({
   electoral_key,
   curp,
   promotor_id,
+  district_id,
   section,
 }: {
   page: string;
@@ -21,10 +22,15 @@ export const getAllPromoted = async ({
   electoral_key?: string;
   name?: string;
   last_name?: string;
+  district_id?: string;
   section?: string;
   promotor_id?: number;
 }) => {
   let params = "";
+  if (district_id) {
+    console.log("district_id", district_id);
+    params = params.concat(`&district_id=${district_id}`);
+  }
   if (phone_number) {
     params = params.concat(`&phone_number=${phone_number}`);
   }

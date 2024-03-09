@@ -278,6 +278,25 @@ export const usePromotedC = () => {
     });
     setLoading(false);
   };
+  const handleGetPromoteds = async (district_id: string) => {
+    setLoading(true);
+    setParams({
+      ...params,
+      district_id,
+    });
+    const { data, meta } = await getAllPromoted({ page: "1", district_id });
+    const dataMunicipal = await getMunicipalCatalog();
+    setMunicipal(dataMunicipal);
+    setPromoteds(data);
+    setTableParams({
+      ...tableParams,
+      pagination: {
+        ...tableParams.pagination,
+        total: meta.total,
+      },
+    });
+    setLoading(false);
+  };
 
   const handleExportExcel = async () => {
     setLoading(true);
@@ -351,6 +370,7 @@ export const usePromotedC = () => {
     typeExport,
     formExport,
     title,
+    handleGetPromoteds,
     handleSetTitle,
     handleCloseModal,
     handleOpenModal,

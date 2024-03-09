@@ -22,6 +22,8 @@ import PrioritiesPage from "@/module/priorities/PrioritiesPage";
 import AdminHome from "@/module/admin/page/AdminHome";
 import AdminDetail from "@/module/admin/page/AdminDetail";
 import RoleBasedRoute from "@/module/auth/RoleBasedRoute";
+import DistrictHome from "@/module/districts/page/DistrictHome";
+import DistrictDetail from "@/module/districts/page/DistrictDetail";
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const token = localStorage.getItem("token");
 
@@ -89,7 +91,10 @@ export const router = createBrowserRouter([
       {
         path: "/mapa",
         element: (
-          <RoleBasedRoute allowedUserTypes={["superadmin", "admin"]} to="/promovidos">
+          <RoleBasedRoute
+            allowedUserTypes={["superadmin", "admin"]}
+            to="/promovidos"
+          >
             <DashboardMap />
           </RoleBasedRoute>
         ),
@@ -172,6 +177,14 @@ export const router = createBrowserRouter([
         path: "/Problemas",
         element: <ProblemHome />,
       },
+      {
+        path: "/distritos",
+        element: <DistrictHome />,
+      },
+      {
+        path: "/distritos/:id",
+        element: <DistrictDetail />,
+      }
     ],
   },
   {

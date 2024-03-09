@@ -16,28 +16,36 @@ const DropDownPV = ({ record, handleOpenModal }: DropDownPVProps) => {
   const setAlert = useAlertStore((state) => state.setAlert);
   const clearAlert = useAlertStore((state) => state.clearAlert);
   const handleGetItemsDropdown = (record: Promoted) => {
-    return [
-      {
-        key: "3",
-        label: "Editar",
-        onClick: () => navigate(`/promovidos-editar/${record.id}`),
-      },
+    const currentPath = window.location.pathname;
+    const showOption3 = currentPath.includes(`/distritos/`);
+    const items = [
       {
         key: "4",
         label: "Mostar Detalles",
         onClick: () => navigate(`/promovidos/${record.id}`),
       },
-      {
-        key: "2",
-        label: "Generar un problema",
-        onClick: () => handleOpenModal("problem", record),
-      },
+
       {
         key: "1",
         label: "Eliminar",
         onClick: () => showPromiseConfirm(record),
       },
     ];
+
+    if (!showOption3) {
+      items.push({
+        key: "3",
+        label: "Editar",
+        onClick: () => navigate(`/promovidos-editar/${record.id}`),
+      });
+      items.push({
+        key: "2",
+        label: "Generar un problema",
+        onClick: () => handleOpenModal("problem", record),
+      });
+    }
+
+    return items;
   };
   const showPromiseConfirm = (record: Promoted) => {
     confirm({
