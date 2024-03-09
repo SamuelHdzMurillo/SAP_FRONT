@@ -74,17 +74,17 @@ const PromotedHome = () => {
       ]}
       title={"Promovidos"}
     >
-      {userType === "superadmin" && (
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            marginBottom: 20,
-            gap: 10,
-          }}
-        >
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          marginBottom: 20,
+          gap: 10,
+        }}
+      >
+        {userType != "promotor" && (
           <Button
             style={{
               backgroundColor: "#1C1C1C",
@@ -98,6 +98,8 @@ const PromotedHome = () => {
             {" "}
             Importar{" "}
           </Button>
+        )}
+        {userType === "superadmin" && (
           <Dropdown menu={{ items }}>
             <Button
               type="primary"
@@ -108,8 +110,8 @@ const PromotedHome = () => {
               Opciones
             </Button>
           </Dropdown>
-        </div>
-      )}
+        )}
+      </div>
 
       <TableC
         dataSource={promotedsStore}
