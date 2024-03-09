@@ -6,11 +6,8 @@ import { useDistrictsC } from "../hooks/useDistrictsC";
 import { useEffect } from "react";
 
 import { useDistrictStore } from "../store";
-import { Card, Col, Flex, Row, Typography } from "antd";
+import { Card, Col, Flex, Row } from "antd";
 
-const { Title, Text } = Typography;
-
-import Widgets from "@/module/dashboard/components/Widgets";
 import { UsergroupAddOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import { usePromotedC } from "@/module/promoted/hooks/usePromotedC";
