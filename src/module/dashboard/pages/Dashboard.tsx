@@ -4,11 +4,7 @@ import LayoutC from "@/components/LayoutC";
 import Municipals from "@/module/charts/pages/Municipals";
 import Charts from "@/module/charts/pages/Countchart";
 import PieChartMun from "@/module/charts/pages/PiechartMun";
-import {
-  getDashboardCountByPromotor,
-  getPromotedByDatesPage,
-  
-} from "../api";
+import { getDashboardCountByPromotor, getPromotedByDatesPage } from "../api";
 import { Card } from "antd";
 import "./style.css";
 import { BarChartOutlined, UsergroupAddOutlined } from "@ant-design/icons";
@@ -62,7 +58,6 @@ const Dashboard: React.FC<DashboardProps> = () => {
   const [promoter_count_sem, setPromoterCountsem] = useState<number>(0);
   const [promoter_count_day, setPromoterCountday] = useState<number>(0);
   const [promoter_countTotal, setPromoterCountTotal] = useState<number>(0);
-  
 
   const transformedSeries = [
     {
@@ -71,13 +66,8 @@ const Dashboard: React.FC<DashboardProps> = () => {
     },
   ];
 
- 
-
   useEffect(() => {
     const handleGetPromotedsByPromoters = async () => {
-      
-      
-
       const promoter_count_mont_data = await getDashboardCountByPromotor({
         filter: "month",
       });
@@ -94,8 +84,6 @@ const Dashboard: React.FC<DashboardProps> = () => {
       const promotedsByDatesData = await getPromotedByDatesPage({
         filter: "all",
       });
-      
-      
 
       setPromoterCountMonth(promoter_count_mont_data.promoteds_count);
       setPromoterCountsem(promoter_count_sem_data.promoteds_count);
@@ -164,8 +152,17 @@ const Dashboard: React.FC<DashboardProps> = () => {
                 xaxis: {
                   categories: itemsChartByDates.map((item) => {
                     const date = new Date(item.day);
-                    const monthLabel = date.toLocaleString("default", { month: "long" }).toUpperCase();
-                    const percentage = ((item.value / transformedSeries[0].data.reduce((acc, val) => acc + val, 0)) * 100).toFixed(2);
+                    const monthLabel = date
+                      .toLocaleString("default", { month: "long" })
+                      .toUpperCase();
+                    const percentage = (
+                      (item.value /
+                        transformedSeries[0].data.reduce(
+                          (acc, val) => acc + val,
+                          0
+                        )) *
+                      100
+                    ).toFixed(2);
                     return `${monthLabel} - \n${percentage}%`; // Use line break for month label and percentage
                   }),
                   labels: {
@@ -177,7 +174,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                 yaxis: {
                   labels: {
                     formatter: function (value) {
-                      return value;
+                      return value.toString();
                     },
                   },
                 },

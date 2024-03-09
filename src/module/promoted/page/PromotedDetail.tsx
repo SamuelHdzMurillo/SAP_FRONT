@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 import MapComponentG from "../components/MapComponentG";
 
 const PromotedDetail = () => {
-  const { form, handleGetPromtoed } = usePromotedC();
+  const {  handleGetPromtoed } = usePromotedC();
   const promotedStore = usePromotedStore((state) => state.promoted);
   const params = useParams<{ id: string }>();
   const [loading, setLoading] = useState(false);
@@ -40,7 +40,7 @@ const PromotedDetail = () => {
           loading={loading}
           title="Detalle del Promovido"
           data={promotedStore}
-          form={<PromotedForm form={form} isTitle={false} />}
+          form={<PromotedForm isTitle={false} usersCatalog={[]} />}
           isProblem
           titleTable="Problemas"
           problem={

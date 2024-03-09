@@ -1,4 +1,3 @@
-import { Form } from "antd";
 import "../promoted.css";
 import LayoutC from "@/components/LayoutC";
 import PromotedForm from "../components/PromotedForm";
