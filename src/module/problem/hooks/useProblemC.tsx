@@ -4,6 +4,7 @@ import DropDownPMS from "../components/DropDownPMS";
 import { TablePaginationConfig, TableProps } from "antd";
 import { getAllProblem } from "../api";
 import { useState } from "react";
+import { useFilterTable } from "@/components/filterTable/useFilterTable";
 interface TableParams {
   pagination?: TablePaginationConfig;
 }
@@ -13,6 +14,7 @@ export const useProblemC = () => {
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [params, setParams] = useState<any>({}); // eslint-disable-line
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
@@ -20,22 +22,52 @@ export const useProblemC = () => {
       total: 50,
     },
   });
+  const handleGetFilterData = async (
+    value: string,
+    dataIndex: string | number
+  ) => {
+    const { data, meta } = await getAllProblem({
+      [`${dataIndex}`]: value,
+      page: "1",
+    });
+    setParams({
+      ...params,
+      [`${dataIndex}`]: value,
+    });
+    setLoading(true);
+    setTableParams({
+      ...tableParams,
+      pagination: {
+        ...tableParams.pagination,
+        total: meta.total,
+      },
+    });
+    setProblems(data);
+    setLoading(false);
+    return data;
+  };
+  const { getColumnSearchProps } = useFilterTable({
+    onFilter: handleGetFilterData,
+  });
   const columns: TableColumnsType<Problem> = [
     {
-      title: "Title",
+      title: "Problema",
       dataIndex: "title",
       key: "title",
+      ...getColumnSearchProps("title"),
     },
     {
       title: "Promovido",
       dataIndex: "promoted_name",
       key: "promoted_name",
+      ...getColumnSearchProps("promoted_name"),
       render: (text) => <Tag color="rgb(143, 143, 42)">{text}</Tag>,
     },
     {
       title: "Numero de seccion",
       dataIndex: "section_number",
       key: "section_number",
+      ...getColumnSearchProps("section_number"),
       render: (text) => <Tag color="rgb(42, 43, 43)">{text}</Tag>,
     },
     {
@@ -74,6 +106,7 @@ export const useProblemC = () => {
     });
     const { data } = await getAllProblem({
       page: pagination.current?.toString(),
+      ...params,
     });
 
     setProblems(data);
