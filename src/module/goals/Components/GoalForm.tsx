@@ -63,11 +63,14 @@ const GoalForm = ({
       case "post":
         try {
           const data = await postGoal(newValues, typeMeta);
+          console.log(data.goal);
           const formatedGoal = {
             id: data.goal.id,
             goalName: data.goal.goal_name,
             goalValue: data.goal.goal_value,
             muncipal_name: data.goal.municipal_name,
+            district_name: data.goal.district_name,
+            section_name: data.goal.section_name,
             municipal_id: 0,
             promoted_count: data.goal.promoted_count,
           };

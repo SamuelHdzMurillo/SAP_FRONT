@@ -80,7 +80,7 @@ const PromotorsForm = ({
         break;
       case "put":
         try {
-          const { data } = await putPromotor(promotor);
+          const data = await putPromotor(promotor);
           updatePromotor(data);
           setAlert({
             type: "success",
