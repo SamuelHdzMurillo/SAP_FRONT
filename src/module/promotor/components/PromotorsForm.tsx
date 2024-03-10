@@ -66,8 +66,6 @@ const PromotorsForm = ({
             isShow: true,
           });
         } catch (error) {
-          const { data } = error.response;
-          console.log(data);
           let errorMessage = obtenerMensajeDeError(
             error,
             "Ocurrió un error al registrar el usuario"
