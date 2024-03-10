@@ -216,7 +216,7 @@ const PriorityFrom = ({
                 options={sectionsSelects}
                 onDeselect={(e) => {
                   const newSectionsSelects = sectionsSelects.filter(
-                    (item) => item.value !== e.value
+                    (item) => item.value !== e
                   );
                   handleSetSectionsSelects(
                     newSectionsSelects as MunicipalCatalog[]

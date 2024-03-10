@@ -178,10 +178,6 @@ export const router = createBrowserRouter([
         path: "/Problemas",
         element: <ProblemHome />,
       },
-      // {
-      //   path: "/distritos",
-      //   element: <DistrictHome />,
-      // },
       {
         path: "/municipios",
         element: <MunicipalDetail />,
