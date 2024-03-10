@@ -64,6 +64,8 @@ const PromotedForm = ({
                 ]}
               >
                 <Select
+                  showSearch
+                  optionFilterProp="children"
                   filterOption={filterOption}
                   options={usersCatalog}
                   placeholder="Buscar promotor"
