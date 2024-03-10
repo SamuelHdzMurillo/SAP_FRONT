@@ -92,7 +92,7 @@ const PromotorDetail = () => {
               <PromotorsForm form={form} isDetail={true} />
             </div>
           }
-          isTable={user_type === "superadmin"}
+          isTable={user_type === "superadmin" || user_type === "admin"}
           titleTable="Promovidos"
           table={
             <TableC
