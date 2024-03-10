@@ -119,7 +119,7 @@ const GoalDistrictsPage: React.FC = () => {
                       goal.promoted_count === 0 ? "(No tiene promovidos)" : ""
                     } `,
                     color: "#8f2a2b",
-                    data: [goal.promoted_count + 1],
+                    data: [goal.promoted_count],
                   },
                   {
                     name: "Meta",
