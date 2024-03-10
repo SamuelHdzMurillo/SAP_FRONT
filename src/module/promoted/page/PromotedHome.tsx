@@ -45,12 +45,14 @@ const PromotedHome = () => {
   } = usePromotedC();
 
   const promotedsStore = usePromotedStore((state) => state.promoteds);
+  const setPromoteds = usePromotedStore((state) => state.setPromoteds);
 
   const clearAlert = useAlertStore((state) => state.clearAlert);
   const userType = useAuthStore((state) => state.user_type);
   const type = usePromotedStore((state) => state.typeForm);
   const [usersCatalog, setUsersCatalog] = useState([]);
   useEffect(() => {
+    setPromoteds([]);
     handleGetPromoteds();
     const handleGetUsersCatalog = async () => {
       const { data } = await getPromotorsCatalog();

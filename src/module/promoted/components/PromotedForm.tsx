@@ -2,6 +2,7 @@ import InputText from "@/components/InputText";
 import { Col, Row, Form, Select, Button } from "antd";
 import { MunicipalCatalog } from "../page/PromotedRegister";
 import { usePromotedFormHook } from "../hooks/usePromotedFormHook";
+import { useLocation } from "react-router-dom";
 interface PromotorsFormProps {
   isTitle?: boolean;
   usersCatalog: MunicipalCatalog[];
@@ -30,6 +31,8 @@ const PromotedForm = ({
       <h1>Registro de Promovidos</h1>
     )
   ) : null;
+
+  const location = useLocation();
   const filterOption = (
     input: string,
     option?: { label: string; value: string }
@@ -51,28 +54,31 @@ const PromotedForm = ({
         onValuesChange={(e) => onChange(e)}
       >
         <Row gutter={[10, 10]}>
-          {(userType === "superadmin" || userType === "admin") && (
-            <Col span={24}>
-              <Form.Item
-                name="promotor_id"
-                label="Selecciona un promotor"
-                rules={[
-                  {
-                    required: userType === "superadmin" || userType === "admin",
-                    message: "Este campo es requerido",
-                  },
-                ]}
-              >
-                <Select
-                  showSearch
-                  optionFilterProp="children"
-                  filterOption={filterOption}
-                  options={usersCatalog}
-                  placeholder="Buscar promotor"
-                />
-              </Form.Item>
-            </Col>
-          )}
+          {(userType === "superadmin" || userType === "admin") &&
+            location.pathname == "/promovidos-registrar" && (
+              <Col span={24}>
+                <Form.Item
+                  name="promotor_id"
+                  label="Selecciona un promotor"
+                  rules={[
+                    {
+                      required:
+                        (userType === "superadmin" || userType === "admin") &&
+                        location.pathname == "/promovidos-registrar",
+                      message: "Este campo es requerido",
+                    },
+                  ]}
+                >
+                  <Select
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={filterOption}
+                    options={usersCatalog}
+                    placeholder="Buscar promotor"
+                  />
+                </Form.Item>
+              </Col>
+            )}
 
           <Col xs={{ span: 24 }} lg={{ span: 12 }}>
             <InputText required label="Nombre (s)" name="name" />

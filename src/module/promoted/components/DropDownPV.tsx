@@ -17,7 +17,9 @@ const DropDownPV = ({ record, handleOpenModal }: DropDownPVProps) => {
   const clearAlert = useAlertStore((state) => state.clearAlert);
   const handleGetItemsDropdown = (record: Promoted) => {
     const currentPath = window.location.pathname;
-    const showOption3 = currentPath.includes(`/distritos/`);
+    const showOption3 =
+      currentPath.includes(`/distritos/`) ||
+      currentPath.includes("/promotores/");
     const items = [
       {
         key: "4",

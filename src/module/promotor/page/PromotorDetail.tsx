@@ -21,6 +21,7 @@ const PromotorDetail = () => {
   const { handleTableChange , handleGetPromotedsByPromotor, tableParams, columns} = usePromotedC();
   const promotorStore = usePromotorStore((state) => state.promotor);
   const promotesdStore = usePromotedStore((state) => state.promoteds);
+  const setPromoteds = usePromotedStore((state) => state.setPromoteds);
   const [loading, setLoading] = useState(false);
   const [showImage, setShowImage] = useState(false); // Estado para controlar la visibilidad de la imagen
   const [showModal, setShowModal] = useState(false);
@@ -36,6 +37,7 @@ const PromotorDetail = () => {
 
   const { id } = useParams();
   useEffect(() => {
+    setPromoteds([]);
     setLoading(true);
     handleGetPromotor(parseInt(id));
     handleGetPromotedsByPromotor(parseInt(id));
