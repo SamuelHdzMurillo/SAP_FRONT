@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { Navigate, createBrowserRouter } from "react-router-dom";
+import { Navigate, createHashRouter } from "react-router-dom";
 import MainC from "../layout/MainC";
 import UserHome from "@/module/user/page/UserHome";
 import PromotedRegister from "@/module/promoted/page/PromotedRegister";
@@ -34,7 +34,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
   return <Navigate to="/login" />;
 };
-export const router = createBrowserRouter([
+export const router = createHashRouter([
   {
     path: "/",
     element: (
