@@ -81,6 +81,7 @@ export const usePromotedC = () => {
     let district_id = params.district_id;
     let section_id = params.section_id;
     let municipal_id = params.municipal_id;
+    let promotor_id = params.promotor_id;
     if (value === "" && dataIndex === "") {
       if (params.district_id) {
         setParams({
@@ -94,6 +95,10 @@ export const usePromotedC = () => {
       } else if (params.municipal_id) {
         setParams({
           municipal_id: params.municipal_id,
+        });
+      } else if (params.promotor_id) {
+        setParams({
+          promotor_id: params.promotor_id,
         });
       } else {
         setParams({});
@@ -109,6 +114,7 @@ export const usePromotedC = () => {
       district_id,
       section_id,
       municipal_id,
+      promotor_id,
       page: "1",
     });
     setTableParams({
@@ -303,6 +309,26 @@ export const usePromotedC = () => {
     });
     setLoading(false);
   };
+
+  const handleGetPromotedsByPromotor = async (promotor_id: number) => {
+    setLoading(true);
+    const { data, meta } = await getAllPromoted({ page: "1", promotor_id });
+    const dataMunicipal = await getMunicipalCatalog();
+    setParams({
+      promotor_id,
+    });
+    setMunicipal(dataMunicipal);
+    setPromoteds(data);
+    setTableParams({
+      ...tableParams,
+      pagination: {
+        ...tableParams.pagination,
+        total: meta.total,
+      },
+    });
+    setLoading(false);
+  };
+
   const handleGetPromotedsByDistricts = async (
     district_id?: string,
     section_id?: number,
@@ -422,5 +448,6 @@ export const usePromotedC = () => {
     handleGetSectionsByDistrict,
     handleChangeDistrict,
     handleChangeSection,
+    handleGetPromotedsByPromotor,
   };
 };

@@ -11,14 +11,16 @@ import { Modal } from "antd";
 
 import { Button } from "antd"; // Importa Card, Select y Button de antd
 import { useAuthStore } from "@/module/auth/auth";
+import { usePromotedStore } from "@/module/promoted/store";
 
 const URL = import.meta.env.VITE_API_URL;
 const PromotorDetail = () => {
-  const { form, handleGetPromotor, columsPromoted, tableParams } =
+  const { form, handleGetPromotor } =
     usePromotorC();
   const user_type = useAuthStore((state) => state.user_type);
-  const { handleTableChange } = usePromotedC();
+  const { handleTableChange , handleGetPromotedsByPromotor, tableParams, columns} = usePromotedC();
   const promotorStore = usePromotorStore((state) => state.promotor);
+  const promotesdStore = usePromotedStore((state) => state.promoteds);
   const [loading, setLoading] = useState(false);
   const [showImage, setShowImage] = useState(false); // Estado para controlar la visibilidad de la imagen
   const [showModal, setShowModal] = useState(false);
@@ -36,6 +38,7 @@ const PromotorDetail = () => {
   useEffect(() => {
     setLoading(true);
     handleGetPromotor(parseInt(id));
+    handleGetPromotedsByPromotor(parseInt(id));
     setLoading(false);
   }, []);
   return (
@@ -96,8 +99,8 @@ const PromotorDetail = () => {
           titleTable="Promovidos"
           table={
             <TableC
-              dataSource={promotorStore.promoteds}
-              columns={columsPromoted}
+              dataSource={promotesdStore}
+              columns={columns}
               pagination={tableParams.pagination}
               handleTableChange={handleTableChange}
               loading={loading}
