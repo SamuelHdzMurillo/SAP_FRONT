@@ -6,6 +6,8 @@ import { Goal, useGoalStore } from "../store";
 import { useAlertStore } from "@/components/alerts/alertStore";
 import { postGoal } from "../goal.api";
 import { MunicipalCatalog } from "@/module/promoted/page/PromotedRegister";
+import { langDate } from "@/helper";
+import { PickerLocale } from "antd/es/date-picker/generatePicker";
 interface PromotorsFormProps {
   form: FormInstance<Goal>;
   isTitle?: boolean;
@@ -134,12 +136,12 @@ const GoalForm = ({
           </Col>
           <Col xs={{ span: 24 }} lg={{ span: 12 }}>
             <Form.Item name={"start_date"} label="Fecha de inicio">
-              <DatePicker />
+              <DatePicker locale={langDate as PickerLocale} />
             </Form.Item>
           </Col>
           <Col xs={{ span: 24 }} lg={{ span: 12 }}>
             <Form.Item name={"end_date"} label="Fecha limite">
-              <DatePicker />
+              <DatePicker locale={langDate as PickerLocale} />
             </Form.Item>
           </Col>
           <Col xs={{ span: 24 }} lg={{ span: 12 }}>
