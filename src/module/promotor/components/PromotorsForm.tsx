@@ -66,7 +66,13 @@ const PromotorsForm = ({
             isShow: true,
           });
         } catch (error) {
-          const errorMessage = obtenerMensajeDeError(error, "Ocurrió un error al registrar el usuario");
+          const { data } = error.response;
+          console.log(data);
+          let errorMessage = obtenerMensajeDeError(
+            error,
+            "Ocurrió un error al registrar el usuario"
+          );
+
           setAlert({
             type: "error",
             message: errorMessage,
@@ -84,7 +90,10 @@ const PromotorsForm = ({
             isShow: true,
           });
         } catch (error) {
-          const errorMessage = obtenerMensajeDeError(error, "Ocurrió un error al actualizar el usuario");
+          const errorMessage = obtenerMensajeDeError(
+            error,
+            "Ocurrió un error al actualizar el usuario"
+          );
           setAlert({
             type: "error",
             message: errorMessage,
@@ -107,29 +116,15 @@ const PromotorsForm = ({
     // handleCloseModal();
   };
 
-  const traducciones = {
-    "The email has already been taken.": "El correo electrónico ya ha sido tomado.",
-    "The phone number has already been taken.": "El numero telefonico ya ha sido tomado.",
-    
-  };
-
   const obtenerMensajeDeError = (error: any, mensajePredeterminado: string) => {
-    console.log(error.response); // Log the error response for debugging
-  
-    if (error.response && error.response.data && error.response.data.errors) {
-      const errores: any = error.response.data.errors;
-      const primerError: any = Object.values(errores)[0];
-  
-      if (Array.isArray(primerError)) {
-        return traducciones[primerError[0]] || mensajePredeterminado;
-      } else {
-        return traducciones[primerError] || mensajePredeterminado;
-      }
+    const { data } = error.response;
+    if (data.email) {
+      return "El correo electrónico ya ha sido tomado.";
+    } else if (data.phone_number) {
+      return "El numero telefonico ya ha sido tomado.";
     }
-  
     return mensajePredeterminado;
   };
-  
 
   const onChange = (changedValues: AnyObject) => {
     const key = Object.keys(changedValues)[0];
