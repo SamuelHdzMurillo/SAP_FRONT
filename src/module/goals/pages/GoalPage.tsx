@@ -135,6 +135,7 @@ const GoalPage: React.FC = () => {
           handleGetSectionsByDistrict={handleGetSectionsByDistrict}
           form={form}
           handleCloseModal={handleCloseModal}
+          handleGetGoals={handleGetGoals}
           typeMeta={typeMeta}
         />
       </ModalC>

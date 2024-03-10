@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import type { AnyObject } from "yup";
 import { Goal, useGoalStore } from "../store";
 import { useAlertStore } from "@/components/alerts/alertStore";
-import { postGoal } from "../goal.api";
+import { getGoalCharts, postGoal } from "../goal.api";
 import { MunicipalCatalog } from "@/module/promoted/page/PromotedRegister";
 import { langDate } from "@/helper";
 import { PickerLocale } from "antd/es/date-picker/generatePicker";
@@ -18,6 +18,7 @@ interface PromotorsFormProps {
   sections?: MunicipalCatalog[] | [];
   handleGetDistrictByMunicap?: (id: number) => void;
   handleGetSectionsByDistrict?: (id: number) => void;
+  handleGetGoals?: (typeMeta: string) => void;
 }
 const MODULE = "Meta";
 const GoalForm = ({
@@ -29,6 +30,7 @@ const GoalForm = ({
   handleGetDistrictByMunicap,
   handleGetSectionsByDistrict,
   handleCloseModal,
+  handleGetGoals,
 }: PromotorsFormProps) => {
   const goal = useGoalStore((state) => state.goal);
   const setGoal = useGoalStore((state) => state.setGoal);
@@ -63,7 +65,6 @@ const GoalForm = ({
       case "post":
         try {
           const data = await postGoal(newValues, typeMeta);
-          console.log(data.goal);
           const formatedGoal = {
             id: data.goal.id,
             goalName: data.goal.goal_name,
@@ -74,7 +75,8 @@ const GoalForm = ({
             municipal_id: 0,
             promoted_count: data.goal.promoted_count,
           };
-          addGoal(formatedGoal);
+          handleGetGoals && handleGetGoals(typeMeta);
+          // addGoal(formatedGoal);
           setAlert({
             type: "success",
             message: `${MODULE} registrado correctamente`,

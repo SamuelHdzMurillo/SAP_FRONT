@@ -152,6 +152,7 @@ const GoalSectionsPage: React.FC = () => {
           form={form}
           handleCloseModal={handleCloseModal}
           typeMeta={typeMeta}
+          handleGetGoals={handleGetGoals}
         />
       </ModalC>
     </LayoutC>
