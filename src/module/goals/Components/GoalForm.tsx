@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import type { AnyObject } from "yup";
 import { Goal, useGoalStore } from "../store";
 import { useAlertStore } from "@/components/alerts/alertStore";
-import { getGoalCharts, postGoal } from "../goal.api";
+import { postGoal } from "../goal.api";
 import { MunicipalCatalog } from "@/module/promoted/page/PromotedRegister";
 import { langDate } from "@/helper";
 import { PickerLocale } from "antd/es/date-picker/generatePicker";
@@ -34,7 +34,7 @@ const GoalForm = ({
 }: PromotorsFormProps) => {
   const goal = useGoalStore((state) => state.goal);
   const setGoal = useGoalStore((state) => state.setGoal);
-  const addGoal = useGoalStore((state) => state.addGoal);
+  // const addGoal = useGoalStore((state) => state.addGoal);
   const setTypeForm = useGoalStore((state) => state.setTypeForm);
   const setAlert = useAlertStore((state) => state.setAlert);
   const clearAlert = useAlertStore((state) => state.clearAlert);
@@ -64,17 +64,7 @@ const GoalForm = ({
     switch (typeForm) {
       case "post":
         try {
-          const data = await postGoal(newValues, typeMeta);
-          const formatedGoal = {
-            id: data.goal.id,
-            goalName: data.goal.goal_name,
-            goalValue: data.goal.goal_value,
-            muncipal_name: data.goal.municipal_name,
-            district_name: data.goal.district_name,
-            section_name: data.goal.section_name,
-            municipal_id: 0,
-            promoted_count: data.goal.promoted_count,
-          };
+          await postGoal(newValues, typeMeta);
           handleGetGoals && handleGetGoals(typeMeta);
           // addGoal(formatedGoal);
           setAlert({
