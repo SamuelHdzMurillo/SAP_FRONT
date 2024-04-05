@@ -36,8 +36,8 @@ export const usePriorityHook = () => {
           (prom: PriorityChartApi, i: number) => {
             return {
               x: prom.section_name,
-              fillColor: i % 2 === 0 ? "#8f2a2b" : "#1C1C1C", // Change the color based on whether the index is even or odd
-              strokeColor: i % 2 === 0 ? "#8f2a2b" : "#1C1C1C", // Change the color based on whether the index is even or odd
+              fillColor: i % 2 === 0 ? "#8f2a2b" : "#1C1C1C",
+              strokeColor: i % 2 === 0 ? "#8f2a2b" : "#1C1C1C",
               y: prom.promoteds_count,
             };
           }
