@@ -97,7 +97,7 @@ export const usePriorityHook = () => {
         }
         setTimeout(() => {
           clearAlert();
-        }, 3000);
+        }, 3000)
       },
       onCancel() {},
     });
